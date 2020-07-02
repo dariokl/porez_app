@@ -20,16 +20,21 @@ class RegistrationForm(FlaskForm):
     # Used to check if the user email exists in the current database and returns ValidationEerror in that case
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            flash('Email already registered')
-            raise ValidationError('Email already registered')
-
-    # Used to check if the users username exists in the current database and returns ValidationEerror in that case
-    def validate_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            flash('Username already taken')
-            raise ValidationError('Username already taken')
+            flash('Email adresa je u upotrebi')
+            raise ValidationError('Email adresa je u upotrebi')
 
 class LoginForm(FlaskForm):
     email = StringField('Email')
     password = PasswordField('Password')
     submit = SubmitField('Enter')
+
+
+class PasswordReset(FlaskForm):
+    email = StringField('Email', validators=[Email()])
+    submit = SubmitField('Posalji zahtjev')
+
+class PasswordChange(FlaskForm):
+    password = PasswordField('Ukucajte lozinku', validators=[EqualTo('confirm_pass', \
+                                                                     message='Lozinke moraju biti iste')])
+    confirm_pass = PasswordField('Ponovite lozinku', validators=[Required()])
+    submit= SubmitField('Promijenite Lozinku')

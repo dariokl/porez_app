@@ -1,12 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
 
 from config import config
 
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+mail = Mail()
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -19,6 +21,9 @@ def create_app(config_name):
     # Init login manager
     login_manager.init_app(app)
     login_manager.login_view = 'users.login'
+
+    #Flask mail
+    mail.init_app(app)
 
     # Blueprint imports from separated modules in app structure
     from .users import users as users_blueprint

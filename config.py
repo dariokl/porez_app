@@ -16,12 +16,12 @@ class Config:
      required env variables in order to make application run , also adding any additional functionality
      should be handled with .env variables in order to keep application safe and avoid possible security risks"""
 
-    #MAIL_SERVER = os.environ.get('MAIL_SERVER')
-    #MAIL_PORT = int(os.environ.get('MAIL_PORT'))
-    #USE_MAIL_TLS = os.environ.get('USE_MAIL_TLS' or 'True')
-    #MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    #MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    #MAIL_SENDER = os.environ.get('MAIL_SENDER')
+    MAIL_SERVER = os.environ.get('SENDGRID_SERVER')
+    MAIL_PORT = (os.environ.get('MAIL_PORT'))
+    USE_MAIL_TLS = os.environ.get('USE_MAIL_TLS' or 'True')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_SENDER')
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
