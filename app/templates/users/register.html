@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<div class="signup-form">
+    <form  method="POST">
+		<h2>Registracija</h2>
+		<p>Please fill in this form to create an account!</p>
+		<hr>
+			{{ form.hidden_tag() }}
+        <div class="form-group">
+			<div class="input-group">
+				<div class="row">
+					<div class="col-6">
+						{{ form.ime( class='form-control', placeholder='Ime' ) }}
+					</div>
+					<div class="col-6">
+					{{ form.prezime( class='form-control', placeholder='Prezime' ) }}
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-envelope"></i>
+					</span>
+				</div>
+				{{ form.email( class='form-control', placeholder='Email' ) }}
+			</div>
+        </div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-lock"></i>
+					</span>
+				</div>
+				{{ form.password( class='form-control', placeholder='Lozinka' ) }}
+			</div>
+        </div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-lock"></i>
+					</span>
+				</div>
+				{{ form.confirm_pass( class='form-control', placeholder='Ponovite Lozinku' ) }}
+			</div>
+        </div>
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fas fa-id-card"></i>
+					</span>
+				</div>
+				{{ form.jmbg( class='form-control', placeholder='JMBG' ) }}
+			</div>
+        </div>
+        <div class="form-group">
+			<div class="input-group">
+				<div class="row">
+					<div class="col-6">
+						{{ form.grad( class='form-control', placeholder='Ime Grada' ) }}
+					</div>
+					<div class="col-6">
+					{{ form.kontakt_tel( id='phone', class='form-control', placeholder='061...' ) }}
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="form-group">
+			<label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
+		</div>
+		<div class="form-group">
+            {{ form.submit(class="btn btn-primary btn-lg") }}
+        </div>
+    </form>
+	<div class="text-center">Posjedujete Account ? <a href="#">Login here</a></div>
+</div>
+</div>
+
+{% endblock %}
