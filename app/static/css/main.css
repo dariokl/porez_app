@@ -1,3 +1,83 @@
+h2 {
+	color: #5cd3b4;
+}
+
+.navbar ul li  a {
+  border-bottom: 1px solid #5cd3b4;
+  transition: all 0.25s linear;
+  position: relative;
+}
+
+.navbar ul li a:before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  position: absolute;
+  left: 0;
+  bottom: -3px; /* this is to match where the border is */
+  transform-origin: left;
+  transform: scale(0);
+  transition: 0.25s linear;
+/*   will-change: transform; */
+}
+
+.navbar ul li a:hover:before {
+  transform: scale(1);
+}
+
+
+.navbar ul li a  {
+	 color: #000;
+	 text-decoration: none;
+}
+ a span:nth-child(2) {
+	 transition-delay: 0.1s;
+}
+ a span:nth-child(3) {
+	 transition-delay: 0.2s;
+}
+ a span:nth-child(4) {
+	 transition-delay: 0.3s;
+}
+ a span:nth-child(5) {
+	 transition-delay: 0.3s;
+}
+ a span:nth-child(6) {
+	 transition-delay: 0.3s;
+}
+ a span:nth-child(7) {
+	 transition-delay: 0.3s;
+}
+a span:nth-child(8) {
+	 transition-delay: 0.3s;
+}
+a span:nth-child(9) {
+	 transition-delay: 0.3s;
+}
+
+ a:hover span {
+	 font-weight: 700;
+}
+ a:hover span:nth-child(4) {
+	 transition-delay: 0.3s;
+}
+ a:hover span:nth-child(3) {
+	 transition-delay: 0.2s;
+}
+ a:hover span:nth-child(2) {
+	 transition-delay: 0.1s;
+}
+ a:hover span:nth-child(1) {
+	 transition-delay: 0s;
+}
+ a.hover-shadow:hover {
+	 text-shadow: 1px 1px 0px #ddd, 2px 2px 0px #ddd, 3px 3px 0px #ddd;
+}
+ a.hover-color:hover {
+	 border-color: darkmagenta;
+}
 
 
 .alert {
@@ -31,7 +111,7 @@
 	border-bottom: 3px solid #5cd3b4;
 }
 .signup-form form {
-	color: #999;
+	color: black;
 	border-radius: 3px;
 	margin-bottom: 15px;
 	background: #fff;
@@ -78,7 +158,7 @@
 }
 
 .login-form {
-	width: 350px;
+	width: 450px;
 	margin: 0 auto;
 	padding: 100px 0 30px;
 }
@@ -128,7 +208,7 @@
 	background: #41cba9 !important;
 }
 .login-form a {
-	color: #eee;
+	color: black;
 	text-decoration: underline;
 }
 .login-form a:hover {

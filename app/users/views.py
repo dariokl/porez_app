@@ -8,12 +8,6 @@ from ..forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange
 
 from ..email import send_email
 
-
-@users.route('/', methods=['GET', 'POST'])
-def index():
-    return 'a'
-
-
 @users.route('/register', methods=['POST', 'GET'])
 def register():
     """ Here we are using Flask_WTF to generate forms to make sure our form validation is handled by back end
@@ -45,7 +39,7 @@ def account_confirm(token):
     #Current_user can only be a logged in user because we set the @login_required decorator and if the current user is
     #confirmed we just redirect him to the index page.
     if current_user.is_confirmed:
-        return redirect(url_for('users.index'))
+        return redirect(url_for('core.index'))
 
     if current_user.confirm_token(token):
         db.session.commit()
@@ -53,7 +47,7 @@ def account_confirm(token):
     else:
         flash('Vas zahtjev nije validan , pokusajte poslati token ponovo')
 
-    return redirect(url_for('users.index'))
+    return redirect(url_for('core.index'))
 
 
 @users.route('/login', methods=['POST', 'GET'])
@@ -81,8 +75,9 @@ def login():
     return render_template('users/login.html', form=form)
 
 
-@users.route('/password-reset/', methods=["POST", "GET"])
+@users.route('/password-reset', methods=["POST", "GET"])
 def password_reset():
+    """ A route to request password reset token on users email adress"""
 
     form = PasswordReset()
 
@@ -93,7 +88,7 @@ def password_reset():
         send_email(user.email, 'Izmjena lozinke', "email/password_reset", user=user, token=token)
         flash ('Molim vas provjerite vas Inbox vase email adrese')
 
-        return redirect(url_for('users.index'))
+        return redirect(url_for('core.index'))
 
     return render_template('password_reset.html', form=form)
 
@@ -104,10 +99,10 @@ def password_change(token):
     set_password method to change the password """
 
     if current_user.is_authenticated:
-        return redirect(url_for('users.index'))
+        return redirect(url_for('core.index'))
     user = User.verify_reset_password_token(token)
     if not user:
-        return redirect(url_for('users.index'))
+        return redirect(url_for('core.index'))
     form = PasswordChange()
     if form.validate_on_submit():
         user.set_password(form.password.data)
@@ -116,4 +111,11 @@ def password_change(token):
         return redirect(url_for('users.login'))
     return render_template('users/password_reset.html', form=form)
 
+@users.route('/profile/<user_id>', methods=['GET', 'POST'])
+def profile(user_id):
+    user = User.query.filter_by(id=user_id).first_or_404()
+
+
+
+    return render_template('users/profile.html', user=user)
 

@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
 <div class="login-form">
     <form  method="POST">
         {{ form.hidden_tag() }}
 		<div class="avatar">
-			<img src="/examples/images/avatar.png" alt="Avatar">
 		</div>
         <h2 class="text-center">Login Korisnika</h2>
         <div class="form-group">
@@ -19,11 +18,11 @@
             {{ form.submit( class='btn btn-primary btn-lg btn-block' ) }}
         </div>
 		<div class="bottom-action clearfix">
-            <label class="float-left form-check-label"><input type="checkbox"> Remember me</label>
+
             <a href="{{ url_for('users.password_reset') }}" class="float-right">Forgot Password?</a>
         </div>
     </form>
-    <p class="text-center small">Don't have an account? <a href="#">Sign up here!</a></p>
+    <p class="text-center small">Nemate account ? <a href="{{ url_for('users.register') }}">Registruj se !</a></p>
 </div>
 </div>
 {% endblock %}

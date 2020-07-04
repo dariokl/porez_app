@@ -15,7 +15,7 @@ class RegistrationForm(FlaskForm):
     jmbg = IntegerField('JMBG', validators=[Required()])
     kontakt_tel = IntegerField('Broj Telefona')
     grad = StringField('Grad', validators=[Required()])
-    submit = SubmitField('Registruj Se')
+    submit = SubmitField('REGISTRUJ SE')
 
     # Used to check if the user email exists in the current database and returns ValidationEerror in that case
     def validate_email(self, field):
@@ -26,15 +26,15 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField('Email')
     password = PasswordField('Password')
-    submit = SubmitField('Enter')
+    submit = SubmitField('LOG IN')
 
 
 class PasswordReset(FlaskForm):
     email = StringField('Email', validators=[Email()])
-    submit = SubmitField('Posalji zahtjev')
+    submit = SubmitField('POSALJI ZAHTJEV')
 
 class PasswordChange(FlaskForm):
     password = PasswordField('Ukucajte lozinku', validators=[EqualTo('confirm_pass', \
                                                                      message='Lozinke moraju biti iste')])
     confirm_pass = PasswordField('Ponovite lozinku', validators=[Required()])
-    submit= SubmitField('Promijenite Lozinku')
+    submit= SubmitField('PROMJENA LOZINKE')
