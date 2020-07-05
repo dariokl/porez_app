@@ -1,84 +1,163 @@
+
 h2 {
 	color: #5cd3b4;
 }
-
-.navbar ul li  a {
-  border-bottom: 1px solid #5cd3b4;
-  transition: all 0.25s linear;
+.navbar {
+  min-height: 70px;
+  transition: all 0.5s;
+  z-index: 997;
+  transition: all 0.5s;
+  padding: 10px 0;
+  background: #fff;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
-.navbar ul li a:before {
-  content: "";
+.logo h1 a  {
+  font-size: 26px;
+  padding: 0 0 0 8px;
+  margin: 11px 0;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+  border-left: 8px solid #5cd3b4;
+}
+
+.ba {
+	text-transform: lowercase;
+}
+
+
+
+#navbarNav a {
   display: block;
+  position: relative;
+  color: #545454;
+  padding: 13px 0 15px 25px;
+  transition: 0.3s;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+}
+
+#navbarNav a:hover {
+  color: #5cd3b4;
+  text-decoration: none;
+}
+#landing {
   width: 100%;
-  height: 3px;
-  background-color: black;
+  height: 70vh;
+  background-color: rgba(59, 59, 59, 0.8);
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: -120px;
+  position: relative;
+  z-index: 1;
+}
+
+
+
+#landing .carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
+  bottom: 0;
+  top: 0;
   left: 0;
-  bottom: -3px; /* this is to match where the border is */
-  transform-origin: left;
-  transform: scale(0);
-  transition: 0.25s linear;
-/*   will-change: transform; */
+  right: 0;
+  padding-bottom: 120px;
 }
 
-.navbar ul li a:hover:before {
-  transform: scale(1);
+#landing .carousel-content {
+  text-align: center;
 }
 
-
-.navbar ul li a  {
-	 color: #000;
-	 text-decoration: none;
-}
- a span:nth-child(2) {
-	 transition-delay: 0.1s;
-}
- a span:nth-child(3) {
-	 transition-delay: 0.2s;
-}
- a span:nth-child(4) {
-	 transition-delay: 0.3s;
-}
- a span:nth-child(5) {
-	 transition-delay: 0.3s;
-}
- a span:nth-child(6) {
-	 transition-delay: 0.3s;
-}
- a span:nth-child(7) {
-	 transition-delay: 0.3s;
-}
-a span:nth-child(8) {
-	 transition-delay: 0.3s;
-}
-a span:nth-child(9) {
-	 transition-delay: 0.3s;
+#landing h2 {
+  color: #2e2e2e;
+  margin-bottom: 30px;
+  font-size: 48px;
+  font-weight: 700;
 }
 
- a:hover span {
-	 font-weight: 700;
-}
- a:hover span:nth-child(4) {
-	 transition-delay: 0.3s;
-}
- a:hover span:nth-child(3) {
-	 transition-delay: 0.2s;
-}
- a:hover span:nth-child(2) {
-	 transition-delay: 0.1s;
-}
- a:hover span:nth-child(1) {
-	 transition-delay: 0s;
-}
- a.hover-shadow:hover {
-	 text-shadow: 1px 1px 0px #ddd, 2px 2px 0px #ddd, 3px 3px 0px #ddd;
-}
- a.hover-color:hover {
-	 border-color: darkmagenta;
+#landing h2 span {
+  color: #5cd3b4;
 }
 
+#landing p {
+  width: 80%;
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+  margin: 0 auto 30px auto;
+  color: arken(#545454, 15);
+}
+
+#landing .carousel-inner .carousel-item {
+  transition-property: opacity;
+  background-position: center top;
+}
+
+#landing .btn-get-started {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: 50px;
+  transition: 0.5s;
+  line-height: 1;
+  margin: 10px;
+  color: #fff;
+  border: 2px solid #545454;
+  background: #5cd3b4;
+}
+
+#landing{
+	background-image : url('/static/img/slide/slide-2.jpg') ;
+}
+
+.featured {
+  position: relative;
+  z-index: 2;
+}
+.featured .icon-box {
+  padding: 40px 30px;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: #fff;
+  transition: all ease-in-out 0.3s;
+}
+
+.featured .icon-box i {
+  color: #5cd3b4;
+  font-size: 42px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.featured .icon-box h3 {
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.featured .icon-box h3 a {
+  color: #545454;
+  transition: 0.3s;
+}
+
+.featured .icon-box p {
+  color: #545454;
+  line-height: 24px;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.featured .icon-box:hover {
+  background: #5cd3b4;
+}
 
 .alert {
 	justify-content: center;

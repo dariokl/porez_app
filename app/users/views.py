@@ -1,10 +1,10 @@
 from flask import url_for, request, render_template, redirect, flash
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, current_user, login_required, logout_user
 from app import db
 from . import users
 
 from ..models import User
-from ..forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange
+from ..forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEdit
 
 from ..email import send_email
 
@@ -74,6 +74,12 @@ def login():
 
     return render_template('users/login.html', form=form)
 
+@users.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You have logged out")
+    return redirect(url_for(('core.index')))
 
 @users.route('/password-reset', methods=["POST", "GET"])
 def password_reset():
@@ -112,10 +118,23 @@ def password_change(token):
     return render_template('users/password_reset.html', form=form)
 
 @users.route('/profile/<user_id>', methods=['GET', 'POST'])
+@login_required
 def profile(user_id):
+
     user = User.query.filter_by(id=user_id).first_or_404()
 
+    form = ProfileEdit()
+
+    if request.method == "GET":
+        form.ime.data = current_user.ime.title()
+        form.prezime.data = current_user.prezime.title()
+        form.email.data = current_user.email
+        form.grad.data = current_user.grad.title()
+        form.jmbg.data = current_user.jmbg
+        form.kontakt_tel.data = current_user.kontakt_tel
 
 
-    return render_template('users/profile.html', user=user)
+
+
+    return render_template('users/profile.html', user=user, form=form)
 
