@@ -251,6 +251,10 @@ h2 {
 	padding: 30px;
 	position: relative;
 }
+
+.login-form i {
+    width: 10px;
+}
 .login-form h2 {
 	font-size: 22px;
 	margin: 35px 0 25px;
@@ -268,6 +272,14 @@ h2 {
 	background: #41cba9;
 	padding: 15px;
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    justify-items: center;
+    justify-content: center;
+}
+.avatar i {
+    font-size: 3.5rem;
+    color: white;
+    margin-top: 0.5rem;
+    margin-left: -3.2rem;
 }
 .login-form .avatar img {
 	width: 100%;

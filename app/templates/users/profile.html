@@ -20,77 +20,160 @@
 
       <div class="text-center">
         <a href="#" class="btn icon-btn borderless btn-outline-twitter btn-lg btn-round" data-toggle="modal"
-           data-target="#exampleModal">
-          Privatnost
+           data-target="#emailModal">
+          Personal
         </a>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Privatne informacije
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                <div class="login-form">
+                  <div class="avatar" style="position: relative;">
+                    <i class="fa fa-id-card"></i>
+                  </div>
+                  <h2> Vase korisnicke informacije </h2>
+                  <p>Zbog zastite vase privatnosti i ujedno uspjesnog funkcionisana web aplikacije , molimo Vas
+                    da koristite validne licne dokumentacije zbog vlastite sigurnosti. Ukoliko imate vise pitanja
+                    vezanih za sigurnost vasih privatnih podata obratite nam se putem emaila !</p>
+                  <hr>
+                  <form method="POST">
+                    {{ form_personal.hidden_tag() }}
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
 					<span class="input-group-text">
 						<i class="fa fa-user"></i>
 					</span>
-                    </div>
-                    {{ form.ime( class='form-control')}}
-                  </div>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                        </div>
+                        {{ form_personal.ime( class='form-control')}}
+                      </div>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
 					<span class="input-group-text">
 						<i class="fa fa-user"></i>
 					</span>
-                    </div>
-                    {{ form.prezime( class='form-control')}}
-                  </div>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-envelope"></i>
-					</span>
-                    </div>
-                    {{ form.email( class='form-control')}}
-                  </div>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                        </div>
+                        {{ form_personal.prezime( class='form-control')}}
+                      </div>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
 					<span class="input-group-text">
 						<i class="fa fa-globe"></i>
 					</span>
-                    </div>
-                    {{ form.grad( class='form-control')}}
-                  </div>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                        </div>
+                        {{ form_personal.grad( class='form-control')}}
+                      </div>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
 					<span class="input-group-text">
 						<i class="fa fa-id-card"></i>
 					</span>
+                        </div>
+                        {{ form_personal.jmbg(class='form-control')}}
+                      </div>
                     </div>
-                    {{ form.jmbg( class='form-control')}}
-                  </div>
-                    <div class="input-group">
-                    <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-phone"></i>
-					</span>
-                    </div>
-                    {{ form.kontakt_tel( class='form-control')}}
-                  </div>
                 </div>
-                </form>
+                <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a>
+                </p>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {{ form_personal.submit() }}
+                  </form>
+                </div>
               </div>
-              <hr>
-              <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a></p>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="btn icon-btn borderless btn-outline-twitter btn-lg btn-round" data-toggle="modal"
+           data-target="#emailContact">
+          Kontakt
+        </a>
+        <div class="modal fade" id="emailContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Kontakt Informacije
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="login-form">
+                  <div class="avatar" style="position: relative; top: 0px;">
+                    <i class="fa fa-cogs"></i>
+                  </div>
+                  <h2> Vase kontakt informacije </h2>
+                  <p>Da bi ste uspjesno izvrisli promjenu vase email adrese
+                    ili vaseg broja telefona , nakon zahtjeva za promjenu molimo Vas
+                    da provijerite inbox Vase email adrese i izvrsite potvrdu promjene.</p>
+                  <hr>
+                  <form method="POST">
+                    {{ form_contact.hidden_tag() }}
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-user fa-1x"></i>
+					</span>
+                        </div>
+                        {{ form_contact.email( class='form-control')}}
+                      </div>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+					<span class="input-group-text">
+						<i class="fa fa-phone fa-1x"></i>
+					</span>
+                        </div>
+                        {{ form_contact.kontakt_tel( class='form-control')}}
+                      </div>
+                    </div>
+                </div>
+                <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a>
+                </p>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {{ form_contact.submit() }}
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#" class="btn btn-lg btn-danger btn-round" data-toggle="modal"
+           data-target="#deleteModal">
+          Obrisite Profil
+        </a>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteLabel">Obrisite Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
+              </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                {{ form.submit() }}
+                <form method="POST">
+                  {{ form_delete.hidden_tag() }}
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {{ form_delete.submit(class='btn btn-danger') }}
+                </form>
               </div>
             </div>
           </div>
@@ -99,13 +182,11 @@
     </div>
   </div>
   <hr class="m-0">
-
   <ul class="nav nav-tabs tabs-alt justify-content-center">
     <li class="nav-item">
       <a class="nav-link py-4 active" href="#">Porez</a>
     </li>
   </ul>
-
 </div>
 
 {% endblock %}

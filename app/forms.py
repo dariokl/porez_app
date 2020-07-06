@@ -39,17 +39,23 @@ class PasswordChange(FlaskForm):
     confirm_pass = PasswordField('Ponovite lozinku', validators=[Required()])
     submit= SubmitField('PROMJENA LOZINKE')
 
-class ProfileEdit(FlaskForm):
+class ProfileEditPersonal(FlaskForm):
     ime = StringField('Ime' , validators=[Required()])
     prezime = StringField('Prezime', validators=[Required()])
-    email = StringField('Email', validators=[Email()])
     jmbg = IntegerField('JMBG', validators=[Required()])
-    kontakt_tel = IntegerField('Broj Telefona')
     grad = StringField('Grad', validators=[Required()])
-    submit = SubmitField('SNIMI PROMJENE')
+    submit = SubmitField('Snimi')
+
+class ProfileEditContact(FlaskForm):
+    email = StringField('Email', validators=[Email()])
+    kontakt_tel = IntegerField('Broj Telefona')
+    submit = SubmitField('Snimi')
 
     # Used to check if the user email exists in the current database and returns ValidationEerror in that case
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             flash('Email adresa je u upotrebi')
             raise ValidationError('Email adresa je u upotrebi')
+
+class ProfileDelete(FlaskForm):
+    submit = SubmitField('Obrisi Profil')

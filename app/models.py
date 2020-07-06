@@ -83,3 +83,31 @@ class User(db.Model, UserMixin):
         except:
             return
         return User.query.get(id)
+
+
+    #Generating email change token that contains a new email adress from the token , i will use this token to handle
+    #Phone number changes too
+    def email_change_token(self, email, tel, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'email': email, 'tel': tel, 'confirm': self.id}).decode('utf-8')
+
+
+    def email_confirm_change(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+
+        #Trying to decode the token and handling exception
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            False
+
+        #The users.id must be inside the token in order to pass the validation
+        if data.get('confirm') != self.id:
+            return False
+
+        #This is where we handle the update on the selected users data
+        self.email = data.get('email')
+        self.kontakt_tel = data.get('tel')
+        db.session.commit()
+
+        return True

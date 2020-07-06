@@ -4,50 +4,10 @@ from app import db
 from . import users
 
 from ..models import User
-from ..forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEdit
+from ..forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEditPersonal, \
+    ProfileEditContact, ProfileDelete
 
 from ..email import send_email
-
-@users.route('/register', methods=['POST', 'GET'])
-def register():
-    """ Here we are using Flask_WTF to generate forms to make sure our form validation is handled by back end
-    after user makes the post request we check if the form is validated and we proceed to create a new user
-    for our database"""
-
-    form = RegistrationForm()
-
-    if form.validate_on_submit():
-        new_user = User(ime=form.ime.data, prezime=form.prezime.data, password=form.password.data, \
-                        email=form.email.data, jmbg=form.jmbg.data, kontakt_tel=form.kontakt_tel.data, \
-                        grad=form.grad.data)
-        db.session.add(new_user)
-        db.session.commit()
-        token = new_user.generate_confirm_token()
-        send_email(new_user.email, 'Dobrodosli !', 'email/register_email', user=new_user, token=token)
-        flash('Uspjesno ste se registrovali')
-        return redirect(url_for('users.login'))
-
-    return render_template('users/register.html', form=form)
-
-
-@users.route('/confirm/<token>')
-@login_required
-def account_confirm(token):
-    """ Server side token checking , we use confirm_token to read the token data and change user.is_confirmed to True
-    and make the database changes"""
-
-    #Current_user can only be a logged in user because we set the @login_required decorator and if the current user is
-    #confirmed we just redirect him to the index page.
-    if current_user.is_confirmed:
-        return redirect(url_for('core.index'))
-
-    if current_user.confirm_token(token):
-        db.session.commit()
-        flash('Uspjesno ste potvrdili vasu email adresu')
-    else:
-        flash('Vas zahtjev nije validan , pokusajte poslati token ponovo')
-
-    return redirect(url_for('core.index'))
 
 
 @users.route('/login', methods=['POST', 'GET'])
@@ -74,6 +34,7 @@ def login():
 
     return render_template('users/login.html', form=form)
 
+
 @users.route('/logout')
 @login_required
 def logout():
@@ -81,10 +42,52 @@ def logout():
     flash("You have logged out")
     return redirect(url_for(('core.index')))
 
+
+@users.route('/register', methods=['POST', 'GET'])
+def register():
+    """ Here we are using Flask_WTF to generate forms to make sure our form validation is handled by back end
+    after user makes the post request we check if the form is validated and we proceed to create a new user
+    for our database"""
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        new_user = User(ime=form.ime.data, prezime=form.prezime.data, password=form.password.data, \
+                        email=form.email.data, jmbg=form.jmbg.data, kontakt_tel=form.kontakt_tel.data, \
+                        grad=form.grad.data)
+        db.session.add(new_user)
+        db.session.commit()
+        token = new_user.generate_confirm_token()
+        send_email(new_user.email, 'Dobrodosli !', 'email/register_email', user=new_user, token=token)
+        flash('Uspjesno ste se registrovali')
+        return redirect(url_for('users.login'))
+
+    return render_template('users/register.html', form=form)
+
+
+@users.route('/confirm/<token>')
+@login_required
+def account_confirm(token):
+    """ Server side token checking , we use confirm_token to read the token data and change user.is_confirmed to True
+    and make the database changes"""
+
+    # Current_user can only be a logged in user because we set the @login_required decorator and if the current user is
+    # confirmed we just redirect him to the index page.
+    if current_user.is_confirmed:
+        return redirect(url_for('core.index'))
+
+    if current_user.confirm_token(token):
+        # Checking the data inside the token with .confirm_token method from user class
+        db.session.commit()
+        flash('Uspjesno ste potvrdili vasu email adresu')
+    else:
+        flash('Vas zahtjev nije validan , pokusajte poslati token ponovo')
+
+    return redirect(url_for('core.index'))
+
+
 @users.route('/password-reset', methods=["POST", "GET"])
 def password_reset():
     """ A route to request password reset token on users email adress"""
-
     form = PasswordReset()
 
     if form.validate_on_submit():
@@ -92,11 +95,12 @@ def password_reset():
         token = user.generate_password_reset_token()
 
         send_email(user.email, 'Izmjena lozinke', "email/password_reset", user=user, token=token)
-        flash ('Molim vas provjerite vas Inbox vase email adrese')
+        flash('Molim vas provjerite vas Inbox vase email adrese')
 
         return redirect(url_for('core.index'))
 
     return render_template('password_reset.html', form=form)
+
 
 @users.route('/password-change/<token>', methods=["POST"])
 def password_change(token):
@@ -117,24 +121,69 @@ def password_change(token):
         return redirect(url_for('users.login'))
     return render_template('users/password_reset.html', form=form)
 
+
 @users.route('/profile/<user_id>', methods=['GET', 'POST'])
 @login_required
 def profile(user_id):
+    """This view is used for personal profile page , users should have ability to edit the pesonal data. Ability
+    to change email address and delete they're own accounts"""
 
+    # We simply check does user exist and return 404 if the user.id is not valid
     user = User.query.filter_by(id=user_id).first_or_404()
 
-    form = ProfileEdit()
+    # Two forms that we use for personal data changes so as the contact information changes
+    form_personal = ProfileEditPersonal()
+    form_contact = ProfileEditContact()
+    form_delete = ProfileDelete()
 
     if request.method == "GET":
-        form.ime.data = current_user.ime.title()
-        form.prezime.data = current_user.prezime.title()
-        form.email.data = current_user.email
-        form.grad.data = current_user.grad.title()
-        form.jmbg.data = current_user.jmbg
-        form.kontakt_tel.data = current_user.kontakt_tel
+        # General personal informations
+        form_personal.ime.data = current_user.ime.title()
+        form_personal.prezime.data = current_user.prezime.title()
+        form_personal.grad.data = current_user.grad.title()
+        form_personal.jmbg.data = current_user.jmbg
+
+        # Personal contact data
+        form_contact.email.data = current_user.email
+        form_contact.kontakt_tel.data = current_user.kontakt_tel
+
+    if form_personal.validate_on_submit() and form_personal.submit.data:
+        # Changing the personal data , it does not require any aditional information
+        user.ime = form_personal.ime.data
+        user.prezime = form_personal.prezime.data
+        user.grad = form_personal.grad.data
+        user.jmbg = form_personal.jmbg.data
+        db.session.commit()
+        flash('Uspjesno ste promijenili vase podatke')
+        return redirect(url_for('users.profile', user_id=current_user.id))
+
+    if form_contact.validate_on_submit() and form_contact.submit.data:
+        # Create a token that contains email adress , check the email_change_token method to see what happens in view.
+        token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
+        send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
+
+        return redirect(url_for('users.profile', user_id=current_user.id))
+
+    if form_delete.validate_on_submit() and form_delete.submit.data:
+        db.session.delete(user)
+        db.session.commit()
+        flash('Uspjesno ste izbrisali svoj profil !')
+        return redirect(url_for('core.index'))
+
+    return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,\
+                           form_delete=form_delete)
 
 
+@users.route('/email-change/<token>')
+@login_required
+def email_change(token):
+    """Checking the token and calling the email_confirm_change method in order to see what is going on under the hood
+    chech the modes.py"""
 
-
-    return render_template('users/profile.html', user=user, form=form)
-
+    if current_user.email_confirm_change(token):
+        flash('Uspjesno ste promijenili vasu adresu')
+        logout_user()
+        return redirect(url_for('users.login'))
+    else:
+        flash('Vas token nije validan , obratite nam se za pomoc !')
+        return redirect(url_for('core.index'))
