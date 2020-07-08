@@ -24,13 +24,13 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             # Using flask_login
             login_user(user)
-            flash('You are logged in')
+            flash('Uspjesno ste se logovali !')
 
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 next = url_for('users.register')
             return redirect(next)
-        flash('Wrong username or password')
+        flash('Pogresna lozinka ili email !')
 
     return render_template('users/login.html', form=form)
 
@@ -39,7 +39,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("You have logged out")
+    flash("Uspjesno ste se odjavili !")
     return redirect(url_for(('core.index')))
 
 
@@ -117,7 +117,7 @@ def password_change(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash('Uspjesno ste promijenili lozinku')
         return redirect(url_for('users.login'))
     return render_template('users/password_reset.html', form=form)
 
@@ -130,6 +130,9 @@ def profile(user_id):
 
     # We simply check does user exist and return 404 if the user.id is not valid
     user = User.query.filter_by(id=user_id).first_or_404()
+
+    if user != current_user:
+        return 403
 
     # Two forms that we use for personal data changes so as the contact information changes
     form_personal = ProfileEditPersonal()

@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 from config import config
 
@@ -9,6 +11,7 @@ from config import config
 db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
+admin = Admin()
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -31,6 +34,11 @@ def create_app(config_name):
 
     from .core import core as core_blueprint
     app.register_blueprint(core_blueprint)
+
+    from .models import User
+
+    admin.init_app(app)
+    admin.add_view(ModelView(User, db.session))
 
     return app
 
