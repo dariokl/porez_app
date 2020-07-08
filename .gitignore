@@ -3,5 +3,5 @@ __pycache__/
 venv_porez
 .idea
 migrations
-
+dev-database.sqlite
 
