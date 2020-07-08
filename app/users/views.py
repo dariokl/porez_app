@@ -121,6 +121,18 @@ def password_change(token):
         return redirect(url_for('users.login'))
     return render_template('users/password_reset.html', form=form)
 
+@users.route('/email-confirm-token')
+@login_required
+def email_confirm_token():
+    send_email(current_user.email, 'Potvrdite Email Adresu !',
+               'email/register_email', user=current_user, token=current_user.generate_confirm_token())
+    flash('Provjerite Vasu email adresu i potvrdite svoj racun !')
+
+    return redirect(url_for('users.profile', user_id=current_user.id))
+
+
+
+    send_email(current_user.email, 'Potvrdite Email Adresu', 'email/register_email',)
 
 @users.route('/profile/<user_id>', methods=['GET', 'POST'])
 @login_required
