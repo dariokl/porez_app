@@ -6,12 +6,14 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 from config import config
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
 admin = Admin()
+
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -20,6 +22,7 @@ def create_app(config_name):
 
     # Itialize databse
     db.init_app(app)
+    db.app = app
 
     # Init login manager
     login_manager.init_app(app)
@@ -39,6 +42,13 @@ def create_app(config_name):
 
     admin.init_app(app)
     admin.add_view(ModelView(User, db.session))
+
+
+    from .users.views import scheduled_cleaning
+
+    scheduler = BackgroundScheduler(daemon=True)
+    scheduler.add_job(scheduled_cleaning, 'interval', minutes=10)
+    scheduler.start()
 
     return app
 

@@ -1,4 +1,4 @@
-from .models import User
+from app.models import User
 from flask import flash
 
 from flask_wtf import FlaskForm
@@ -12,8 +12,6 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Ukucajte lozinku', validators=[EqualTo('confirm_pass',\
                                                                      message='Lozinke moraju biti iste')])
     confirm_pass = PasswordField('Ponovite lozinku', validators=[Required()])
-    jmbg = IntegerField('JMBG', validators=[Required()])
-    kontakt_tel = IntegerField('Broj Telefona')
     grad = StringField('Grad', validators=[Required()])
     submit = SubmitField('REGISTRUJ SE')
 

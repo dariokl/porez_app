@@ -1,13 +1,15 @@
-from flask import url_for, request, render_template, redirect, flash
+from flask import url_for, request, render_template, redirect, flash, Markup
 from flask_login import login_user, current_user, login_required, logout_user
 from app import db
 from . import users
 
 from ..models import User
-from ..forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEditPersonal, \
+from app.users.forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEditPersonal, \
     ProfileEditContact, ProfileDelete
 
 from ..email import send_email
+
+from datetime import datetime, timedelta
 
 
 @users.route('/login', methods=['POST', 'GET'])
@@ -18,6 +20,9 @@ def login():
     if form.validate_on_submit():
         # Query user table with email data sent by post request after submiting and form validation.
         user = User.query.filter_by(email=form.email.data).first()
+        if user is None:
+            flash(Markup('Vasa email adresa nije registrovana molimo Vas izvrsite registraciju , kliknite link <a href="/register" class="alert-link">here</a>!'))
+            return redirect(url_for('users.login'))
 
         # Checking the user query , if there is an user registered with the submited email adress
         # We proceed to check his password with verify_password method
@@ -52,13 +57,12 @@ def register():
 
     if form.validate_on_submit():
         new_user = User(ime=form.ime.data, prezime=form.prezime.data, password=form.password.data, \
-                        email=form.email.data, jmbg=form.jmbg.data, kontakt_tel=form.kontakt_tel.data, \
-                        grad=form.grad.data)
+                        email=form.email.data, grad=form.grad.data)
         db.session.add(new_user)
         db.session.commit()
         token = new_user.generate_confirm_token()
         send_email(new_user.email, 'Dobrodosli !', 'email/register_email', user=new_user, token=token)
-        flash('Uspjesno ste se registrovali')
+        flash('Da bi ste uspjesno zavrsili registraciju molimo Vas provjerite svoj email i izvrsite potvrdu email adrese !')
         return redirect(url_for('users.login'))
 
     return render_template('users/register.html', form=form)
@@ -134,14 +138,14 @@ def email_confirm_token():
 
     send_email(current_user.email, 'Potvrdite Email Adresu', 'email/register_email',)
 
-@users.route('/profile/<user_id>', methods=['GET', 'POST'])
+@users.route('/profile', methods=['GET', 'POST'])
 @login_required
-def profile(user_id):
+def profile():
     """This view is used for personal profile page , users should have ability to edit the pesonal data. Ability
     to change email address and delete they're own accounts"""
 
     # We simply check does user exist and return 404 if the user.id is not valid
-    user = User.query.filter_by(id=user_id).first_or_404()
+    user = User.query.filter_by(id=current_user.id).first_or_404()
 
     if user != current_user:
         return 403
@@ -202,3 +206,12 @@ def email_change(token):
     else:
         flash('Vas token nije validan , obratite nam se za pomoc !')
         return redirect(url_for('core.index'))
+
+
+
+def scheduled_cleaning():
+    day_filter = datetime.utcnow() - timedelta(minutes=10)
+    expired = db.session.query(User).filter(User.is_confirmed == False).filter(User.expire < day_filter).delete()
+    db.session.commit()
+
+

@@ -1,6 +1,7 @@
 from flask import current_app
 from app import db, login_manager
 from flask_login import UserMixin
+from datetime import datetime, timedelta
 
 from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -24,8 +25,10 @@ class User(db.Model, UserMixin):
     grad = db.Column(db.String)
 
     is_confirmed = db.Column(db.Boolean, default=False)
+    expire = db.Column(db.Integer)
 
     def __init__(self, **kwargs):
+        self. expire = datetime.utcnow() + timedelta(minutes=1)
         super(User, self).__init__(**kwargs)
 
     def __repr__(self):
