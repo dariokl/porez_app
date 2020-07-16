@@ -180,7 +180,7 @@ def profile():
         # Create a token that contains email adress , check the email_change_token method to see what happens in view.
         token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
         send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
-
+        flash(' Da bi ste izvrsili promjenu vase email adrese ili broja telefona , izvrsite potvrdu putem vaseg maila !')
         return redirect(url_for('users.profile', user_id=current_user.id))
 
     if form_delete.validate_on_submit() and form_delete.submit.data:

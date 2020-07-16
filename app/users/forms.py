@@ -49,11 +49,6 @@ class ProfileEditContact(FlaskForm):
     kontakt_tel = IntegerField('Broj Telefona')
     submit = SubmitField('Snimi')
 
-    # Used to check if the user email exists in the current database and returns ValidationEerror in that case
-    def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            flash('Email adresa je u upotrebi')
-            raise ValidationError('Email adresa je u upotrebi')
 
 class ProfileDelete(FlaskForm):
     submit = SubmitField('Obrisi Profil')
