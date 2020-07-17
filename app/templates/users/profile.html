@@ -15,8 +15,16 @@
           <div class="col">
             {% if current_user.is_confirmed %}
             <p><strong>Grad:</strong> {{ current_user.grad|title }}</p>
+            {% if current_user.jmbg != None %}
             <p><strong>JMBG:</strong> {{ current_user.jmbg }}</p>
+            {% else %}
+            <p><strong>JMBG:</strong> Nema podataka</p>
+            {% endif %}
+            {% if current_user.kontakt_tel != None %}
             <p><strong>Kontakt Tel:</strong> {{ current_user.kontakt_tel }}</p>
+            {% else %}
+            <p><strong>Kontakt Tel:</strong> Nema podataka</p>
+            {% endif %}
             {% else %}
             <p>Da bi ste mogli upravljati vasim licnim podacima , i izvristi promjenu vase email adrese molim Vas
               potvrdie <a href="{{url_for('users.email_confirm_token')}}">Vasu email adresu !</a></p>

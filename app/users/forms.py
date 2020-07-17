@@ -1,5 +1,6 @@
 from app.models import User
 from flask import flash
+from flask_login import current_user
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, IntegerField
@@ -29,7 +30,7 @@ class LoginForm(FlaskForm):
 
 class PasswordReset(FlaskForm):
     email = StringField('Email', validators=[Email()])
-    submit = SubmitField('POSALJI ZAHTJEV')
+    submit = SubmitField('POŠALJI ZAHTJEV')
 
 class PasswordChange(FlaskForm):
     password = PasswordField('Ukucajte lozinku', validators=[EqualTo('confirm_pass', \
@@ -48,6 +49,8 @@ class ProfileEditContact(FlaskForm):
     email = StringField('Email', validators=[Email()])
     kontakt_tel = IntegerField('Broj Telefona')
     submit = SubmitField('Snimi')
+
+
 
 
 class ProfileDelete(FlaskForm):

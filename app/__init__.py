@@ -47,7 +47,7 @@ def create_app(config_name):
     from .users.views import scheduled_cleaning
 
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(scheduled_cleaning, 'interval', minutes=10)
+    scheduler.add_job(scheduled_cleaning, 'interval', minutes=7)
     scheduler.start()
 
     return app

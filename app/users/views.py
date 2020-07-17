@@ -21,7 +21,7 @@ def login():
         # Query user table with email data sent by post request after submiting and form validation.
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            flash(Markup('Vasa email adresa nije registrovana molimo Vas izvrsite registraciju , kliknite link <a href="/register" class="alert-link">here</a>!'))
+            flash(Markup('Vaša email adresa nije registrovana molimo Vas  da izvršite registraciju , kliknite link <a href="/register" class="alert-link">here</a>!'))
             return redirect(url_for('users.login'))
 
         # Checking the user query , if there is an user registered with the submited email adress
@@ -29,13 +29,13 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             # Using flask_login
             login_user(user)
-            flash('Uspjesno ste se logovali !')
+            flash('Uspješno ste se logovali !')
 
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
-                next = url_for('users.register')
+                next = url_for('users.profile')
             return redirect(next)
-        flash('Pogresna lozinka ili email !')
+        flash('Pogrešna lozinka ili email !')
 
     return render_template('users/login.html', form=form)
 
@@ -44,7 +44,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("Uspjesno ste se odjavili !")
+    flash("Uspješno ste se odjavili !")
     return redirect(url_for(('core.index')))
 
 
@@ -61,8 +61,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         token = new_user.generate_confirm_token()
-        send_email(new_user.email, 'Dobrodosli !', 'email/register_email', user=new_user, token=token)
-        flash('Da bi ste uspjesno zavrsili registraciju molimo Vas provjerite svoj email i izvrsite potvrdu email adrese !')
+        send_email(new_user.email, 'Dobrodošli !', 'email/register_email', user=new_user, token=token)
+        flash('Da bi ste uspješno završili registraciju molimo Vas provjerite svoj email i izvršite potvrdu email adrese !')
         return redirect(url_for('users.login'))
 
     return render_template('users/register.html', form=form)
@@ -82,9 +82,9 @@ def account_confirm(token):
     if current_user.confirm_token(token):
         # Checking the data inside the token with .confirm_token method from user class
         db.session.commit()
-        flash('Uspjesno ste potvrdili vasu email adresu')
+        flash('Uspješno ste potvrdili Vašu email adresu')
     else:
-        flash('Vas zahtjev nije validan , pokusajte poslati token ponovo')
+        flash('Vaš zahtjev nije validan !')
 
     return redirect(url_for('core.index'))
 
@@ -99,7 +99,7 @@ def password_reset():
         token = user.generate_password_reset_token()
 
         send_email(user.email, 'Izmjena lozinke', "email/password_reset", user=user, token=token)
-        flash('Molim vas provjerite vas Inbox vase email adrese')
+        flash('Molimo Vas provjerite vašu email adresu !')
 
         return redirect(url_for('core.index'))
 
@@ -121,7 +121,7 @@ def password_change(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Uspjesno ste promijenili lozinku')
+        flash('Uspješno ste promijenili lozinku')
         return redirect(url_for('users.login'))
     return render_template('users/password_reset.html', form=form)
 
@@ -130,12 +130,9 @@ def password_change(token):
 def email_confirm_token():
     send_email(current_user.email, 'Potvrdite Email Adresu !',
                'email/register_email', user=current_user, token=current_user.generate_confirm_token())
-    flash('Provjerite Vasu email adresu i potvrdite svoj racun !')
+    flash('Provjerite Vašu email adresu i potvrdite svoj račun !')
 
     return redirect(url_for('users.profile', user_id=current_user.id))
-
-
-
     send_email(current_user.email, 'Potvrdite Email Adresu', 'email/register_email',)
 
 @users.route('/profile', methods=['GET', 'POST'])
@@ -160,6 +157,7 @@ def profile():
         form_personal.ime.data = current_user.ime.title()
         form_personal.prezime.data = current_user.prezime.title()
         form_personal.grad.data = current_user.grad.title()
+
         form_personal.jmbg.data = current_user.jmbg
 
         # Personal contact data
@@ -173,20 +171,34 @@ def profile():
         user.grad = form_personal.grad.data
         user.jmbg = form_personal.jmbg.data
         db.session.commit()
-        flash('Uspjesno ste promijenili vase podatke')
+        flash('Uspješno ste promijenili vaše podatke')
         return redirect(url_for('users.profile', user_id=current_user.id))
 
     if form_contact.validate_on_submit() and form_contact.submit.data:
+        #Validation method outside the form , if current user requires change of his personal contact information
+        #Using if statement to check is there an email already used by someone else beacuse we cant user validate
+        # email from our form.py
+        if current_user.email == form_contact.email.data:
+            pass
+        else:
+            try:
+                validate = User.query.filter_by(email=form_contact.email.data).first()
+                if validate.id != current_user.id:
+                    flash('Email je već u upotrebi !')
+                    return redirect(url_for('users.profile'))
+            except AttributeError:
+                pass
+
         # Create a token that contains email adress , check the email_change_token method to see what happens in view.
         token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
         send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
-        flash(' Da bi ste izvrsili promjenu vase email adrese ili broja telefona , izvrsite potvrdu putem vaseg maila !')
+        flash('Da bi ste izvršili promjenu Vaše email adrese ili broja telefona , izvrsite potvrdu putem vaseg emaila !')
         return redirect(url_for('users.profile', user_id=current_user.id))
 
     if form_delete.validate_on_submit() and form_delete.submit.data:
         db.session.delete(user)
         db.session.commit()
-        flash('Uspjesno ste izbrisali svoj profil !')
+        flash('Uspješno ste izbrisali svoj profil !')
         return redirect(url_for('core.index'))
 
     return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,\
@@ -200,13 +212,12 @@ def email_change(token):
     chech the modes.py"""
 
     if current_user.email_confirm_change(token):
-        flash('Uspjesno ste promijenili vasu adresu')
+        flash('Uspješno ste promijenili vasu adresu')
         logout_user()
         return redirect(url_for('users.login'))
     else:
-        flash('Vas token nije validan , obratite nam se za pomoc !')
+        flash('Vaš token nije validan , obratite nam se za pomoć !')
         return redirect(url_for('core.index'))
-
 
 
 def scheduled_cleaning():

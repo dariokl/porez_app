@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid">
-<div class="login-form">
+<div class="col-12 col-sm-12 col-lg-12 login-form">
     <form  method="POST">
         {{ form.hidden_tag() }}
 		<div class="avatar">
@@ -20,7 +20,7 @@
         </div>
 		<div class="bottom-action clearfix">
 
-            <a href="{{ url_for('users.password_reset') }}" class="float-right">Forgot Password?</a>
+            <a href="{{ url_for('users.password_reset') }}" class="float-right">Izgubili ste lozinku ?</a>
         </div>
     </form>
     <p class="text-center small">Nemate account ? <a href="{{ url_for('users.register') }}">Registruj se !</a></p>
