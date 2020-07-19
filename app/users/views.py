@@ -55,6 +55,8 @@ def register():
     for our database"""
     form = RegistrationForm()
 
+
+
     if form.validate_on_submit():
         new_user = User(ime=form.ime.data, prezime=form.prezime.data, password=form.password.data, \
                         email=form.email.data, grad=form.grad.data)
@@ -179,7 +181,10 @@ def profile():
         #Using if statement to check is there an email already used by someone else beacuse we cant user validate
         # email from our form.py
         if current_user.email == form_contact.email.data:
-            pass
+            if current_user.kontakt_tel != form_contact.kontakt_tel.data:
+                user.kontakt_tel = form_contact.kontakt_tel.data
+                db.session.commit()
+                flash('Uspjesno ste ažurirali Vaš broj telefona !')
         else:
             try:
                 validate = User.query.filter_by(email=form_contact.email.data).first()
@@ -187,12 +192,13 @@ def profile():
                     flash('Email je već u upotrebi !')
                     return redirect(url_for('users.profile'))
             except AttributeError:
-                pass
+                # Create a token that contains email adress , check the email_change_token method to see what happens in view.
+                token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
+                flash('Da bi ste izvršili promjenu email adrese , provjerite vašu email adresu i izvršite potvrdu !')
+                send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
+                return redirect(url_for('users.profile', user_id=current_user.id))
 
-        # Create a token that contains email adress , check the email_change_token method to see what happens in view.
-        token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
-        send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
-        flash('Da bi ste izvršili promjenu Vaše email adrese ili broja telefona , izvrsite potvrdu putem vaseg emaila !')
+
         return redirect(url_for('users.profile', user_id=current_user.id))
 
     if form_delete.validate_on_submit() and form_delete.submit.data:

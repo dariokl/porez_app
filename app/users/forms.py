@@ -4,16 +4,15 @@ from flask_login import current_user
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, IntegerField
-from wtforms.validators import Email, Required, EqualTo, ValidationError
+from wtforms.validators import Email, Required, EqualTo, ValidationError, DataRequired
 
 class RegistrationForm(FlaskForm):
-    ime = StringField('Ime' , validators=[Required()])
-    prezime = StringField('Prezime', validators=[Required()])
+    ime = StringField('Ime' , validators=[DataRequired()])
+    prezime = StringField('Prezime', validators=[DataRequired()])
     email = StringField('Email', validators=[Email()])
-    password = PasswordField('Ukucajte lozinku', validators=[EqualTo('confirm_pass',\
-                                                                     message='Lozinke moraju biti iste')])
-    confirm_pass = PasswordField('Ponovite lozinku', validators=[Required()])
-    grad = StringField('Grad', validators=[Required()])
+    password = PasswordField('Ukucajte lozinku', validators=[DataRequired(), EqualTo('confirm_pass', message='Lozinke moraju biti iste !')])
+    confirm_pass = PasswordField('Ponovite lozinku', validators=[DataRequired()])
+    grad = StringField('Grad', validators=[DataRequired()])
     submit = SubmitField('REGISTRUJ SE')
 
     # Used to check if the user email exists in the current database and returns ValidationEerror in that case
@@ -34,15 +33,15 @@ class PasswordReset(FlaskForm):
 
 class PasswordChange(FlaskForm):
     password = PasswordField('Ukucajte lozinku', validators=[EqualTo('confirm_pass', \
-                                                                     message='Lozinke moraju biti iste')])
-    confirm_pass = PasswordField('Ponovite lozinku', validators=[Required()])
+                                                                     message='Lozinke moraju biti iste !')])
+    confirm_pass = PasswordField('Ponovite lozinku', validators=[DataRequired()])
     submit= SubmitField('PROMJENA LOZINKE')
 
 class ProfileEditPersonal(FlaskForm):
-    ime = StringField('Ime' , validators=[Required()])
-    prezime = StringField('Prezime', validators=[Required()])
-    jmbg = IntegerField('JMBG', validators=[Required()])
-    grad = StringField('Grad', validators=[Required()])
+    ime = StringField('Ime' , validators=[DataRequired()])
+    prezime = StringField('Prezime', validators=[DataRequired()])
+    jmbg = IntegerField('JMBG', validators=[DataRequired()])
+    grad = StringField('Grad', validators=[DataRequired()])
     submit = SubmitField('Snimi')
 
 class ProfileEditContact(FlaskForm):
