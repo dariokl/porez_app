@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
     grad = db.Column(db.String)
 
     is_confirmed = db.Column(db.Boolean, default=False)
-    expire = db.Column(db.Integer)
+    expire = db.Column(db.DateTime)
 
     def __init__(self, **kwargs):
         self. expire = datetime.utcnow() + timedelta(minutes=1)
