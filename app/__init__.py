@@ -8,6 +8,8 @@ from flask_admin.contrib.sqla import ModelView
 from config import config
 from apscheduler.schedulers.background import BackgroundScheduler
 
+from .commands import create_tables
+
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -49,6 +51,8 @@ def create_app(config_name):
     scheduler = BackgroundScheduler(daemon=True)
     scheduler.add_job(scheduled_cleaning, 'interval', minutes=7)
     scheduler.start()
+
+    app.cli.add_command(create_tables)
 
     return app
 
