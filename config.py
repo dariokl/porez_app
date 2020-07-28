@@ -31,7 +31,10 @@ class Config:
 
 class ProductionConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{pw}@{url}/{db}'.format(user=os.environ.get('MYSQL_USER'), \
+                                                                              pw=os.environ.get('MYSQL_PW'), \
+                                                                              url=os.environ.get('MYSQL_URL'), \
+                                                                              db=os.environ.get('MYSQL_DB'))
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev-database.sqlite')

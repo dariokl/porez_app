@@ -23,12 +23,13 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     jmbg = db.Column(db.Integer)
     kontakt_tel = db.Column(db.Integer)
-    grad = db.Column(db.String)
+    grad = db.Column(db.String(64))
 
     is_confirmed = db.Column(db.Boolean, default=False)
     expire = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     def __init__(self, **kwargs):
+        self.expire = datetime.utcnow() + timedelta(days=1)
         super(User, self).__init__(**kwargs)
 
     def __repr__(self):
