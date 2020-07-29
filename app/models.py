@@ -27,6 +27,7 @@ class User(db.Model, UserMixin):
 
     is_confirmed = db.Column(db.Boolean, default=False)
     expire = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    twofactor = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
         self.expire = datetime.utcnow() + timedelta(days=1)

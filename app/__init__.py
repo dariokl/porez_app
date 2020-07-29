@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_migrate import Migrate
 
 from config import config
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -15,6 +16,8 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
 admin = Admin()
+migrate = Migrate()
+
 
 
 def create_app(config_name):
@@ -25,6 +28,7 @@ def create_app(config_name):
     # Itialize databse
     db.init_app(app)
     db.app = app
+    migrate.init_app(app, db)
 
     # Init login manager
     login_manager.init_app(app)
@@ -49,11 +53,8 @@ def create_app(config_name):
     from .users.views import scheduled_cleaning
 
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(scheduled_cleaning, 'interval', seconds=10)
+    scheduler.add_job(scheduled_cleaning, 'interval', minutes=60)
     scheduler.start()
-
-    db.create_all()
-
 
     return app
 
