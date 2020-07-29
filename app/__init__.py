@@ -56,5 +56,7 @@ def create_app(config_name):
     scheduler.add_job(scheduled_cleaning, 'interval', minutes=60)
     scheduler.start()
 
+    db.create_all()
+
     return app
 
