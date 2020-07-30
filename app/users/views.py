@@ -226,7 +226,6 @@ def email_change(token):
 
 
 def scheduled_cleaning():
-    print('a')
     day_filter = datetime.utcnow() - timedelta(minutes=1)
     expired = db.session.query(User).filter(User.is_confirmed == False).filter(User.expire < day_filter).delete()
     db.session.commit()
