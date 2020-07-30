@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     ime = db.Column(db.String(64))
     prezime = db.Column(db.String(64))
-    email = db.Column(db.String(64), index=True)
+    email = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     jmbg = db.Column(db.Integer)
     kontakt_tel = db.Column(db.Integer)
@@ -27,7 +27,6 @@ class User(db.Model, UserMixin):
 
     is_confirmed = db.Column(db.Boolean, default=False)
     expire = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    twofactor = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
         self.expire = datetime.utcnow() + timedelta(days=1)

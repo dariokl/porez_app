@@ -198,7 +198,6 @@ def profile():
                 send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
                 return redirect(url_for('users.profile', user_id=current_user.id))
 
-
         return redirect(url_for('users.profile', user_id=current_user.id))
 
     if form_delete.validate_on_submit() and form_delete.submit.data:

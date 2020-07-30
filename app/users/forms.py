@@ -49,6 +49,5 @@ class ProfileEditContact(FlaskForm):
     kontakt_tel = IntegerField('Broj Telefona', validators=[DataRequired()])
     submit = SubmitField('Snimi')
 
-
 class ProfileDelete(FlaskForm):
     submit = SubmitField('Obrisi Profil')
