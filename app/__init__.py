@@ -53,7 +53,7 @@ def create_app(config_name):
     from .users.views import scheduled_cleaning
 
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(scheduled_cleaning, 'interval', seconds=10)
+    scheduler.add_job(scheduled_cleaning, 'interval', minutes=5)
     scheduler.start()
 
     db.create_all()

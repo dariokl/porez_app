@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
     expire = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     def __init__(self, **kwargs):
-        self.expire = datetime.utcnow() + timedelta(minutes=1)
+        self.expire = datetime.utcnow() + timedelta(minutes=5)
         super(User, self).__init__(**kwargs)
 
     def __repr__(self):
