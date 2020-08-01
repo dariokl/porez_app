@@ -27,7 +27,7 @@
             {% endif %}
             {% else %}
             <p>Da bi ste mogli upravljati vasim licnim podacima , i izvristi promjenu vase email adrese molim Vas
-              potvrdie <a href="{{url_for('users.email_confirm_token')}}">Vasu email adresu !</a></p>
+              potvrdite <a href="{{url_for('users.email_confirm_token')}}">Vasu email adresu !</a></p>
             {% endif %}
           </div>
         </div>
@@ -215,7 +215,7 @@
                 <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
               </div>
               <div class="modal-footer">
-                <form method="POST">
+                <form  method="POST">
                   {{ form_delete.hidden_tag() }}
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   {{ form_delete.submit(class='btn btn-danger') }}

@@ -1,5 +1,5 @@
 from app.models import User
-from flask import flash
+from flask import flash, redirect, url_for
 from flask_login import current_user
 
 from flask_wtf import FlaskForm

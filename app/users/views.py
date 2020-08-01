@@ -166,7 +166,8 @@ def profile():
         form_contact.email.data = current_user.email
         form_contact.kontakt_tel.data = current_user.kontakt_tel
 
-    if form_personal.validate_on_submit() and form_personal.submit.data:
+
+    if form_personal.submit.data and form_personal.validate_on_submit():
         # Changing the personal data , it does not require any aditional information
         user.ime = form_personal.ime.data
         user.prezime = form_personal.prezime.data
@@ -176,7 +177,8 @@ def profile():
         flash('Uspješno ste promijenili vaše podatke')
         return redirect(url_for('users.profile', user_id=current_user.id))
 
-    if form_contact.validate_on_submit() and form_contact.submit.data:
+
+    if form_contact.submit.data and form_contact.validate_on_submit():
         #Validation method outside the form , if current user requires change of his personal contact information
         #Using if statement to check is there an email already used by someone else beacuse we cant user validate
         # email from our form.py
@@ -193,18 +195,19 @@ def profile():
                     return redirect(url_for('users.profile'))
             except AttributeError:
                 # Create a token that contains email adress , check the email_change_token method to see what happens in view.
-                token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
+                #token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
                 flash('Da bi ste izvršili promjenu email adrese , provjerite vašu email adresu i izvršite potvrdu !')
-                send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
+                #send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
                 return redirect(url_for('users.profile', user_id=current_user.id))
 
         return redirect(url_for('users.profile', user_id=current_user.id))
 
-    if form_delete.validate_on_submit() and form_delete.submit.data:
+    if form_delete.submit.data and form_delete.validate_on_submit():
         db.session.delete(user)
         db.session.commit()
         flash('Uspješno ste izbrisali svoj profil !')
         return redirect(url_for('core.index'))
+
 
     return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,\
                            form_delete=form_delete)
@@ -230,6 +233,7 @@ def scheduled_cleaning():
     try:
         expired = db.session.query(User).filter(User.is_confirmed == False).filter(User.expire < day_filter).delete()
         db.session.commit()
+        print('The cron job scheduled every hour deleted {} users'.format(expired))
     except:
         db.session.rollback()
     finally:
