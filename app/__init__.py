@@ -50,13 +50,5 @@ def create_app(config_name):
     admin.add_view(ModelView(User, db.session))
 
 
-    from .users.views import scheduled_cleaning
-
-    scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(scheduled_cleaning, 'cron', hour='*')
-    scheduler.start()
-
-    db.create_all()
-
     return app
 

@@ -167,7 +167,7 @@ def profile():
         form_contact.kontakt_tel.data = current_user.kontakt_tel
 
 
-    if form_personal.submit.data and form_personal.validate_on_submit():
+    if form_personal.submit.data and form_personal.validate():
         # Changing the personal data , it does not require any aditional information
         user.ime = form_personal.ime.data
         user.prezime = form_personal.prezime.data
@@ -178,7 +178,7 @@ def profile():
         return redirect(url_for('users.profile', user_id=current_user.id))
 
 
-    if form_contact.submit.data and form_contact.validate_on_submit():
+    if form_contact.submit.data and form_contact.validate():
         #Validation method outside the form , if current user requires change of his personal contact information
         #Using if statement to check is there an email already used by someone else beacuse we cant user validate
         # email from our form.py
@@ -202,7 +202,7 @@ def profile():
 
         return redirect(url_for('users.profile', user_id=current_user.id))
 
-    if form_delete.submit.data and form_delete.validate_on_submit():
+    if form_delete.submit.data and form_delete.validate():
         db.session.delete(user)
         db.session.commit()
         flash('Uspješno ste izbrisali svoj profil !')
