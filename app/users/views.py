@@ -230,10 +230,13 @@ def scheduled_cleaning():
     try:
         expired = db.session.query(User).filter(User.is_confirmed == False).filter(User.expire < day_filter).delete()
         db.session.commit()
+        print('jedan')
     except:
         db.session.rollback()
+        print('dva')
     finally:
         db.session.close()
+        print('tri')
 
 
 
