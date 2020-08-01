@@ -24,6 +24,7 @@ class Config:
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_SENDER')
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SCHEDULER_API_ENABLED = True
 
     @staticmethod
     def init_app(app):

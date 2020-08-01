@@ -9,7 +9,7 @@ from flask_migrate import Migrate
 from config import config
 from apscheduler.schedulers.background import BackgroundScheduler
 
-
+from flask_apscheduler import APScheduler
 
 
 db = SQLAlchemy()
@@ -17,7 +17,7 @@ login_manager = LoginManager()
 mail = Mail()
 admin = Admin()
 migrate = Migrate()
-
+sched = APScheduler()
 
 
 def create_app(config_name):
