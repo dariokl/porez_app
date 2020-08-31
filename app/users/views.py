@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, login_required, logout_user
 from app import db
 from . import users
 
-from ..models import User
+from ..models import User, Tax
 from app.users.forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEditPersonal, \
     ProfileEditContact, ProfileDelete
 
@@ -209,8 +209,11 @@ def profile():
         return redirect(url_for('core.index'))
 
 
+    porez = Tax.query.all()
+
+
     return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,\
-                           form_delete=form_delete)
+                           form_delete=form_delete, porez=porez)
 
 
 @users.route('/email-change/<token>')

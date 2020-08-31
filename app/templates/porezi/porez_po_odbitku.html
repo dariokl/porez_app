@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/submit.css') }}">
+{% endblock %}
+{% block content %}
+<div class="mt-5 section-title" data-aos="fade-up">
+          <h2>Pregled rashoda</h2>
+    <p> Obrazac <strong>PRIM- 1054</strong> <br> Pregled prihoda i rashoda od iznajmljivanja imovine </p>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-md-offset-3">
+                <form id="msform" method="POST">
+                    <!-- progressbar -->
+                    <ul id="progressbar">
+                        <li class="active">Personal Details</li>
+                        <li>Social Profiles</li>
+                        <li>Account Setup</li>
+                    </ul>
+                    <!-- fieldsets -->
+                    <fieldset>
+                        <h2 class="fs-title">Personal Details</h2>
+                        <h3 class="fs-subtitle">Tell us something more about you</h3>
+                        {% for field in form.fields[:8] %}
+                        {{ field.hidden_tag()}}
+
+                        {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
+                        {{ field(class='form-group')}}
+
+                        {% endfor %}
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Social Profiles</h2>
+                        <h3 class="fs-subtitle">Your presence on the social network</h3>
+                        {% for field in form.fields[8:16] %}
+                        {{ field.hidden_tag()}}
+
+                        {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
+                        {{ field(class='form-group')}}
+
+                        {% endfor %}
+                        <input type="button" name="next" class="next action-button" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title">Create your account</h2>
+                        <h3 class="fs-subtitle">Fill in your credentials</h3>
+                        {% for field in form.fields[16:] %}
+                        {{ field.hidden_tag()}}
+
+                        {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
+                        {{ field(class='form-group')}}
+
+                        {% endfor %}
+                        {{ form.submit() }}
+                        <input type="submit" name="submit" class="submit action-button" value="Submit"/>
+                    </fieldset>
+                </form>
+                <div class="dme_link">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-title" data-aos="fade-up">
+          <h2>Our Services</h2>
+        </div>
+     <section id="about" class="about">
+
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6">
+            <img src="/static/img/prvi-page-001.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 content">
+            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+            <p class="font-italic">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+              magna aliqua.
+            </p>
+            <ul>
+              <li><i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+              <li><i class="fa fa-check"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
+              <li><i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
+            </ul>
+            <p>
+              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+              culpa qui officia deserunt mollit anim id est laborum
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+<section>
+    <div class="container">
+        <img class="img-fluid" src="/static/img/slide/step.png">
+        <div class="row">
+            <div class="col-sm-4">
+                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem cumque, deserunt dicta doloremque dolores ducimus ex excepturi, explicabo id maiores minus non perferendis quae quam, reiciendis rerum totam ut.</span></p>
+            </div>
+                        <div class="col-sm-4">
+                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur beatae dolor neque nobis obcaecati officiis, perferendis reiciendis rerum. Dicta dolore enim hic iusto quas! Accusamus iusto omnis tempora voluptatibus.</span></p>
+            </div>
+                        <div class="col-sm-4">
+                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consequatur culpa dolorum magni officiis quidem quis quod sed similique temporibus! Blanditiis dolorem exercitationem, illum laboriosam nesciunt voluptatum. Dicta, natus, quibusdam!</span></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

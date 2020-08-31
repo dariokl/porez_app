@@ -44,10 +44,11 @@ def create_app(config_name):
     from .core import core as core_blueprint
     app.register_blueprint(core_blueprint)
 
-    from .models import User
+    from .models import User, Tax
 
     admin.init_app(app)
     admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(Tax, db.session))
 
 
     return app

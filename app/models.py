@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from sqlalchemy.sql import func
+from sqlalchemy.dialects.mysql import JSON
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -21,7 +22,7 @@ class User(db.Model, UserMixin):
     prezime = db.Column(db.String(64))
     email = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    jmbg = db.Column(db.Integer)
+    jmbg = db.Column(db.String)
     kontakt_tel = db.Column(db.Integer)
     grad = db.Column(db.String(64))
 
@@ -115,3 +116,11 @@ class User(db.Model, UserMixin):
         db.session.commit()
 
         return True
+
+
+class Tax(db.Model):
+
+    __tablename__ = 'taxes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    json_data = db.Column(JSON)
