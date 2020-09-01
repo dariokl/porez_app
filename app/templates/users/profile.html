@@ -239,11 +239,11 @@
   <div class="container">
     <div class="row">
       {% for tax in porez %}
-      <a href="{{url_for('core.render', id=tax.id)}}">
       <div class="col-sm-4">
+        <a href="{{url_for('core.render', id=tax.id)}}">
         <img class="img-fluid" src="static/img/prvi-page-001.jpg">
-      </div>
         </a>
+      </div>
       {% endfor %}
     </div>
   </div>

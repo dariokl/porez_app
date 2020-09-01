@@ -30,7 +30,7 @@ def pregled_rashoda():
 
 
     # PDF handling , simply finding the right pdf that matches this route.
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/prvi.pdf'))
+    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prvi.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'prvi.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
@@ -38,6 +38,7 @@ def pregled_rashoda():
     # Generating the list of dict that will be used for dynamic flask_wtf forms.
     forom = []
     for page in template_pdf.Root.Pages.Kids:
+        print(page)
         for field in page.Annots:
             label = field.T
             forom.append({'name' : field.T })
@@ -46,7 +47,7 @@ def pregled_rashoda():
    # Due to lack of back-end representation in the actuall PDF rendering on "core.render" , of data will be stored in
    # manner to not match the PDF form fields so i can hardcode some of those strings on the PDF rendering.
     if forom[0]['name'] == '(2 JIBJMB)':
-        forom[0]['name'] = current_user.jmbg
+        forom[0]['name'] = "JMBG Korisnika -" + " " + str(current_user.jmbg)
 
     if forom[23]['name'] == '(1 Prezime i ime vlasnika imovine)':
         forom[23]['name'] = "{} {}".format(current_user.ime, current_user.prezime)
@@ -71,10 +72,48 @@ def pregled_rashoda():
     return render_template('porezi/porez_po_odbitku.html', form=form)
 
 
+@core.route('/porez_na_imovinu', methods=['POST', 'GET'])
+def porez_na_imovinu():
+    """ Reading the pdf , to get all the forms , save them to a list of dictionaries and use it to generate dynamic
+    flask_wtf fields because some of PDF's have more than 50 fields..."""
+
+
+    # PDF handling , simply finding the right pdf that matches this route.
+    file_pdf= os.path.abspath(os.path.dirname('app/static/img/drugi.pdf'))
+    pdf_to_read = os.path.join(file_pdf, 'drugi.pdf')
+    template_pdf = pdfrw.PdfReader(pdf_to_read)
+
+
+    # Generating the list of dict that will be used for dynamic flask_wtf forms.
+    forom = []
+
+    for page in template_pdf.Root.Pages.Kids:
+        for field in page.Annots:
+            label = field.T
+            forom.append({'name' : field.T })
+
+    print(len(forom))
+
+    form = FieldsForms(fields=forom)
+    if request.method == 'POST' and form.submit():
+        data = form.data['fields']
+
+        # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
+        my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
+        new = Tax(json_data=my_dict)
+        db.session.add(new)
+        db.session.commit()
+
+        return redirect (url_for('users.profile'))
+
+
+    return render_template('porezi/porez_po_odbitku.html', form=form)
+
+
 
 @core.route('/render/<int:id>')
 def render(id):
-    file_pdf = '/home/dariok/Desktop/flask_apps/porez_app/app/static/img/prvi.pdf'
+    file_pdf = '/home/dariok/Desktop/flask_apps/porez_app/app/static/img/pdf/prvi.pdf'
 
     all = Tax.query.filter_by(id=id).first()
 
@@ -91,7 +130,7 @@ def render(id):
     karina = '0611991181961'
 
     presist = [all['(3 Porezna godina)'], all['(6 Porezni period)'], all['(do)']]
-    exclude = ['(3 Porezna godina)', '(6 Porezni period)', '(do)']
+    exclude = ['(3 Porezna godina)', '(6 Porezni period)', '(do)',]
 
     for i in exclude:
         if all[i]:
@@ -113,8 +152,7 @@ def render(id):
             pdf.drawString(x=479, y=610, text=presist[0], charSpace=9)
             pdf.drawString(x=459, y=583, text=presist[1], charSpace=9)
             pdf.drawString(x=507, y=583, text=presist[2], charSpace=9)
-            print(label, side)
-
+            pdf.drawString(x=72, y=608, text='{} {}'.format(current_user.ime, current_user.prezime))
 
         pdf.showPage()
 
