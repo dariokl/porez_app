@@ -6,9 +6,11 @@
 {% block content %}
 <div class="mt-5 section-title" data-aos="fade-up">
           <h2>Pregled rashoda</h2>
-    <p> Obrazac <strong>PRIM- 1054</strong> <br> Pregled prihoda i rashoda od iznajmljivanja imovine </p>
+    <p> Obrazac <strong>PR- 1</strong> <br> Prijava za razred poreza na imovinu za pravna i fizicka lica </p>
 </div>
-
+{% if form.errors %}
+<p> {{ form.errors }}</p>
+{% endif %}
 <section>
     <div class="container">
         <div class="row">
@@ -21,41 +23,31 @@
                         <li>Account Setup</li>
                     </ul>
                     <!-- fieldsets -->
-                    <fieldset>
+                    <fieldset >
                         <h2 class="fs-title">Personal Details</h2>
                         <h3 class="fs-subtitle">Tell us something more about you</h3>
-                        {% for field in form.fields[:8] %}
-                        {{ field.hidden_tag()}}
+                        {{ form.hidden_tag() }}
+                        <div class="col" id="add_to">
+                            {% for field in form.fields %}
+                            {{ field.hidden_tag() }}
+                            {% endfor %}
+                            {{ form.select(id='select')}}
 
-                        {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
-                        {{ field(class='form-group')}}
+                        </div>
+                        {{ form.submit() }}
+                        <input type="button" id='ajax_post' name="next" class="next action-button" value="Next"/>
 
-                        {% endfor %}
-                        <input type="button" name="next" class="next action-button" value="Next"/>
                     </fieldset>
                     <fieldset>
                         <h2 class="fs-title">Social Profiles</h2>
                         <h3 class="fs-subtitle">Your presence on the social network</h3>
-                        {% for field in form.fields[8:16] %}
-                        {{ field.hidden_tag()}}
 
-                        {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
-                        {{ field(class='form-group')}}
-
-                        {% endfor %}
                         <input type="button" name="next" class="next action-button" value="Next"/>
                     </fieldset>
                     <fieldset>
                         <h2 class="fs-title">Create your account</h2>
                         <h3 class="fs-subtitle">Fill in your credentials</h3>
-                        {% for field in form.fields[16:] %}
-                        {{ field.hidden_tag()}}
 
-                        {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
-                        {{ field(class='form-group')}}
-
-                        {% endfor %}
-                        {{ form.submit() }}
                         <input type="submit" name="submit" class="submit action-button" value="Submit"/>
                     </fieldset>
                 </form>
@@ -75,7 +67,7 @@
 
         <div class="row">
           <div class="col-lg-6">
-            <img src="/static/img/prvi-page-001.jpg" class="img-fluid" alt="">
+            <img src="/static/img/drugi-page-001.jpg" class="img-fluid" alt="">
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0 content">
             <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
@@ -115,5 +107,9 @@
     </div>
 </section>
 
+{% block scripts %}
+{{ super() }}
+<script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='/js/pr_1.js') }}"></script>
+{% endblock %}
 
 {% endblock %}

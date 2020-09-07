@@ -3,7 +3,7 @@ from flask import render_template, send_file, request, redirect, url_for
 from flask_login import current_user
 from . import core
 
-from .forms import FieldsForms
+from .forms import FieldsForms, NekretnineForms
 from ..models import Tax
 
 from app import db
@@ -23,8 +23,8 @@ def index():
 
 
 
-@core.route('/pregled_rashoda', methods=['POST', 'GET'])
-def pregled_rashoda():
+@core.route('/pregled_pr', methods=['POST', 'GET'])
+def pregled_pr():
     """ Reading the pdf , to get all the forms , save them to a list of dictionaries and use it to generate dynamic
     flask_wtf fields because some of PDF's have more than 50 fields..."""
 
@@ -69,22 +69,26 @@ def pregled_rashoda():
         return redirect (url_for('users.profile'))
 
 
-    return render_template('porezi/porez_po_odbitku.html', form=form)
+    return render_template('porezi/prim-1054.html', form=form)
 
 
-@core.route('/porez_na_imovinu', methods=['POST', 'GET'])
-def porez_na_imovinu():
-    """ Reading the pdf , to get all the forms , save them to a list of dictionaries and use it to generate dynamic
-    flask_wtf fields because some of PDF's have more than 50 fields..."""
+@core.route('/prijava_razrez_im', methods=['POST', 'GET'])
+def prijava_razrez_im():
+    """ Just like in view '/porez_po_odbitku' we are going to use premade pdf form , in order to automatise this process
+    we will need to read the pdf file once again. Most forms are going to be generated , but still we will have to use
+    some Jquery to complete the pdf filling logic because this form consist more than 150 forms , wich is obnoxious number
+    to fill out , and is really slim chances one user is going to use all of the possible field submisions. Certain
+    dropdown select field will help to organise logic behind the automation of this process."""
 
 
     # PDF handling , simply finding the right pdf that matches this route.
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/drugi.pdf'))
+    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/drugi.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'drugi.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
 
     # Generating the list of dict that will be used for dynamic flask_wtf forms.
+    # Beware this form contains absurd amount of forms , most of them wont be used for anything.
     forom = []
 
     for page in template_pdf.Root.Pages.Kids:
@@ -92,22 +96,18 @@ def porez_na_imovinu():
             label = field.T
             forom.append({'name' : field.T })
 
-    print(len(forom))
 
-    form = FieldsForms(fields=forom)
-    if request.method == 'POST' and form.submit():
-        data = form.data['fields']
+    if request.method == "POST":
+        all = request.form
+        print(all)
+    form = NekretnineForms(fields=forom)
+    if request.method == 'POST' and form.validate_on_submit():
+        print(request.form['string1'])
 
-        # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
-        my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
-        new = Tax(json_data=my_dict)
-        db.session.add(new)
-        db.session.commit()
-
-        return redirect (url_for('users.profile'))
+        return redirect (url_for('core.prijava_razrez_im'))
 
 
-    return render_template('porezi/porez_po_odbitku.html', form=form)
+    return render_template('porezi/pr-1.html', form=form)
 
 
 
