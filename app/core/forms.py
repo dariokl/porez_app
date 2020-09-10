@@ -13,7 +13,7 @@ class FieldsForms(FlaskForm):
 
 class NekretnineForms(FlaskForm):
     fields = FieldList(FormField(FieldEnteryForm), min_entries=1)
-    select = SelectField('Select', choices=[('0', 'Izaberite nekretninu'),('1', 'Kuca zgrada ili stan'), ('2', 'Motor')], validators=[DataRequired()])
+    select = SelectField('Select', choices=[('(kuca)', 'Izaberite nekretninu'), ('(poslovni)', 'Poslovni prostor')], validators=[DataRequired()])
     submit = SubmitField('Select')
 
 

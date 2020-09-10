@@ -124,3 +124,4 @@ class Tax(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     json_data = db.Column(JSON)
+    tip = db.Column(db.String(64))

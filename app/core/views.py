@@ -1,5 +1,5 @@
 import os
-from flask import render_template, send_file, request, redirect, url_for
+from flask import render_template, send_file, request, redirect, url_for, session
 from flask_login import current_user
 from . import core
 
@@ -82,8 +82,8 @@ def prijava_razrez_im():
 
 
     # PDF handling , simply finding the right pdf that matches this route.
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/drugi.pdf'))
-    pdf_to_read = os.path.join(file_pdf, 'drugi.pdf')
+    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/drugi_3.pdf'))
+    pdf_to_read = os.path.join(file_pdf, 'fix.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
 
@@ -96,20 +96,30 @@ def prijava_razrez_im():
             label = field.T
             forom.append({'name' : field.T })
 
-
-    if request.method == "POST":
-        all = request.form
-        print(all)
     form = NekretnineForms(fields=forom)
-    if request.method == 'POST' and form.validate_on_submit():
-        print(request.form['string1'])
 
-        return redirect (url_for('core.prijava_razrez_im'))
+    print(forom)
 
+
+    if form.validate_on_submit():
+        if 'step_1' in session:
+            print(session['step_1'])
+            tax = Tax(json_data=session['step_1'], tip='razrez')
+            db.session.add(tax)
+            db.session.commit()
+            session.pop('step_1', None)
+            return redirect(url_for('core.prijava_razrez_im'))
 
     return render_template('porezi/pr-1.html', form=form)
 
-
+@core.route('/step_1', methods=['POST'])
+def step_1():
+    if request.method == "POST" and request.json:
+        if 'step_1' in session:
+            session['step_1'] = request.json
+        else:
+            session['step_1'] = request.json
+    return 'sucess'
 
 @core.route('/render/<int:id>')
 def render(id):
@@ -190,6 +200,56 @@ def porez():
 
 
 
+
+@core.route('/render_razrez/<int:id>')
+def render_razrez(id):
+    file_pdf = '/home/dariok/Desktop/flask_apps/porez_app/app/static/img/pdf/fix.pdf'
+
+    all = Tax.query.filter_by(id=id).first()
+
+    all = all.json_data
+
+    print(all)
+
+
+    template_pdf = pdfrw.PdfReader(file_pdf)
+
+    data = io.BytesIO()
+    overlay_io = io.BytesIO()
+
+    pdf = canvas.Canvas(data)
+    for page in template_pdf.Root.Pages.Kids:
+        for field in page.Annots:
+            label = field.T
+            side = field.Rect
+            left = min(side[0], side[2])
+            bottom = min(side[1], side[3])
+            value = all.get(label, '')
+            pdf.drawString(x=float(left), y=float(bottom), text='     '.join([e for e in value]), wordSpace=10)
+
+            pdf.drawString(x=72, y=608, text='{} {}'.format(current_user.ime, current_user.prezime))
+
+
+
+        pdf.showPage()
+
+        pdf.save()
+        data.seek(0)
+
+        overlay = pdfrw.PdfReader(data)
+
+        mark = overlay.pages[0]
+
+        for page in range(len(template_pdf.pages)):
+            merger = PageMerge(template_pdf.pages[page])
+            merger.add(mark).render()
+
+        pdfrw.PdfWriter().write(overlay_io, template_pdf)
+        overlay_io.seek(0)
+
+        return send_file(overlay_io, as_attachment=True,
+                         attachment_filename='a_file.pdf',
+                         mimetype='application/pdf')
 
 
 

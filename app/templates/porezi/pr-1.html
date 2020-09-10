@@ -23,7 +23,7 @@
                         <li>Account Setup</li>
                     </ul>
                     <!-- fieldsets -->
-                    <fieldset >
+                    <fieldset>
                         <h2 class="fs-title">Personal Details</h2>
                         <h3 class="fs-subtitle">Tell us something more about you</h3>
                         {{ form.hidden_tag() }}
@@ -31,17 +31,20 @@
                             {% for field in form.fields %}
                             {{ field.hidden_tag() }}
                             {% endfor %}
-                            {{ form.select(id='select')}}
+                            <div class="sub_forms">
+                            </div>
+                            <div class="input_group">
+                                {{ form.select()}}
+                            </div>
 
                         </div>
-                        {{ form.submit() }}
                         <input type="button" id='ajax_post' name="next" class="next action-button" value="Next"/>
 
                     </fieldset>
                     <fieldset>
                         <h2 class="fs-title">Social Profiles</h2>
                         <h3 class="fs-subtitle">Your presence on the social network</h3>
-
+                                                {{ form.submit(id='sub') }}
                         <input type="button" name="next" class="next action-button" value="Next"/>
                     </fieldset>
                     <fieldset>
@@ -109,7 +112,7 @@
 
 {% block scripts %}
 {{ super() }}
-<script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='/js/pr_1.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='/js/pr_2.js') }}"></script>
 {% endblock %}
 
 {% endblock %}
