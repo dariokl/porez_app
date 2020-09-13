@@ -50,6 +50,8 @@ def create_app(config_name):
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Tax, db.session))
 
+    db.create_all()
+
 
     return app
 

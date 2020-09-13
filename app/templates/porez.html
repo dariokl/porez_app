@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section id='landing' class="d-flex align-items-center position-relative img-fluid">
+<section id='' class="d-flex align-items-center position-relative img-fluid">
 <div class="container">
-	<div class="col">
-        <a href="{{url_for('core.pregled_pr')}}">PRIM- 1054</a>
-    </div>
-    <div class="col">
-        <a href="{{url_for('core.prijava_razrez_im')}}">PR -1 </a>
+<div class="row">
+<div class="col-4">
+    <img src="static/img/prvi-page-001.jpg" class="img-fluid">
+</div>
+    <div class="col-8">
+        <div class="mt-5 text-center">
+            <p class="mt-5"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, porro, soluta. At atque aut consequatur doloremque esse explicabo libero molestiae nostrum, quidem quo rem sapiente totam unde ut voluptates voluptatibus?</span></p>
+            <a href="{{url_for('core.pregled_pr')}}"class="btn btn-primary" style="color: white;">Ispunite PRIM- 1054</a>
+        </div>
     </div>
 </div>
+<div class="row">
+<div class="col-4">
+    <img src="static/img/drugi-page-001.jpg" class="img-fluid">
+</div>
+    <div class="col-8">
+        <div class="mt-5 text-center">
+            <p class="mt-5"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, porro, soluta. At atque aut consequatur doloremque esse explicabo libero molestiae nostrum, quidem quo rem sapiente totam unde ut voluptates voluptatibus?</span></p>
+            <a href="{{url_for('core.prijava_razrez_im')}}"class="btn btn-primary" style="color: white;">Ispunite PR- 1</a>
+        </div>
+    </div>
+</div>
+</div>
+
     </section>
 {% endblock %}

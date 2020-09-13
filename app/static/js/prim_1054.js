@@ -28,12 +28,19 @@ $(document).ready(function () {
 });
 
 $("#fields-17-name").change(function () {
-    var li = [$('#fields-5-name').val(), $('#fields-6-name').val(), $('#fields-7-name').val(), $('#fields-8-name').val(), $('#fields-9-name').val(), $('#fields-10-name').val(), $('#fields-11-name').val(), $('#fields-12-name').val(), $('#fields-13-name').val(), $('#fields-14-name').val(), $('#fields-15-name').val(), $('#fields-16-name').val()]
+    var li = [$('#fields-7-name').val(), $('#fields-8-name').val(), $('#fields-9-name').val(), $('#fields-10-name').val(), $('#fields-11-name').val(), $('#fields-12-name').val(), $('#fields-13-name').val(), $('#fields-14-name').val(), $('#fields-15-name').val(), $('#fields-16-name').val()]
     var total = 0
     for (var i = 0; i < li.length; i++) {
         total += li[i] << 0;
     }
     $('#fields-18-name').val(total)
-
-
+    if ($("#fields-5-name").val() === '') {
+        var sum = ((30/100) * $("#fields-6-name").val())
+        $("#fields-19-name").val(sum)
+    }
+    else {
+        var sum = ((30/100) * $("#fields-5-name").val())
+        $("#fields-19-name").val(sum)
+    }
 })
+

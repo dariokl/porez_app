@@ -240,11 +240,18 @@
     <div class="row">
       {% for tax in porez %}
       <div class="col-sm-4">
-        {% if tax.tip == 'razrez' %}
+        {% if tax.tip == 'PR-1' %}
         <a href="{{url_for('core.render_razrez', id=tax.id)}}">
-          {% endif %}
-        <img class="img-fluid" src="static/img/prvi-page-001.jpg">
-        </a>
+          <img class="img-fluid" src="static/img/drugi-page-001.jpg">
+          <span>{{ tax.tip }}</span>
+          <span>{{ tax.timestamp}}</span>
+          {% else %}
+          <a href="{{url_for('core.render_1054', id=tax.id)}}">
+            <img class="img-fluid" src="static/img/prvi-page-001.jpg">
+            <span>{{ tax.tip }}</span>
+            <span>{{ tax.timestamp}}</span>
+            {% endif %}
+          </a>
       </div>
       {% endfor %}
     </div>
