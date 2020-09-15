@@ -1,29 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{{url_for('core.index')}}">Home</a></li>
+          <li>Porez</li>
+        </ol>
+        <h2>Porez</h2>
+
+      </div>
+    </section>
 <section id='' class="d-flex align-items-center position-relative img-fluid">
 <div class="container">
 <div class="row">
 <div class="col-4">
-    <img src="static/img/prvi-page-001.jpg" class="img-fluid">
+    <img src="static/img/prvi-page-001.jpg" class="img-fluid" data-aos="fade-left">
 </div>
     <div class="col-8">
-        <div class="mt-5 text-center">
+        <div class="mt-5 text-center" data-aos="fade-right">
             <p class="mt-5"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, porro, soluta. At atque aut consequatur doloremque esse explicabo libero molestiae nostrum, quidem quo rem sapiente totam unde ut voluptates voluptatibus?</span></p>
             <a href="{{url_for('core.pregled_pr')}}"class="btn btn-primary" style="color: white;">Ispunite PRIM- 1054</a>
         </div>
     </div>
 </div>
+    <hr>
 <div class="row">
-<div class="col-4">
-    <img src="static/img/drugi-page-001.jpg" class="img-fluid">
-</div>
-    <div class="col-8">
-        <div class="mt-5 text-center">
+        <div class="col-8">
+        <div class="mt-5 text-center" data-aos="fade-left">
             <p class="mt-5"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, porro, soluta. At atque aut consequatur doloremque esse explicabo libero molestiae nostrum, quidem quo rem sapiente totam unde ut voluptates voluptatibus?</span></p>
             <a href="{{url_for('core.prijava_razrez_im')}}"class="btn btn-primary" style="color: white;">Ispunite PR- 1</a>
         </div>
     </div>
+<div class="col-4">
+    <img src="static/img/drugi-page-001.jpg" class="img-fluid" data-aos="fade-right">
+</div>
 </div>
 </div>
 

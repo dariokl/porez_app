@@ -39,7 +39,6 @@ def pregled_pr():
     # Generating the list of dict that will be used for dynamic flask_wtf forms.
     forom = []
     for page in template_pdf.Root.Pages.Kids:
-        print(page)
         for field in page.Annots:
             label = field.T
             forom.append({'name' : field.T })
@@ -60,7 +59,6 @@ def pregled_pr():
     # Still trying to figure out how can i make all the fields validate , but for now i just submit it .
     if request.method == 'POST' and form.submit():
         data = form.data['fields']
-
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
         my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
         new = Tax(json_data=my_dict, tip='PRIM-1054')

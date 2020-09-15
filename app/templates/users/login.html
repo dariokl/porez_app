@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{{url_for('core.index')}}">Home</a></li>
+          <li>Login</li>
+        </ol>
+        <h2>Login</h2>
+
+      </div>
+    </section>
 <div class="container-fluid">
 <div class="col-12 col-sm-12 col-lg-12 login-form">
     <form  method="POST">
