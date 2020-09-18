@@ -1,4 +1,4 @@
-from flask import url_for, request, render_template, redirect, flash, Markup
+from flask import url_for, request, render_template, redirect, flash, Markup, jsonify
 from flask_login import login_user, current_user, login_required, logout_user
 from app import db
 from . import users
@@ -229,6 +229,23 @@ def email_change(token):
     else:
         flash('Vaš token nije validan , obratite nam se za pomoć !')
         return redirect(url_for('core.index'))
+
+@users.route('/livesearch', methods=['GET', 'POST'])
+def livesearch():
+
+    search = request.json
+
+    print(search)
+
+    query = Tax.query.filter(Tax.tip == search.get('name').upper()).all()
+
+    if not query:
+        return jsonify({'data': 'NONE'})
+
+    print(query)
+
+
+    return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
 
 
 def scheduled_cleaning():

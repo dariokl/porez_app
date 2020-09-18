@@ -12,9 +12,10 @@
 
       </div>
     </section>
+<section>
+
 
 <div class="container">
-  <hr class="m-0">
 
   <div class="container">
     <div class="text-center py-5">
@@ -247,27 +248,90 @@
     </li>
   </ul>
 </div>
+
 <section>
   <div class="container">
-    <div class="row">
-      {% for tax in porez %}
-      <div class="col-sm-4">
-        {% if tax.tip == 'PR-1' %}
-        <a href="{{url_for('core.render_razrez', id=tax.id)}}">
-          <img class="img-fluid" src="static/img/drugi-page-001.jpg">
-          <span>{{ tax.tip }}</span>
-          <span>{{ tax.timestamp}}</span>
-          {% else %}
-          <a href="{{url_for('core.render_1054', id=tax.id)}}">
-            <img class="img-fluid" src="static/img/prvi-page-001.jpg">
-            <span>{{ tax.tip }}</span>
-            <span>{{ tax.timestamp}}</span>
-            {% endif %}
-          </a>
+
+<div class="container">
+  <div class="row searchFilter" >
+     <div class="col-sm-12" >
+      <div class="input-group" >
+       <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
+       <div class="input-group-btn" >
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Category</span> <span class="caret" >&nbsp;</span></button>
+        <div class="dropdown-menu dropdown-menu-right" >
+           <ul class="category_filters" >
+            <li >
+             <input class="cat_type category-input" data-label="All" id="all" value="" name="radios" type="radio" ><label for="all" >All</label>
+            </li>
+            <li >
+             <input type="radio" name="radios" id="Design" value="Design" ><label class="category-label" for="Design" >Design</label>
+            </li>
+            <li >
+             <input type="radio" name="radios" id="Marketing" value="Marketing" ><label class="category-label" for="Marketing" >Marketing</label>
+            </li>
+            <li >
+             <input type="radio" name="radios" id="Programming" value="Programming" ><label class="category-label" for="Programming" >Programming</label>
+            </li>
+            <li >
+             <input type="radio" name="radios" id="Sales" value="Sales" ><label class="category-label" for="Sales" >Sales</label>
+            </li>
+            <li >
+             <input type="radio" name="radios" id="Support" value="Support" ><label class="category-label" for="Support" >Support</label>
+            </li>
+           </ul>
+        </div>
+        <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
+       </div>
       </div>
-      {% endfor %}
+     </div>
+  </div>
+</div>
+
+    <div class="row pt-5 m-auto" id="add_to">
+      {% for tax in porez %}
+      <div class="col-md-6 col-lg-4 pb-3" data-aos="fade-up" data-aos-duration="1000">
+            {% if tax.tip == 'PR-1' %}
+        <div class="card card-custom bg-white border-white border-0">
+          <div class="card-custom-img" style="background-image: url(/static/img/drugi-page-001.jpg); background-size: contain;"></div>
+          <div class="card-custom-avatar">
+            <img class="img-fluid" src="/static/img/ProfileLogo.png" alt="Avatar" />
+          </div>
+          <div class="card-body" style="overflow-y: auto">
+            <h4 class="card-title">{{tax.tip}}</h4>
+            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body content. You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks" target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
+          </div>
+          <div class="card-footer" style="background: inherit; border-color: inherit;">
+            <a href="{{url_for('core.render_razrez', id=tax.id)}}" class="btn btn-primary">Download</a>
+            <a href="#" class="btn btn-outline-primary">Other option</a>
+          </div>
+          {% else %}
+                  <div class="card card-custom bg-white border-white border-0">
+          <div class="card-custom-img" style="background-image: url(/static/img/prvi-page-001.jpg); background-size: contain;"></div>
+          <div class="card-custom-avatar">
+            <img class="img-fluid" src="/static/img/ProfileLogo.png" alt="Avatar" />
+          </div>
+          <div class="card-body" style="overflow-y: auto">
+            <h4 class="card-title">{{tax.tip}}</h4>
+            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body content. You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks" target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
+          </div>
+          <div class="card-footer" style="background: inherit; border-color: inherit;">
+            <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
+            <a href="#" class="btn btn-outline-primary">Other option</a>
+          </div>
+                    {% endif %}
+
+        </div>
+
+      </div>
+        {% endfor %}
     </div>
   </div>
 </section>
+  {% block scripts %}
+  {{ super() }}
+  <script src="/static/js/profile.js">
+  </script>
+  {% endblock %}
 
 {% endblock %}
