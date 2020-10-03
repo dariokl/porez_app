@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     prezime = db.Column(db.String(64))
     email = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    jmbg = db.Column(db.String)
+    jmbg = db.Column(db.String(64))
     kontakt_tel = db.Column(db.Integer)
     grad = db.Column(db.String(64))
 
