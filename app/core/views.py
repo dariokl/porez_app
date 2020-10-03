@@ -101,7 +101,11 @@ def prijava_razrez_im():
     #It is pretty much straight forward just sending data as user clicks on next button.
     if form.validate_on_submit():
         if 'step_1' in session:
-            print(session['step_1'])
+            session['step_1']['(godina)'] = form.kal_godina.data
+            session['step_1']['(adresa)'] = form.adresa.data
+            session['step_1']['(kanton)'] = form.kanton.data
+            session['step_1']['(racun)'] = form.racun.data
+            session['step_1']['(banka)'] = form.banka.data
             tax = Tax(json_data=session['step_1'], tip='PR-1')
             db.session.add(tax)
             db.session.commit()
@@ -204,7 +208,8 @@ def render_1054(id):
 
 @core.route('/render_razrez/<int:id>')
 def render_razrez(id):
-    """Everything explained in first render function."""
+    """Everything explained in first render function. The only difference here is that there is a lot of hardcoding
+    to draw the data on canvas"""
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
@@ -231,7 +236,14 @@ def render_razrez(id):
                 pdf.drawString(x=float(left) + 190, y=float(bottom), text=value[2])
                 pdf.drawString(x=float(left) + 240, y=float(bottom), text=value[3])
                 pdf.drawString(x=float(left) + 340, y=float(bottom), text=value[3])
-            pdf.drawString(x=200, y=727, text=str(current_user.jmbg))
+            #Everything had to be hardcoded here due to formation inside the database..
+            pdf.drawString(x=128.5, y=725, text=str(current_user.jmbg), charSpace=5)
+            pdf.drawString(x=260, y=702, text='{} {}'.format(current_user.ime, current_user.prezime))
+            pdf.drawString(x=425, y=727, text=all['(godina)'])
+            pdf.drawString(x=135, y=650, text=all['(kanton)'])
+            pdf.drawString(x=170, y=675, text=all['(adresa)'])
+            pdf.drawString(x=190, y=611, text=all['(racun)'])
+            pdf.drawString(x=415, y=611, text=all['(banka)'])
 
         pdf.showPage()
 
@@ -239,7 +251,6 @@ def render_razrez(id):
         data.seek(0)
 
         overlay = pdfrw.PdfReader(data)
-
         mark = overlay.pages[0]
 
         for page in range(len(template_pdf.pages)):

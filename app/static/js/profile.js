@@ -1,6 +1,7 @@
 $(function () {
     $('#searchBtn').on('click', function (e) {
         $('#add_to').empty();
+        TimeSet()
         $.ajax({
             url: '/livesearch',
             method: 'POST',
@@ -59,3 +60,13 @@ function dataChart(value) {
             '</div>')
     }
 };
+
+
+function TimeSet() {
+    var week = moment().subtract(7, 'days').calendar();
+    var month = moment().subtract(30, 'days').calendar();
+    $('.Sedmica').val(week);
+    $('.Mjesec').val(month);
+
+}
+

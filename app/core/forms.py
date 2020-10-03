@@ -9,12 +9,16 @@ class FieldEnteryForm(FlaskForm):
 class FieldsForms(FlaskForm):
     """A form for one or more addresses"""
     fields = FieldList(FormField(FieldEnteryForm), min_entries=1)
-    submit = SubmitField('Unesi podatke')
+    submit = SubmitField('Unesi Podatke')
 
 class NekretnineForms(FlaskForm):
-    fields = FieldList(FormField(FieldEnteryForm), min_entries=1)
+    kal_godina = StringField('Porezna godina')
+    adresa = StringField('Adresa')
+    kanton = StringField('Kanton')
+    racun =  StringField('Broj bankovnog racuna')
+    banka = StringField('Banka')
     select = SelectField('Select', choices=[('(kuca)', 'Kuca ili stan'), ('(poslovni)', 'Poslovni prostor')], validators=[DataRequired()])
-    submit = SubmitField('Select')
+    submit = SubmitField('Unesi Podatke')
 
 
 

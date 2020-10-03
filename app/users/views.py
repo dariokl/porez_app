@@ -11,6 +11,8 @@ from ..email import send_email
 
 from datetime import datetime, timedelta
 
+import maya
+
 
 @users.route('/login', methods=['POST', 'GET'])
 def login():
@@ -232,19 +234,24 @@ def email_change(token):
 
 @users.route('/livesearch', methods=['GET', 'POST'])
 def livesearch():
-
+    """Ajax call to this route returns jsonified data to generate all the forms based on name of form and date submited
+    currently there is week/month/year filter"""
     search = request.json
+    date = search.get('date')
 
-    print(search)
+    #In case that someone doesnt submit filter i was running into value error that used to query all data in model
+    try:
+        date = maya.parse(date).datetime()
+    except ValueError:
+        query = Tax.query.filter(Tax.tip == search.get('name').upper()).all()
 
-    query = Tax.query.filter(Tax.tip == search.get('name').upper()).all()
+        return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
+
+    query = Tax.query.filter(Tax.timestamp > date).filter(Tax.tip
+                                                          == search.get('name')).all()
 
     if not query:
         return jsonify({'data': 'NONE'})
-
-    print(query)
-
-
     return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
 
 

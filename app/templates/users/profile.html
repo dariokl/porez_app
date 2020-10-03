@@ -262,22 +262,16 @@
         <div class="dropdown-menu dropdown-menu-right" >
            <ul class="category_filters" >
             <li >
-             <input class="cat_type category-input" data-label="All" id="all" value="" name="radios" type="radio" ><label for="all" >All</label>
+             <input class="cat_type category-input" data-label="All" id="all" value="" name="radios" type="radio" ><label for="all" >Sve</label>
             </li>
             <li >
-             <input type="radio" name="radios" id="Design" value="Design" ><label class="category-label" for="Design" >Design</label>
+             <input type="radio" name="radios" id="Design" class="Sedmica" value="Sedmica" ><label class="Sedmica" for="Sedmica" >Prosla sedmica</label>
             </li>
             <li >
-             <input type="radio" name="radios" id="Marketing" value="Marketing" ><label class="category-label" for="Marketing" >Marketing</label>
+             <input type="radio" name="radios" id="Mjesec" class='Mjesec' value="Marketing" ><label class="category-label" for="Mjesec" >Prosli mjesec</label>
             </li>
             <li >
-             <input type="radio" name="radios" id="Programming" value="Programming" ><label class="category-label" for="Programming" >Programming</label>
-            </li>
-            <li >
-             <input type="radio" name="radios" id="Sales" value="Sales" ><label class="category-label" for="Sales" >Sales</label>
-            </li>
-            <li >
-             <input type="radio" name="radios" id="Support" value="Support" ><label class="category-label" for="Support" >Support</label>
+             <input type="radio" name="radios" id="Godina" class="Godina" value="Programming" ><label class="category-label" for="Godina" >Prosla Godina</label>
             </li>
            </ul>
         </div>
@@ -317,6 +311,7 @@
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
+            {{ tax.timestamp }}
             <a href="#" class="btn btn-outline-primary">Other option</a>
           </div>
                     {% endif %}
