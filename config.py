@@ -1,14 +1,13 @@
-from dotenv import load_dotenv
-load_dotenv()
-
-
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
+
+
+
 
 # Used to create SQLite database for development and testing purpouses
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 class Config:
 
@@ -30,18 +29,25 @@ class Config:
     def init_app(app):
         pass
 
+
 class ProductionConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{pw}@{url}/{db}'.format(user=os.environ.get('MYSQL_USER'), \
-                                                                              pw=os.environ.get('MYSQL_PW'), \
-                                                                              url=os.environ.get('MYSQL_URL'), \
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{pw}@{url}/{db}'.format(user=os.environ.get('MYSQL_USER'),
+                                                                              pw=os.environ.get(
+                                                                                  'MYSQL_PW'),
+                                                                              url=os.environ.get(
+                                                                                  'MYSQL_URL'),
                                                                               db=os.environ.get('MYSQL_DB'))
 
+
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev-database.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+        os.path.join(basedir, 'dev-database.sqlite')
+
 
 class TestingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+        os.path.join(basedir, 'test.sqlite')
 
 
 config = {

@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% for field in form_personal.errors %}
+{% for error in form_personal.errors[field] %}
+    <div class="alert alert-error">
+        <strong>{{error}}</strong>
+    </div>
+{% endfor %}
+{% endfor %}
     <section id="breadcrumbs" class="breadcrumbs">
       <div class="container">
 
@@ -84,7 +91,7 @@
 						<i class="fa fa-user"></i>
 					</span>
                         </div>
-                        {{ form_personal.ime( class='form-control')}}
+                        {{ form_personal.ime( class='form-control', value=user.ime)}}
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -92,7 +99,7 @@
 						<i class="fa fa-user"></i>
 					</span>
                         </div>
-                        {{ form_personal.prezime( class='form-control')}}
+                        {{ form_personal.prezime( class='form-control', value=user.prezime)}}
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -100,7 +107,7 @@
 						<i class="fa fa-globe"></i>
 					</span>
                         </div>
-                        {{ form_personal.grad( class='form-control')}}
+                        {{ form_personal.grad( class='form-control', value=user.grad)}}
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -108,7 +115,7 @@
 						<i class="fa fa-id-card"></i>
 					</span>
                         </div>
-                        {{ form_personal.jmbg(class='form-control')}}
+                        {{ form_personal.jmbg(class='form-control', value=user.jmbg)}}
                       </div>
                     </div>
                 </div>
@@ -116,7 +123,7 @@
                 </p>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_personal.submit() }}
+                  {{ form_personal.submit1() }}
                   </form>
                 </div>
               </div>
@@ -158,7 +165,7 @@
 						<i class="fa fa-user fa-1x"></i>
 					</span>
                         </div>
-                        {{ form_contact.email( class='form-control')}}
+                        {{ form_contact.email( class='form-control', value=user.email)}}
                       </div>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -166,7 +173,7 @@
 						<i class="fa fa-phone fa-1x"></i>
 					</span>
                         </div>
-                        {{ form_contact.kontakt_tel( class='form-control')}}
+                        {{ form_contact.kontakt_tel( class='form-control', value=user.kontakt_tel)}}
                       </div>
                     </div>
                 </div>
@@ -174,7 +181,7 @@
                 </p>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_contact.submit() }}
+                  {{ form_contact.submit2() }}
                   </form>
                 </div>
               </div>
@@ -195,14 +202,16 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <form method="POST">
+                {{ form_delete.hidden_tag() }}
               <div class="modal-body">
                 <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
+                <div class="col">{{form_delete.confirm.label}}</div>
+                <div class="col">{{form_delete.confirm(class='form-control')}}</div>
               </div>
               <div class="modal-footer">
-                <form method="POST">
-                  {{ form_delete.hidden_tag() }}
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_delete.submit(class='btn btn-danger') }}
+                  {{ form_delete.submit3(class='btn btn-danger') }}
                 </form>
               </div>
             </div>

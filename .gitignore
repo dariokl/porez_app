@@ -3,4 +3,4 @@ __pycache__/
 venv_porez
 .idea
 dev-database.sqlite
-
+.vscode/

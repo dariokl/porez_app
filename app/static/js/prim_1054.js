@@ -28,6 +28,21 @@ $(document).ready(function () {
         $('#fields-22-name').attr('placeholder', 'Datum')
         $('#fields-24-name').attr('placeholder', 'Adresa')
     });
+    var l = []
+
+    $(function () {
+        $('input[type=text').each(function(k, v) {
+            l.push(v['placeholder'])
+        })
+    })
+    
+    $(function () {
+        $('.fake_').each(function(k, v) {
+            $(this).attr('class', 'fake_' + k);
+            $(this).append(l[k])
+        })
+    })
+
 
 });
 
@@ -62,4 +77,5 @@ $(function () {
         $('#fields-21-name').val(multdec(field, 0.1) / month_period);
     });
 });
+
 

@@ -25,6 +25,7 @@
                         <h2 class="fs-title">1/3</h2>
                         <h3 class="fs-subtitle"></h3>
                         {% for field in form.fields[:8] %}
+                        <p class='fake_'></p>
                         {{ field.hidden_tag()}}
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
@@ -37,6 +38,7 @@
                         <h2 class="fs-title">2/3</h2>
                         <h3 class="fs-subtitle"></h3>
                         {% for field in form.fields[8:16] %}
+                        <p class='fake_'></p>
                         {{ field.hidden_tag()}}
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
@@ -49,6 +51,7 @@
                         <h2 class="fs-title">3/3</h2>
                         <h3 class="fs-subtitle"></h3>
                         {% for field in form.fields[16:] %}
+                        <p class='fake_'></p>
                         {{ field.hidden_tag()}}
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}

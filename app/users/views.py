@@ -57,15 +57,14 @@ def register():
     for our database"""
     form = RegistrationForm()
 
-
-
     if form.validate_on_submit():
-        new_user = User(ime=form.ime.data, prezime=form.prezime.data, password=form.password.data, \
+        new_user = User(ime=form.ime.data, prezime=form.prezime.data, password=form.password.data,
                         email=form.email.data, grad=form.grad.data)
         db.session.add(new_user)
         db.session.commit()
         token = new_user.generate_confirm_token()
-        send_email(new_user.email, 'Dobrodošli !', 'email/register_email', user=new_user, token=token)
+        send_email(new_user.email, 'Dobrodošli !',
+                   'email/register_email', user=new_user, token=token)
         flash('Da bi ste uspješno završili registraciju molimo Vas provjerite svoj email i izvršite potvrdu email adrese !')
         return redirect(url_for('users.login'))
 
@@ -102,7 +101,8 @@ def password_reset():
         user = User.query.filter_by(email=form.email.data).first()
         token = user.generate_password_reset_token()
 
-        send_email(user.email, 'Izmjena lozinke', "email/password_reset", user=user, token=token)
+        send_email(user.email, 'Izmjena lozinke',
+                   "email/password_reset", user=user, token=token)
         flash('Molimo Vas provjerite vašu email adresu !')
 
         return redirect(url_for('core.index'))
@@ -129,6 +129,7 @@ def password_change(token):
         return redirect(url_for('users.login'))
     return render_template('users/password_reset.html', form=form)
 
+
 @users.route('/email-confirm-token')
 @login_required
 def email_confirm_token():
@@ -137,7 +138,9 @@ def email_confirm_token():
     flash('Provjerite Vašu email adresu i potvrdite svoj račun !')
 
     return redirect(url_for('users.profile', user_id=current_user.id))
-    send_email(current_user.email, 'Potvrdite Email Adresu', 'email/register_email',)
+    send_email(current_user.email, 'Potvrdite Email Adresu',
+               'email/register_email',)
+
 
 @users.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -147,6 +150,7 @@ def profile():
 
     # We simply check does user exist and return 404 if the user.id is not valid
     user = User.query.filter_by(id=current_user.id).first_or_404()
+    porez = Tax.query.all()
 
     if user != current_user:
         return 403
@@ -156,65 +160,54 @@ def profile():
     form_contact = ProfileEditContact()
     form_delete = ProfileDelete()
 
-    if request.method == "GET":
-        # General personal informations
-        form_personal.ime.data = current_user.ime.title()
-        form_personal.prezime.data = current_user.prezime.title()
-        form_personal.grad.data = current_user.grad.title()
+    if request.method == 'POST':
 
-        form_personal.jmbg.data = current_user.jmbg
+        if form_personal.submit1.data and form_personal.validate():
+            # Changing the personal data , it does not require any aditional information
+            user.ime = form_personal.ime.data
+            user.prezime = form_personal.prezime.data
+            user.grad = form_personal.grad.data
+            user.jmbg = form_personal.jmbg.data
+            db.session.commit()
+            flash('Uspješno ste promijenili vaše podatke')
+            return redirect(url_for('users.profile'))
 
-        # Personal contact data
-        form_contact.email.data = current_user.email
-        form_contact.kontakt_tel.data = current_user.kontakt_tel
-
-
-    if form_personal.submit.data and form_personal.validate():
-        # Changing the personal data , it does not require any aditional information
-        user.ime = form_personal.ime.data
-        user.prezime = form_personal.prezime.data
-        user.grad = form_personal.grad.data
-        user.jmbg = form_personal.jmbg.data
-        db.session.commit()
-        flash('Uspješno ste promijenili vaše podatke')
-        return redirect(url_for('users.profile', user_id=current_user.id))
-
-
-    if form_contact.submit.data and form_contact.validate():
-        #Validation method outside the form , if current user requires change of his personal contact information
-        #Using if statement to check is there an email already used by someone else beacuse we cant user validate
-        # email from our form.py
-        if current_user.email == form_contact.email.data:
-            if current_user.kontakt_tel != form_contact.kontakt_tel.data:
-                user.kontakt_tel = form_contact.kontakt_tel.data
-                db.session.commit()
-                flash('Uspjesno ste ažurirali Vaš broj telefona !')
-        else:
-            try:
-                validate = User.query.filter_by(email=form_contact.email.data).first()
-                if validate.id != current_user.id:
-                    flash('Email je već u upotrebi !')
+        if form_contact.submit2.data and form_contact.validate():
+            # Validation method outside the form , if current user requires change of his personal contact information
+            # Using if statement to check is there an email already used by someone else beacuse we cant user validate
+            # email from our form.py
+            if current_user.email == form_contact.email.data:
+                if current_user.kontakt_tel != form_contact.kontakt_tel.data:
+                    user.kontakt_tel = form_contact.kontakt_tel.data
+                    db.session.commit()
+                    flash('Uspjesno ste ažurirali Vaš broj telefona !')
+            else:
+                try:
+                    validate = User.query.filter_by(
+                        email=form_contact.email.data).first()
+                    if validate.id != current_user.id:
+                        flash('Email je već u upotrebi !')
+                        return redirect(url_for('users.profile'))
+                except AttributeError:
+                    # Create a token that contains email adress , check the email_change_token method to see what happens in view.
+                    #token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
+                    flash(
+                        'Da bi ste izvršili promjenu email adrese , provjerite vašu email adresu i izvršite potvrdu !')
+                    #send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
                     return redirect(url_for('users.profile'))
-            except AttributeError:
-                # Create a token that contains email adress , check the email_change_token method to see what happens in view.
-                #token = user.email_change_token(form_contact.email.data, form_contact.kontakt_tel.data)
-                flash('Da bi ste izvršili promjenu email adrese , provjerite vašu email adresu i izvršite potvrdu !')
-                #send_email(current_user.email, 'Potvrdite promjenu email adrese', 'email/email_change', user=user, token=token)
-                return redirect(url_for('users.profile', user_id=current_user.id))
 
-        return redirect(url_for('users.profile', user_id=current_user.id))
+            return redirect(url_for('users.profile'))
 
-    if form_delete.submit.data and form_delete.validate():
-        db.session.delete(user)
-        db.session.commit()
-        flash('Uspješno ste izbrisali svoj profil !')
-        return redirect(url_for('core.index'))
+        if form_delete.submit3.data and form_delete.validate():
+            if user.verify_password(form_delete.confirm.data):
+                db.session.delete(user)
+                db.session.commit()
+                flash('Uspjesno ste izbrisali svoj profil')
+                return redirect(url_for('core.index'))
+            else:
+                Flash('Unijeli ste pogresnu lozinku !')
 
-
-    porez = Tax.query.all()
-
-
-    return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,\
+    return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,
                            form_delete=form_delete, porez=porez)
 
 
@@ -232,6 +225,7 @@ def email_change(token):
         flash('Vaš token nije validan , obratite nam se za pomoć !')
         return redirect(url_for('core.index'))
 
+
 @users.route('/livesearch', methods=['GET', 'POST'])
 def livesearch():
     """Ajax call to this route returns jsonified data to generate all the forms based on name of form and date submited
@@ -239,7 +233,7 @@ def livesearch():
     search = request.json
     date = search.get('date')
 
-    #In case that someone doesnt submit filter i was running into value error that used to query all data in model
+    # In case that someone doesnt submit filter i was running into value error that used to query all data in model
     try:
         date = maya.parse(date).datetime()
     except ValueError:
@@ -258,15 +252,11 @@ def livesearch():
 def scheduled_cleaning():
     day_filter = datetime.utcnow()
     try:
-        expired = db.session.query(User).filter(User.is_confirmed == False).filter(User.expire < day_filter).delete()
+        expired = db.session.query(User).filter(
+            User.is_confirmed == False).filter(User.expire < day_filter).delete()
         db.session.commit()
         print('The cron job scheduled every hour deleted {} users'.format(expired))
     except:
         db.session.rollback()
     finally:
         db.session.close()
-
-
-
-
-

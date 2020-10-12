@@ -4,7 +4,7 @@ from flask_login import current_user
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, IntegerField
-from wtforms.validators import Email, Required, EqualTo, ValidationError, DataRequired
+from wtforms.validators import Email, Regexp, EqualTo, ValidationError, DataRequired, Length
 
 class RegistrationForm(FlaskForm):
     ime = StringField('Ime' , validators=[DataRequired()])
@@ -40,16 +40,17 @@ class PasswordChange(FlaskForm):
 class ProfileEditPersonal(FlaskForm):
     ime = StringField('Ime' , validators=[DataRequired()])
     prezime = StringField('Prezime', validators=[DataRequired()])
-    jmbg = IntegerField('JMBG', validators=[DataRequired()])
+    jmbg = StringField('JMBG', validators=[DataRequired(), Length(min=13), Regexp('^[0-9]*$', message="Samo brojevi su dozvoljeni")])
     grad = StringField('Grad', validators=[DataRequired()])
-    submit = SubmitField('Snimi')
+    submit1 = SubmitField('Snimi')
 
 class ProfileEditContact(FlaskForm):
     email = StringField('Email', validators=[Email(), DataRequired()])
     kontakt_tel = IntegerField('Broj Telefona', validators=[DataRequired()])
-    submit = SubmitField('Snimi')
+    submit2 = SubmitField('Snimi')
 
 
 class ProfileDelete(FlaskForm):
-    submit = SubmitField('Obrisi Profil')
+    confirm = PasswordField('Ukucajte šifru svog profila')
+    submit3 = SubmitField('Obrisi Profil')
 
