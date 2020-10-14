@@ -1,0 +1,397 @@
+[
+  {
+    "br": 1,
+    "Opcina": "Bihać",
+    "Šifra": "003"
+  },
+  {
+    "br": 2,
+    "Opcina": "Bosanska Krupa",
+    "Šifra": "008"
+  },
+  {
+    "br": 3,
+    "Opcina": "Bosanski Petrovac",
+    "Šifra": "011"
+  },
+  {
+    "br": 4,
+    "Opcina": "Cazin",
+    "Šifra": "019"
+  },
+  {
+    "br": 5,
+    "Opcina": "Ključ",
+    "Šifra": "048"
+  },
+  {
+    "br": 6,
+    "Opcina": "Sanski Most",
+    "Šifra": "076"
+  },
+  {
+    "br": 7,
+    "Opcina": "Velika Kladuša",
+    "Šifra": "097"
+  },
+  {
+    "br": 8,
+    "Opcina": "Bužim",
+    "Šifra": 124
+  },
+  {
+    "br": 9,
+    "Opcina": "Banovići",
+    "Šifra": "001"
+  },
+  {
+    "br": 10,
+    "Opcina": "Gračanica",
+    "Šifra": "035"
+  },
+  {
+    "br": 11,
+    "Opcina": "Gradačac",
+    "Šifra": "036"
+  },
+  {
+    "br": 12,
+    "Opcina": "Kalesija",
+    "Šifra": "044"
+  },
+  {
+    "br": 13,
+    "Opcina": "Kladanj",
+    "Šifra": "047"
+  },
+  {
+    "br": 14,
+    "Opcina": "Čelić",
+    "Šifra": "056"
+  },
+  {
+    "br": 15,
+    "Opcina": "Lukavac",
+    "Šifra": "057"
+  },
+  {
+    "br": 16,
+    "Opcina": "Srebrenik",
+    "Šifra": "085"
+  },
+  {
+    "br": 17,
+    "Opcina": "Tuzla",
+    "Šifra": "094"
+  },
+  {
+    "br": 18,
+    "Opcina": "Živinice",
+    "Šifra": 106
+  },
+  {
+    "br": 19,
+    "Opcina": "Doboj - Istok",
+    "Šifra": 128
+  },
+  {
+    "br": 20,
+    "Opcina": "Sapna",
+    "Šifra": 138
+  },
+  {
+    "br": 21,
+    "Opcina": "Teočak",
+    "Šifra": 142
+  },
+  {
+    "br": 22,
+    "Opcina": "Livno",
+    "Šifra": "055"
+  },
+  {
+    "br": 23,
+    "Opcina": "Tomislavgrad",
+    "Šifra": "028"
+  },
+  {
+    "br": 24,
+    "Opcina": "Kupres",
+    "Šifra": "052"
+  },
+  {
+    "br": 25,
+    "Opcina": "Glamoč",
+    "Šifra": "032"
+  },
+  {
+    "br": 26,
+    "Opcina": "Bosansko Grahovo",
+    "Šifra": "013"
+  },
+  {
+    "br": 27,
+    "Opcina": "Drvar",
+    "Šifra": "027"
+  },
+  {
+    "br": 28,
+    "Opcina": "Breza",
+    "Šifra": "016"
+  },
+  {
+    "br": 29,
+    "Opcina": "Kakanj",
+    "Šifra": "043"
+  },
+  {
+    "br": 30,
+    "Opcina": "Maglaj",
+    "Šifra": "060"
+  },
+  {
+    "br": 31,
+    "Opcina": "Olovo",
+    "Šifra": "067"
+  },
+  {
+    "br": 32,
+    "Opcina": "Tešanj",
+    "Šifra": "090"
+  },
+  {
+    "br": 33,
+    "Opcina": "Vareš",
+    "Šifra": "096"
+  },
+  {
+    "br": 34,
+    "Opcina": "Visoko",
+    "Šifra": "098"
+  },
+  {
+    "br": 35,
+    "Opcina": "Zavidovići",
+    "Šifra": 102
+  },
+  {
+    "br": 36,
+    "Opcina": "Zenica",
+    "Šifra": 103
+  },
+  {
+    "br": 37,
+    "Opcina": "Žepče",
+    "Šifra": 105
+  },
+  {
+    "br": 38,
+    "Opcina": "Doboj - Jug",
+    "Šifra": 132
+  },
+  {
+    "br": 39,
+    "Opcina": "Usora",
+    "Šifra": "025"
+  },
+  {
+    "br": 40,
+    "Opcina": "Goražde",
+    "Šifra": "033"
+  },
+  {
+    "br": 41,
+    "Opcina": "Foča - Ustikolina",
+    "Šifra": 134
+  },
+  {
+    "br": 42,
+    "Opcina": "Pale - Prača",
+    "Šifra": 136
+  },
+  {
+    "br": 43,
+    "Opcina": "Bugojno",
+    "Šifra": "017"
+  },
+  {
+    "br": 44,
+    "Opcina": "Busovača",
+    "Šifra": "018"
+  },
+  {
+    "br": 45,
+    "Opcina": "Donji Vakuf",
+    "Šifra": "026"
+  },
+  {
+    "br": 46,
+    "Opcina": "Dobretići",
+    "Šifra": "050"
+  },
+  {
+    "br": 47,
+    "Opcina": "Fojnica",
+    "Šifra": "030"
+  },
+  {
+    "br": 48,
+    "Opcina": "Gornji Vakuf",
+    "Šifra": "034"
+  },
+  {
+    "br": 49,
+    "Opcina": "Jajce",
+    "Šifra": "042"
+  },
+  {
+    "br": 50,
+    "Opcina": "Kiseljak",
+    "Šifra": "046"
+  },
+  {
+    "br": 51,
+    "Opcina": "Kreševo",
+    "Šifra": "051"
+  },
+  {
+    "br": 52,
+    "Opcina": "Novi Travnik",
+    "Šifra": "065"
+  },
+  {
+    "br": 53,
+    "Opcina": "Travnik",
+    "Šifra": "091"
+  },
+  {
+    "br": 54,
+    "Opcina": "Vitez",
+    "Šifra": 100
+  },
+  {
+    "br": 55,
+    "Opcina": "Čapljina",
+    "Šifra": "021"
+  },
+  {
+    "br": 56,
+    "Opcina": "Čitluk",
+    "Šifra": "023"
+  },
+  {
+    "br": 57,
+    "Opcina": "Grad Mostar",
+    "Šifra": 180
+  },
+  {
+    "br": 58,
+    "Opcina": "Jablanica",
+    "Šifra": "041"
+  },
+  {
+    "br": 59,
+    "Opcina": "Konjic",
+    "Šifra": "049"
+  },
+  {
+    "br": 60,
+    "Opcina": "Neum",
+    "Šifra": 107
+  },
+  {
+    "br": 61,
+    "Opcina": "Prozor - Rama",
+    "Šifra": "073"
+  },
+  {
+    "br": 62,
+    "Opcina": "Ravno",
+    "Šifra": 207
+  },
+  {
+    "br": 63,
+    "Opcina": "Stolac",
+    "Šifra": "086"
+  },
+  {
+    "br": 64,
+    "Opcina": "Hadžići",
+    "Šifra": "038"
+  },
+  {
+    "br": 65,
+    "Opcina": "Ilijaš",
+    "Šifra": "040"
+  },
+  {
+    "br": 66,
+    "Opcina": "Centar",
+    "Šifra": "077"
+  },
+  {
+    "br": 67,
+    "Opcina": "Ilidža",
+    "Šifra": "078"
+  },
+  {
+    "br": 68,
+    "Opcina": "Novo Sarajevo",
+    "Šifra": "079"
+  },
+  {
+    "br": 69,
+    "Opcina": "Vogošća",
+    "Šifra": "080"
+  },
+  {
+    "br": 70,
+    "Opcina": "Novi Grad",
+    "Šifra": 108
+  },
+  {
+    "br": 71,
+    "Opcina": "Stari Grad",
+    "Šifra": 109
+  },
+  {
+    "br": 72,
+    "Opcina": "Trnovo",
+    "Šifra": "093"
+  },
+  {
+    "br": 73,
+    "Opcina": "Orašje",
+    "Šifra": "068"
+  },
+  {
+    "br": 74,
+    "Opcina": "Odžak",
+    "Šifra": "066"
+  },
+  {
+    "br": 75,
+    "Opcina": "Domaljevac-Šamac",
+    "Šifra": "012"
+  },
+  {
+    "br": 76,
+    "Opcina": "Široki Brijeg",
+    "Šifra": "054"
+  },
+  {
+    "br": 77,
+    "Opcina": "Grude",
+    "Šifra": "037"
+  },
+  {
+    "br": 78,
+    "Opcina": "Ljubuški",
+    "Šifra": "059"
+  },
+  {
+    "br": 79,
+    "Opcina": "Posušje",
+    "Šifra": "070"
+  }
+]

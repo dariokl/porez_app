@@ -1,5 +1,5 @@
 import os
-from flask import render_template, send_file, request, redirect, url_for, session
+from flask import render_template, send_file, request, redirect, url_for, session, jsonify
 from flask_login import current_user
 from . import core
 
@@ -11,6 +11,7 @@ import io
 import pdfrw
 from pdfrw import PageMerge
 from reportlab.pdfgen import canvas
+import csv
 
 
 
@@ -51,16 +52,30 @@ def pregled_pr():
 
     if forom[23]['name'] == '(1 Prezime i ime vlasnika imovine)':
         forom[23]['name'] = "{} {}".format(current_user.ime, current_user.prezime)
+    
+
+    # Formating data for select field
+    csv_to_read = os.path.join(file_pdf, 'lista.csv')
+    select = []
+    with open(csv_to_read) as csv_doc:
+        reader = csv.reader(csv_doc, delimiter=',')
+        for row in reader:
+            select.append((row[2], row[1]))
+    
 
 
     # Using FormFieldList to generate exact amount of fields that this pdf holds , so user can submit data for pdf.
     form = FieldsForms(fields=forom)
+    form.select.choices = select
 
     # Still trying to figure out how can i make all the fields validate , but for now i just submit it .
     if request.method == 'POST' and form.submit():
         data = form.data['fields']
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
         my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
+        my_dict['(koja se iznajmljuje)'] = form.select.data
+        print(form.select.data)
+        print(my_dict)
         new = Tax(json_data=my_dict, tip='PRIM-1054')
         db.session.add(new)
         db.session.commit()
@@ -68,6 +83,8 @@ def pregled_pr():
         return redirect (url_for('users.profile'))
 
     return render_template('porezi/prim-1054.html', form=form)
+
+
 
 
 @core.route('/prijava_razrez_im', methods=['POST', 'GET'])
@@ -80,7 +97,7 @@ def prijava_razrez_im():
 
 
     # PDF handling , simply finding the right pdf that matches this route.
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prvi.pdf'))
+    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
@@ -150,7 +167,7 @@ def render_1054(id):
     overlay_io = io.BytesIO()
 
     #Excluding the data we are going to automate
-    presist = [all['(3 Porezna godina)'], all['(6 Porezni period)'], all['(do)']]
+    presist = [all['(3 Porezna godina)'][2:], all['(6 Porezni period)'], all['(do)']]
     exclude = ['(3 Porezna godina)', '(6 Porezni period)', '(do)',]
 
     for i in exclude:

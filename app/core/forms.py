@@ -9,6 +9,9 @@ class FieldEnteryForm(FlaskForm):
 class FieldsForms(FlaskForm):
     """A form for one or more addresses"""
     fields = FieldList(FormField(FieldEnteryForm), min_entries=1)
+    select = SelectField('Izaberite Općinu', choices=[])
+    select_y = SelectField('Godina', choices=[])
+
     submit = SubmitField('Unesi Podatke')
 
 class NekretnineForms(FlaskForm):

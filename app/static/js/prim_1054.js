@@ -5,7 +5,7 @@ $(document).ready(function () {
         });
         $('#fields-0-name').css('background', 'lightgray')
         $('#fields-1-name').attr('placeholder', 'Porezna godina')
-        $('#fields-2-name').attr('placeholder', 'Sifra općine')
+        $('#fields-2-name').hide()
         $('#fields-3-name').attr('placeholder', 'Porezni period - OD')
         $('#fields-4-name').attr('placeholder', 'Porezni period - DO')
         $('#fields-5-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine')
@@ -43,6 +43,12 @@ $(document).ready(function () {
         })
     })
 
+    $('#fields-1-name').yearpicker({
+        startYear: 2000,
+        endYear: 2021,
+        
+    })
+	
 
 });
 
