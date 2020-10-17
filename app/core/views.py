@@ -14,8 +14,6 @@ from reportlab.pdfgen import canvas
 import csv
 
 
-
-
 @core.route('/')
 def index():
 
@@ -74,8 +72,6 @@ def pregled_pr():
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
         my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
         my_dict['(koja se iznajmljuje)'] = form.select.data
-        print(form.select.data)
-        print(my_dict)
         new = Tax(json_data=my_dict, tip='PRIM-1054')
         db.session.add(new)
         db.session.commit()
@@ -83,8 +79,6 @@ def pregled_pr():
         return redirect (url_for('users.profile'))
 
     return render_template('porezi/prim-1054.html', form=form)
-
-
 
 
 @core.route('/prijava_razrez_im', methods=['POST', 'GET'])

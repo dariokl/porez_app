@@ -332,6 +332,9 @@
     </div>
   </div>
 </section>
-
+{% block scripts %}
+<script src="static/js/profile.js"></script>
+{{ super ()}}
+{% endblock %}
 
 {% endblock %}

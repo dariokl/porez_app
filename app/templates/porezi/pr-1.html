@@ -115,7 +115,9 @@
         </div>
     </div>
 </section>
-
-
+{% block scripts %}
+<script src="static/js/pr_1.js"></script>
+{{ super ()}}
+{% endblock %}
 
 {% endblock %}

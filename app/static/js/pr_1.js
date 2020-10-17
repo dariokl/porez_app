@@ -16,7 +16,7 @@ $(function() {
     $('.row').on('change', 'select', function(e) {
         var value = $(e.target).val();
         $(".sub_forms").append(make_subform(value));
-        $(this).find('[value='+value+']').remove();
+        $(this).find('[value="+value+"]').remove();
     });
 });
 
