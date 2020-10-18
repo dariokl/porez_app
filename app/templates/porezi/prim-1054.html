@@ -47,7 +47,7 @@
      
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
-                        {{ field(class='form-group')}}
+                        {{ field(class='form-group', type='number')}}
 
                         {% endfor %}
                         <input type="button" name="next" class="next action-button" value="Next"/>

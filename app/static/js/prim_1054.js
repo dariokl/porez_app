@@ -8,24 +8,25 @@ $(document).ready(function () {
         $('#fields-2-name').hide()
         $('#fields-3-name').attr('placeholder', 'Porezni period - OD')
         $('#fields-4-name').attr('placeholder', 'Porezni period - DO')
-        $('#fields-5-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine').attr('type', 'number')
-        $('#fields-6-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem pokretne imovine').attr('type', 'number')
-        $('#fields-7-name').attr('placeholder', 'Troškovi odžavanja')
-        $('#fields-8-name').attr('placeholder', 'Troškovi oglašavanja')
-        $('#fields-9-name').attr('placeholder', 'Troškovi osiguranja')
-        $('#fields-10-name').attr('placeholder', 'Takse i naknade za license')
-        $('#fields-11-name').attr('placeholder', 'Troškovi nenaplativih potraživanja')
-        $('#fields-12-name').attr('placeholder', 'Trošak amortizacije')
-        $('#fields-13-name').attr('placeholder', 'Putni troškovi')
-        $('#fields-14-name').attr('placeholder', 'Troškovi rezija koje plaća vlasnik')
-        $('#fields-15-name').attr('placeholder', 'Kamate i bankovne naknade')
-        $('#fields-16-name').attr('placeholder', 'Drugi troskovi u vezi s iznajmljivanjem')
+        $('#fields-5-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine (BAM)')
+        $('#fields-6-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem pokretne imovine (BAM)')
+        $('#fields-7-name').attr('placeholder', 'Troškovi odžavanja (BAM)')
+        $('#fields-8-name').attr('placeholder', 'Troškovi oglašavanja (BAM)')
+        $('#fields-9-name').attr('placeholder', 'Troškovi osiguranja (BAM)')
+        $('#fields-10-name').attr('placeholder', 'Takse i naknade za license (BAM)')
+        $('#fields-11-name').attr('placeholder', 'Troškovi nenaplativih potraživanja (BAM)')
+        $('#fields-12-name').attr('placeholder', 'Trošak amortizacije (BAM)')
+        $('#fields-13-name').attr('placeholder', 'Putni troškovi (BAM)')
+        $('#fields-14-name').attr('placeholder', 'Troškovi rezija koje plaća vlasnik (BAM)')
+        $('#fields-15-name').attr('placeholder', 'Kamate i bankovne naknade (BAM)')
+        $('#fields-16-name').attr('placeholder', 'Drugi troskovi u vezi s iznajmljivanjem (BAM)')
         $('#fields-17-name').attr('placeholder', 'Ukupni troskovi').css('background', 'lightgray')
-        $('#fields-18-name').attr('placeholder', 'Troskovi koji se priznaju po procentu').css('background', 'lightgray').attr('type', 'number')
+        $('#fields-18-name').attr('placeholder', 'Troskovi koji se priznaju po procentu').css('background', 'lightgray')
         $('#fields-19-name').attr('placeholder', 'Prihod od iznajmljivanja po odbitku troskova ').css('background', 'lightgray')
-        $('#fields-20-name').attr('placeholder', 'Ukupan iznos porza na iznajmljivanje imovine koji je tokom poreskog perioda uplacen kao akontacija ')
+        $('#fields-20-name').attr('placeholder', 'Ukupan iznos porza na iznajmljivanje imovine koji je tokom poreskog perioda uplacen kao akontacija (BAM) ')
         $('#fields-21-name').attr('placeholder', 'Mjesecni iznos akontacije').css('background', 'lightgray')
         $('#fields-22-name').attr('placeholder', 'Datum')
+        $('#fields-23-name').attr('placeholder', 'Ime i Prezime')
         $('#fields-24-name').attr('placeholder', 'Adresa')
     });
     var l = []
@@ -34,22 +35,37 @@ $(document).ready(function () {
         $('input[type=text').each(function(k, v) {
             l.push(v['placeholder'])
         })
-    })
+    });
     
     $(function () {
         $('.fake_').each(function(k, v) {
             $(this).attr('class', 'fake_' + k);
             $(this).append(l[k])
-        })
-    })
+        });
+    });
 
     $('#fields-1-name').yearpicker({
         startYear: 2000,
         endYear: 2021,
         
-    })
-	
+    });
 
+    $(function() {
+        $('#fields-5-name').attr('type', 'number');
+        $('#fields-6-name').attr('type', 'number');
+        $('#fields-7-name').attr('type', 'number');
+        $('#fields-8-name').attr('type', 'number');
+        $('#fields-9-name').attr('type', 'number');
+        $('#fields-10-name').attr('type', 'number');
+        $('#fields-11-name').attr('type', 'number');
+        $('#fields-12-name').attr('type', 'number');
+        $('#fields-13-name').attr('type', 'number');
+        $('#fields-14-name').attr('type', 'number');
+        $('#fields-15-name').attr('type', 'number');
+        $('#fields-16-name').attr('type', 'number');
+        $('#fields-20-name').attr('type', 'number');
+        $('fields-3-name').attr('type', 'range');
+    });
 });
 
 $(function () {
