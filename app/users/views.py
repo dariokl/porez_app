@@ -152,6 +152,7 @@ def profile():
     user = User.query.filter_by(id=current_user.id).first_or_404()
     porez = Tax.query.all()
 
+
     if user != current_user:
         return 403
 
@@ -208,7 +209,7 @@ def profile():
                 Flash('Unijeli ste pogresnu lozinku !')
 
     return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,
-                           form_delete=form_delete, porez=porez)
+                           form_delete=form_delete)
 
 
 @users.route('/email-change/<token>')
@@ -237,11 +238,11 @@ def livesearch():
     try:
         date = maya.parse(date).datetime()
     except ValueError:
-        query = Tax.query.filter(Tax.tip == search.get('name').upper()).all()
+        query = Tax.query.filter(Tax.user_id==current_user.id).filter(Tax.tip == search.get('name').upper()).all()
 
         return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
 
-    query = Tax.query.filter(Tax.timestamp > date).filter(Tax.tip
+    query = Tax.query.filter(Tax.user_id==current_user.id).filter(Tax.timestamp > date).filter(Tax.tip
                                                           == search.get('name')).all()
 
     if not query:

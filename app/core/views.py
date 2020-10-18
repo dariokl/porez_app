@@ -72,7 +72,7 @@ def pregled_pr():
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
         my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
         my_dict['(koja se iznajmljuje)'] = form.select.data
-        new = Tax(json_data=my_dict, tip='PRIM-1054')
+        new = Tax(json_data=my_dict, tip='PRIM-1054', user_id=current_user.id)
         db.session.add(new)
         db.session.commit()
 
@@ -117,11 +117,11 @@ def prijava_razrez_im():
             session['step_1']['(kanton)'] = form.kanton.data
             session['step_1']['(racun)'] = form.racun.data
             session['step_1']['(banka)'] = form.banka.data
-            tax = Tax(json_data=session['step_1'], tip='PR-1')
+            tax = Tax(json_data=session['step_1'], tip='PR-1', user_id=current_user.id)
             db.session.add(tax)
             db.session.commit()
             session.pop('step_1', None)
-            return redirect(url_for('core.prijava_razrez_im'))
+            return redirect(url_for('users.profile'))
 
     return render_template('porezi/pr-1.html', form=form)
 

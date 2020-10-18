@@ -240,7 +240,7 @@
                 <form  method="POST">
                   {{ form_delete.hidden_tag() }}
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_delete.submit(class='btn btn-danger') }}
+                  {{ form_delete.submit3(class='btn btn-danger') }}
                 </form>
               </div>
             </div>
@@ -292,7 +292,7 @@
 </div>
 
     <div class="row pt-5 m-auto" id="add_to">
-      {% for tax in porez %}
+      {% for tax in user.posts %}
       <div class="col-md-6 col-lg-4 pb-3" data-aos="fade-up" data-aos-duration="1000">
             {% if tax.tip == 'PR-1' %}
         <div class="card card-custom bg-white border-white border-0">

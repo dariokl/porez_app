@@ -1,4 +1,5 @@
 from flask import current_app
+from sqlalchemy.sql.schema import ForeignKey
 from app import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime, timedelta
@@ -28,6 +29,8 @@ class User(db.Model, UserMixin):
 
     is_confirmed = db.Column(db.Boolean, default=False)
     expire = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+    posts = db.relationship('Tax', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.expire = datetime.utcnow() + timedelta(days=1)
@@ -126,3 +129,7 @@ class Tax(db.Model):
     json_data = db.Column(JSON)
     tip = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+
