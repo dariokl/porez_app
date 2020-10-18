@@ -234,20 +234,22 @@ def livesearch():
     search = request.json
     date = search.get('date')
 
+
+        
+
     # In case that someone doesnt submit filter i was running into value error that used to query all data in model
-    try:
+    if date:
+
         date = maya.parse(date).datetime()
-    except ValueError:
+
         query = Tax.query.filter(Tax.user_id==current_user.id).filter(Tax.tip == search.get('name').upper()).all()
+
+        print(query)
 
         return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
 
-    query = Tax.query.filter(Tax.user_id==current_user.id).filter(Tax.timestamp > date).filter(Tax.tip
-                                                          == search.get('name')).all()
-
-    if not query:
-        return jsonify({'data': 'NONE'})
-    return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
+    
+    return jsonify({'date': 'NONE'})
 
 
 def scheduled_cleaning():
