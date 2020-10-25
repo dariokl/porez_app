@@ -4,10 +4,10 @@ $(document).ready(function () {
             $(this).val("")
         });
         $('#fields-0-name').css('background', 'lightgray')
-        $('#fields-1-name').attr('placeholder', 'Porezna godina')
+        $('#fields-1-name').attr('placeholder', 'Porezna godina').prop('required', true)
         $('#fields-2-name').hide()
-        $('#fields-3-name').attr('placeholder', 'Porezni period - OD')
-        $('#fields-4-name').attr('placeholder', 'Porezni period - DO')
+        $('#fields-3-name').attr('placeholder', 'Porezni period - OD').prop('required', true)
+        $('#fields-4-name').attr('placeholder', 'Porezni period - DO').prop('required', true)
         $('#fields-5-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine (BAM)')
         $('#fields-6-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem pokretne imovine (BAM)')
         $('#fields-7-name').attr('placeholder', 'Troškovi odžavanja (BAM)')
@@ -82,6 +82,12 @@ $(document).ready(function () {
         viewMode: "months",
         minViewMode: "months",
     });
+    $('.next').fadeOut()
+
+
+
+
+    
 
 });
 
@@ -117,7 +123,10 @@ $(function () {
     });
 });
 
-$('#msform :input, .datepicker, .select').on('change keyup input dateChange', function (e) {
+
+
+
+$("#msform :input, .datepicker, .select").on('change keyup input dateChange', function (e) {
     form = document.querySelector('#msform');
     if (form.reportValidity() == false) {
         if ($("div.error", $(this).parent()).length == 0) {
