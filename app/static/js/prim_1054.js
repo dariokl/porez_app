@@ -32,13 +32,13 @@ $(document).ready(function () {
     var l = []
 
     $(function () {
-        $('input[type=text').each(function(k, v) {
+        $('input[type=text').each(function (k, v) {
             l.push(v['placeholder'])
         })
     });
-    
+
     $(function () {
-        $('.fake_').each(function(k, v) {
+        $('.fake_').each(function (k, v) {
             $(this).attr('class', 'fake_' + k);
             $(this).append(l[k])
         });
@@ -47,10 +47,10 @@ $(document).ready(function () {
     $('#fields-1-name').yearpicker({
         startYear: 2000,
         endYear: 2021,
-        
+
     });
 
-    $(function() {
+    $(function () {
         $('#fields-5-name').attr('type', 'number');
         $('#fields-6-name').attr('type', 'number');
         $('#fields-7-name').attr('type', 'number');
@@ -64,8 +64,25 @@ $(document).ready(function () {
         $('#fields-15-name').attr('type', 'number');
         $('#fields-16-name').attr('type', 'number');
         $('#fields-20-name').attr('type', 'number');
-        $('fields-3-name').attr('type', 'range');
     });
+
+
+
+    $("#fields-3-name").datepicker({
+        format: "mm",
+        viewMode: "months",
+        minViewMode: "months",
+    }).on('changeDate', function (e) {
+        var minDate = new Date(e.date.valueOf());
+        $('#fields-4-name').datepicker('setStartDate', minDate);
+    });
+
+    $("#fields-4-name").datepicker({
+        format: "mm",
+        viewMode: "months",
+        minViewMode: "months",
+    });
+
 });
 
 $(function () {
@@ -100,4 +117,28 @@ $(function () {
     });
 });
 
+$('#msform :input, .datepicker, .select').on('change keyup input dateChange', function (e) {
+    form = document.querySelector('#msform');
+    if (form.reportValidity() == false) {
+        if ($("div.error", $(this).parent()).length == 0) {
+            var $div = $('<div class="col"></div>');
+            $div.css({
+                'background': '#FF5555',
+                'color': 'black',
+            })
 
+            if ($(this).attr('type') == 'number') {
+                $div.html('U polje je moguće unijeti samo broj !')
+                $div.addClass('error'); //could also add the above styles to your css for .error and remove that code
+            }
+
+            //insert div after the input that changed
+            $div.insertAfter($(this));
+            $('.next').fadeOut()
+        }
+    }
+    else {
+        $('.next').fadeIn()
+        $('.error').remove()
+    }
+});

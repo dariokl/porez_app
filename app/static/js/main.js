@@ -7,7 +7,8 @@ $(".next").click(function(){
 	if(animating) return false;
 	animating = true;
 
-	current_fs = $(this).parent();
+	current_fs = $(this).parents('fieldset').last()
+	console.log(current_fs)
 	next_fs = $(this).parent().next();
 
 	//activate next step on progressbar using the index of next_fs

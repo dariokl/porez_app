@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 
 class FieldEnteryForm(FlaskForm):
-    name = StringField()
+    name = StringField(DataRequired())
 
 class FieldsForms(FlaskForm):
     """A form for one or more addresses"""

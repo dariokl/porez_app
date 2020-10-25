@@ -17,13 +17,15 @@
                 <form id="msform" method="POST">
                     <!-- progressbar -->
                     <ul id="progressbar">
-                        <li class="active">1/3</li>
+                        <li class="active" class='next'>1/3</li>
                         <li>2/3</li>
                         <li>3/3</li>
                     </ul>
                     <!-- fieldsets -->
                     <fieldset>
-                        <h2 class="fs-title">1/3</h2>
+                       <h2 class="fs-title">1/3</h2>
+
+        
                         <h3 class="fs-subtitle"></h3>
                         {{ form.hidden_tag() }}
                           <p>Izaberite Općinu</p>
@@ -32,10 +34,11 @@
                         {% for field in form.fields[:8] %}
                         <p class='fake_'></p>
                         {{ field.hidden_tag()}}
+    
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
                         {{ field(class='form-group')}}
-
+                        <div class='erros'></div>
                         {% endfor %}
                         <input type="button" name="next" class="next action-button" value="Next"/>
                     </fieldset>
@@ -44,7 +47,7 @@
                         <h3 class="fs-subtitle"></h3>
                         {% for field in form.fields[8:16] %}
                         <p class='fake_'></p>
-     
+
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}
                         {{ field(class='form-group', type='number')}}
@@ -63,10 +66,12 @@
                         {{ field(class='form-group')}}
 
                         {% endfor %}
+                        <div class='erros'></div>
                         {{ form.submit(class='') }}
 
                     </fieldset>
                 </form>
+                <div id='errors'></div>
                 <div class="dme_link">
                 </div>
             </div>

@@ -940,3 +940,7 @@ departments {
   right: 0px;
   }
 }
+
+.datepicker .datepicker-switch {
+  visibility:  hidden !important;
+}

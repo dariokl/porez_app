@@ -175,7 +175,6 @@ def render_1054(id):
             #The main loop of view , we are going to extract all the neccessary data from page.Annots
             #Label names and rect positions.
             label = field.T
-            print(label)
             side = field.Rect
             left = min(side[0], side[2])
             bottom = min(side[1], side[3])
