@@ -16,6 +16,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/yearpicker.css">
+
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
     {% block head %} {% endblock %}
     <title>Porez.ba</title>
@@ -101,67 +102,60 @@
 {% block content %}
 {% endblock %}
   <!-- ======= Footer ======= -->
-  <footer id="footer">
-
-
-    <div class="footer-top">
-      <div class="container">
-        <div class="row">
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Links</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Porez</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Support</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-contact">
-            <h4>Contact Us</h4>
-            <p>
-              Ulica Titova bb <br>
-              Sarajevo, KS 76250<br>
-              Bosna I Hercegovina <br><br>
-              <strong>Tel:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> info@example.com<br>
-            </p>
-
-          </div>
-
-          <div class="col-lg-3 col-md-6 footer-info">
-            <h3>About Porez.ba</h3>
-            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-            <div class="social-links mt-3">
-              <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-              <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-              <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+ <!-- Footer -->
+ <footer class="" style='background: #333333' >
+  <div class="container py-5">
+    <div class="row py-4">
+      <div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img src="img/logo.png" alt="" width="180" class="mb-3">
+        <p class="font-italic text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+        <ul class="list-inline mt-4">
+          <li class="list-inline-item"><a href="#" target="_blank" title="twitter"><i class="fa fa-twitter"></i></a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" title="facebook"><i class="fa fa-facebook"></i></a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" title="instagram"><i class="fa fa-instagram"></i></a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" title="pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" title="vimeo"><i class="fa fa-vimeo"></i></a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+        <h6 class="text-uppercase font-weight-bold mb-4">Shop</h6>
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><a href="#" class="text-muted">For Women</a></li>
+          <li class="mb-2"><a href="#" class="text-muted">For Men</a></li>
+          <li class="mb-2"><a href="#" class="text-muted">Stores</a></li>
+          <li class="mb-2"><a href="#" class="text-muted">Our Blog</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+        <h6 class="text-uppercase font-weight-bold mb-4">Company</h6>
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><a href="#" class="text-muted">Login</a></li>
+          <li class="mb-2"><a href="#" class="text-muted">Register</a></li>
+          <li class="mb-2"><a href="#" class="text-muted">Wishlist</a></li>
+          <li class="mb-2"><a href="#" class="text-muted">Our Products</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-lg-0">
+        <h6 class="text-uppercase font-weight-bold mb-4">Newsletter</h6>
+        <p class="text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque temporibus.</p>
+        <div class="p-1 rounded border">
+          <div class="input-group">
+            <input type="email" placeholder="Enter your email address" aria-describedby="button-addon1" class="form-control border-0 shadow-0">
+            <div class="input-group-append">
+              <button id="button-addon1" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>Porez.ba</span></strong>. All Rights Reserved
-      </div>
+  <!-- Copyrights -->
+  <div class="" style='background: #555555'>
+    <div class="container text-center">
+      <p class="text-muted mb-0 py-2">© 2020 Porez.ba</p>
     </div>
-  </footer><!-- End Footer -->
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  </div>
+</footer>
 
 <script
 			  src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"
