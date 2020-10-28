@@ -157,7 +157,7 @@ h2:after {
 }
 
 #landing{
-	background-image : url('/static/img/slide/slide-2.jpg') ;
+	background-image : url('') cover;
 }
 
 .intro {
