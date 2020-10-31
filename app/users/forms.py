@@ -54,3 +54,6 @@ class ProfileDelete(FlaskForm):
     confirm = PasswordField('Ukucajte šifru svog profila')
     submit3 = SubmitField('Obrisi Profil')
 
+class SubmitJMBG(FlaskForm):
+    jmbg = StringField('JMBG', validators=[DataRequired(), Length(min=13), Regexp('^[0-9]*$', message="Samo brojevi su dozvoljeni")])
+    submit = SubmitField('Unesite JMBG')

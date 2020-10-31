@@ -5,13 +5,16 @@ from . import users
 
 from ..models import User, Tax
 from app.users.forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEditPersonal, \
-    ProfileEditContact, ProfileDelete
+    ProfileEditContact, ProfileDelete, SubmitJMBG
 
 from ..email import send_email
 
 from datetime import datetime, timedelta
 
 import maya
+
+
+
 
 
 @users.route('/login', methods=['POST', 'GET'])
@@ -250,6 +253,22 @@ def livesearch():
 
     
     return jsonify({'date': 'NONE'})
+
+
+@users.route('/jmbg', methods=['POST', 'GET'])
+def jmbg():
+
+    form = SubmitJMBG()
+
+    if form.validate_on_submit():
+        current_user.jmbg = form.jmbg.data
+        db.session.commit()
+        flash('Uspjesno ste unijeli Vas JMBG')
+        return redirect(url_for('core.porez'))
+
+
+
+    return render_template('users/jmbg.html', form=form)
 
 
 def scheduled_cleaning():

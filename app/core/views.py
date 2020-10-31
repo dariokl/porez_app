@@ -1,5 +1,5 @@
 import os
-from flask import render_template, send_file, request, redirect, url_for, session, jsonify
+from flask import render_template, send_file, request, redirect, url_for, session, jsonify, flash
 from flask_login import current_user
 from . import core
 
@@ -13,6 +13,20 @@ from pdfrw import PageMerge
 from reportlab.pdfgen import canvas
 import csv
 
+from functools import wraps
+
+
+def checkjmbg(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        if not current_user.jmbg:
+            flash ('Molimo Vas unesite JMBG')
+            return redirect(url_for("users.jmbg"))
+
+        return f(*args, **kwargs)
+
+    return decorated_function
 
 @core.route('/')
 def index():
@@ -20,6 +34,7 @@ def index():
     return render_template('index.html')
 
 @core.route('/porez', methods=['POST', 'GET'])
+@checkjmbg
 def porez():
 
     return render_template('porez.html')
