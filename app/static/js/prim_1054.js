@@ -3,6 +3,7 @@ $(document).ready(function () {
         $("#msform input[type=text]:not(#fields-0-name):not(#fields-23-name)").each(function () {
             $(this).val("")
         });
+
         $('#fields-0-name').css('background', 'lightgray')
         $('#fields-1-name').attr('placeholder', 'Porezna godina').prop('required', true)
         $('#fields-2-name').hide()
