@@ -65,6 +65,7 @@ $(document).ready(function () {
         $('#fields-15-name').attr('type', 'number');
         $('#fields-16-name').attr('type', 'number');
         $('#fields-20-name').attr('type', 'number');
+
     });
 
 
@@ -83,17 +84,17 @@ $(document).ready(function () {
         viewMode: "months",
         minViewMode: "months",
     });
+
+    $('#fields-22-name').datepicker({
+        format: 'dd.mm.yy'
+    })
     $('.next').fadeOut()
 
-
-
-
-    
 
 });
 
 $(function () {
-    $("#fields-16-name").change(function () {
+    $("#msform :input").change(function () {
         var li = [$('#fields-7-name').val(), $('#fields-8-name').val(), $('#fields-9-name').val(), $('#fields-10-name').val(), $('#fields-11-name').val(), $('#fields-12-name').val(), $('#fields-13-name').val(), $('#fields-14-name').val(), $('#fields-15-name').val(), $('#fields-16-name').val()]
         var total = 0
         for (var i = 0; i < li.length; i++) {
@@ -113,14 +114,23 @@ $(function () {
 });
 
 $(function () {
-    $('#fields-20-name').on('change', function () {
+    $('#fields-20-name').on('change keyup input', function () {
         var field = $('#fields-19-name').val();
         function multdec(val1, val2) {
             return (val1 * 10 + val2 * 10) / 100;
         }
-        console.log(multdec(field, 0.1))
-        var month_period = ($('#fields-4-name').val() - $('#fields-3-name').val());
-        $('#fields-21-name').val(multdec(field, 0.1) / month_period);
+
+        const diff = (a, b) => {
+            return Math.abs(a - b);
+        }
+
+
+
+        shorten = (multdec(field, 0.1) / (diff($('#fields-4-name').val(), $('#fields-3-name').val()) +
+            1)).toFixed(2)
+
+        $('#fields-21-name').val(shorten);
+
     });
 });
 
