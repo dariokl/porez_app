@@ -320,8 +320,9 @@
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
-            {{ tax.timestamp }}
-            <a href="#" class="btn btn-outline-primary">Other option</a>
+            <a href="{{url_for('core.edit_1054', form_id=tax.id)}}" class="btn btn-outline-primary">Izmijeni</a>
+            
+            
           </div>
                     {% endif %}
 

@@ -39,10 +39,12 @@ def porez():
 
     return render_template('porez.html')
 
-@core.route('/pregled_pr', methods=['POST', 'GET'])
-def pregled_pr():
-    """ Reading the pdf , to get all the forms , save them to a list of dictionaries and use it to generate dynamic
-    flask_wtf fields because some of PDF's have more than 50 fields..."""
+@core.route('/prim_1054', methods=['POST', 'GET'])
+def prim_1054():
+    """ 
+    Reading the pdf , to get all the forms , save them to a list of dictionaries and use it to generate dynamic
+    flask_wtf fields because some of PDF's have more than 50 fields...
+    """
 
     # PDF handling , simply finding the right pdf that matches this route.
     file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
@@ -74,11 +76,10 @@ def pregled_pr():
         reader = csv.reader(csv_doc, delimiter=',')
         for row in reader:
             select.append((row[2], row[1]))
-    
-
+        
 
     # Using FormFieldList to generate exact amount of fields that this pdf holds , so user can submit data for pdf.
-    form = FieldsForms(fields=forom)
+    form = FieldsForms(fields=enumerate([e for e in forom]))
     form.select.choices = select
 
     # Still trying to figure out how can i make all the fields validate , but for now i just submit it .
@@ -93,16 +94,58 @@ def pregled_pr():
 
         return redirect (url_for('users.profile'))
 
+    return render_template('porezi/prim-1054.html', form=form, current_user=current_user)
+
+@core.route('/edit-1054/<int:form_id>', methods=['POST', 'GET'])
+def edit_1054(form_id):
+    # PDF handling , simply finding the right pdf that matches this route.
+    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
+    pdf_to_read = os.path.join(file_pdf, 'prim_1054.pdf')
+    template_pdf = pdfrw.PdfReader(pdf_to_read)
+
+
+    # Generating the list of dict that will be used for dynamic flask_wtf forms.
+    forom = []
+    to_fill = []
+    for page in template_pdf.Root.Pages.Kids:
+        for field in page.Annots:
+            label = field.T
+            forom.append({'name' : field.T })
+            to_fill.append({'name' : field.T})
+
+    tax_form = db.session.query(Tax).filter(Tax.id==form_id).first()
+
+
+    for val in forom:
+        for k, v in tax_form.json_data.items():
+            if val['name'] == k:
+                to_fill[to_fill.index(val)] = {'name' : tax_form.json_data[k]}
+
+
+    form = FieldsForms(fields=to_fill)
+
+    if request.method == 'POST' and form.submit():
+        data = form.data['fields']
+        # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
+        my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
+        tax_form.json_data = my_dict
+
+        db.session.commit()
+    
+
+        return redirect(url_for('users.profile'))
+
     return render_template('porezi/prim-1054.html', form=form)
 
-
-@core.route('/prijava_razrez_im', methods=['POST', 'GET'])
-def prijava_razrez_im():
-    """ Just like in view '/porez_po_odbitku' we are going to use premade pdf form , in order to automatise this process
+@core.route('/pr_1)', methods=['POST', 'GET'])
+def pr_1():
+    """ 
+    Just like in view '/porez_po_odbitku' we are going to use premade pdf form , in order to automatise this process
     we will need to read the pdf file once again. Most forms are going to be generated , but still we will have to use
     some Jquery to complete the pdf filling logic because this form consist more than 150 forms , wich is obnoxious number
     to fill out , and is really slim chances one user is going to use all of the possible field submisions. Certain
-    dropdown select field will help to organise logic behind the automation of this process."""
+    dropdown select field will help to organise logic behind the automation of this process.
+    """
 
 
     # PDF handling , simply finding the right pdf that matches this route.
@@ -154,11 +197,13 @@ def step_1():
 
 @core.route('/render_1054/<int:id>')
 def render_1054(id):
-    """Note that all rendering views have same "core" inside and that is the for loop we use over pdf.Annots . With this
+    """
+    Note that all rendering views have same "core" inside and that is the for loop we use over pdf.Annots . With this
     for loop we extract the form-field names so as locations of fields. Once we have all the names we can use our Tax
     database model and its json_data column that contains exact same keys as pdf-form. I am going to leave some commets
      after each important step , but PDFRW doc is the key to understand parts of this script. Despite all efforts
-     a lot of things are still hard coded , because pdf is simply stupid format."""
+     a lot of things are still hard coded , because pdf is simply stupid format.
+     """
 
 
     #Finding the right form of pdf
@@ -233,8 +278,10 @@ def render_1054(id):
 
 @core.route('/render_razrez/<int:id>')
 def render_razrez(id):
-    """Everything explained in first render function. The only difference here is that there is a lot of hardcoding
-    to draw the data on canvas"""
+    """
+    Everything explained in first render function. The only difference here is that there is a lot of hardcoding
+    to draw the data on canvas.
+    """
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)

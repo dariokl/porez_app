@@ -1,40 +1,39 @@
 $(document).ready(function () {
     $(function () {
-        $("#msform input[type=text]:not(#fields-0-name):not(#fields-23-name)").each(function () {
-            $(this).val("")
-        });
-
-        $('#fields-0-name').css('background', 'lightgray')
-        $('#fields-1-name').attr('placeholder', 'Porezna godina').prop('required', true)
+        $('#fields-0-name').val('')
+        $('#fields-0-name').css('background', 'lightgray').attr('placeholder' , $('#userVal').text())
+        $('#fields-1-name').attr('read_label', 'Porezna godina').prop('required', true)
         $('#fields-2-name').hide()
-        $('#fields-3-name').attr('placeholder', 'Porezni period - OD').prop('required', true)
-        $('#fields-4-name').attr('placeholder', 'Porezni period - DO').prop('required', true)
-        $('#fields-5-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine (BAM)')
-        $('#fields-6-name').attr('placeholder', 'Prihod ostvaren  iznajmljivanjem pokretne imovine (BAM)')
-        $('#fields-7-name').attr('placeholder', 'Troškovi odžavanja (BAM)')
-        $('#fields-8-name').attr('placeholder', 'Troškovi oglašavanja (BAM)')
-        $('#fields-9-name').attr('placeholder', 'Troškovi osiguranja (BAM)')
-        $('#fields-10-name').attr('placeholder', 'Takse i naknade za license (BAM)')
-        $('#fields-11-name').attr('placeholder', 'Troškovi nenaplativih potraživanja (BAM)')
-        $('#fields-12-name').attr('placeholder', 'Trošak amortizacije (BAM)')
-        $('#fields-13-name').attr('placeholder', 'Putni troškovi (BAM)')
-        $('#fields-14-name').attr('placeholder', 'Troškovi rezija koje plaća vlasnik (BAM)')
-        $('#fields-15-name').attr('placeholder', 'Kamate i bankovne naknade (BAM)')
-        $('#fields-16-name').attr('placeholder', 'Drugi troskovi u vezi s iznajmljivanjem (BAM)')
-        $('#fields-17-name').attr('placeholder', 'Ukupni troskovi').css('background', 'lightgray')
-        $('#fields-18-name').attr('placeholder', 'Troskovi koji se priznaju po procentu').css('background', 'lightgray')
-        $('#fields-19-name').attr('placeholder', 'Prihod od iznajmljivanja po odbitku troskova ').css('background', 'lightgray')
-        $('#fields-20-name').attr('placeholder', 'Ukupan iznos porza na iznajmljivanje imovine koji je tokom poreskog perioda uplacen kao akontacija (BAM) ')
-        $('#fields-21-name').attr('placeholder', 'Mjesecni iznos akontacije').css('background', 'lightgray')
-        $('#fields-22-name').attr('placeholder', 'Datum')
-        $('#fields-23-name').attr('placeholder', 'Ime i Prezime')
-        $('#fields-24-name').attr('placeholder', 'Adresa')
+        $('#fields-3-name').attr('read_label', 'Porezni period - OD').prop('required', true)
+        $('#fields-4-name').attr('read_label', 'Porezni period - DO').prop('required', true)
+        $('#fields-5-name').attr('read_label', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine (BAM)')
+        $('#fields-6-name').attr('read_label', 'Prihod ostvaren  iznajmljivanjem pokretne imovine (BAM)')
+        $('#fields-7-name').attr('read_label', 'Troškovi odžavanja (BAM)')
+        $('#fields-8-name').attr('read_label', 'Troškovi oglašavanja (BAM)')
+        $('#fields-9-name').attr( 'read_label', 'Troškovi osiguranja (BAM)')
+        $('#fields-10-name').attr( 'read_label', 'Takse i naknade za license (BAM)')
+        $('#fields-11-name').attr( 'read_label', 'Troškovi nenaplativih potraživanja (BAM)')
+        $('#fields-12-name').attr( 'read_label', 'Trošak amortizacije (BAM)')
+        $('#fields-13-name').attr( 'read_label', 'Putni troškovi (BAM)')
+        $('#fields-14-name').attr( 'read_label', 'Troškovi rezija koje plaća vlasnik (BAM)')
+        $('#fields-15-name').attr( 'read_label', 'Kamate i bankovne naknade (BAM)')
+        $('#fields-16-name').attr( 'read_label', 'Drugi troskovi u vezi s iznajmljivanjem (BAM)')
+        $('#fields-17-name').attr( 'read_label', 'Ukupni troskovi').css('background', 'lightgray')
+        $('#fields-18-name').attr( 'read_label', 'Troskovi koji se priznaju po procentu').css('background', 'lightgray')
+        $('#fields-19-name').attr( 'read_label', 'Prihod od iznajmljivanja po odbitku troskova ').css('background', 'lightgray')
+        $('#fields-20-name').attr( 'read_label', 'Ukupan iznos porza na iznajmljivanje imovine koji je tokom poreskog perioda uplacen kao akontacija (BAM) ')
+        $('#fields-21-name').attr( 'read_label', 'Mjesecni iznos akontacije').css('background', 'lightgray')
+        $('#fields-22-name').attr( 'read_label', 'Datum')
+        $('#fields-23-name').attr( 'read_label', 'Ime i Prezime')
+        $('#fields-23-name').val('')
+        $('#fields-24-name').val($('#userAVal').text())
     });
     var l = []
 
     $(function () {
         $('input[type=text').each(function (k, v) {
-            l.push(v['placeholder'])
+
+            l.push($(v).attr('read_label'))
         })
     });
 
@@ -88,8 +87,14 @@ $(document).ready(function () {
     $('#fields-22-name').datepicker({
         format: 'dd.mm.yy'
     })
-    $('.next').fadeOut()
 
+    if ($('#fields-5-name').val().length === 0 && $('#fields-6-name').val().length === 0){
+        $('.next').fadeOut()
+    }
+
+    if ($('#fields-22-name').val().length != 0) {
+        $('#fields-22-name').prop('disabled', true)
+    }
 
 });
 

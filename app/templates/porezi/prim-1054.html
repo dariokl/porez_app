@@ -10,6 +10,8 @@
 </div>
 
 <section>
+  <span id='userVal' hidden>{{current_user.jmbg}}</span>
+  <span id='userAVal' hidden>{{current_user.grad}}</span>
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-md-offset-3">
@@ -31,7 +33,7 @@
                           <p>Izaberite Općinu</p>
                           {{ form.select(class='form-control') }}
                           <p> JMBG Korisnika</p>
-                        {% for field in form.fields[:8] %}
+                        {% for field in form.fields[0:8] %}
                         <p class='fake_'></p>
                         {{ field.hidden_tag()}}
     

@@ -168,13 +168,13 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-<script src="static/js/main.js"></script>
-<script src="static/js/yearpicker.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/yearpicker.js"></script>
 {% if request.endpoint == 'users.profile' %}
-<script src="static/js/profile.js"></script>
-{% elif request.endpoint == 'core.pregled_pr' %}
-<script src="static/js/prim_1054.js"></script>
-{% elif request.endpoint == 'core.prijava_razrez_im' %}
+<script src="/static/js/profile.js"></script>
+{% elif request.endpoint == 'core.prim_1054' or request.endpoint == 'core.edit_1054'%}
+<script src="/static/js/prim_1054.js"></script>
+{% elif request.endpoint == 'core.pr_1' %}
 <script src="static/js/pr_1.js"></script>
 {% endif %}
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
