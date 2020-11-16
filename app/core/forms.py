@@ -10,7 +10,7 @@ class FieldsForms(FlaskForm):
     """A form for one or more addresses"""
     fields = FieldList(FormField(FieldEnteryForm), min_entries=1)
     select = SelectField('Izaberite Općinu', choices=[])
-    select_y = SelectField('Godina', choices=[])
+    address = StringField('Adresa Nekretnine')
 
     submit = SubmitField('Unesi Podatke')
 

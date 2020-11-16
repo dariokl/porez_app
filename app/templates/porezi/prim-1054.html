@@ -32,7 +32,9 @@
                         {{ form.hidden_tag() }}
                           <p>Izaberite Općinu</p>
                           {{ form.select(class='form-control') }}
-                          <p> JMBG Korisnika</p>
+                          <p> Adresa Nekretnine </p>
+                          {{ form.address(class='form-group')}}
+
                         {% for field in form.fields[0:8] %}
                         <p class='fake_'></p>
                         {{ field.hidden_tag()}}

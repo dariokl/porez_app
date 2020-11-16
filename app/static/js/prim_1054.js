@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(function () {
-        $('#fields-0-name').val('')
+        $('#fields-0-name').val('').attr('read_label', 'JMBG - Korisnika')
         $('#fields-0-name').css('background', 'lightgray').attr('placeholder' , $('#userVal').text())
         $('#fields-1-name').attr('read_label', 'Porezna godina').prop('required', true)
         $('#fields-2-name').hide()
@@ -31,9 +31,12 @@ $(document).ready(function () {
     var l = []
 
     $(function () {
-        $('input[type=text').each(function (k, v) {
-
+        $('input[type=text]').each(function (k, v) {
+            if ($(v).attr('id') == 'address'){
+            }
+            else {
             l.push($(v).attr('read_label'))
+            }
         })
     });
 

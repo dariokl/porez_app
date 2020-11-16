@@ -1,6 +1,8 @@
+from operator import add
 import os
 from flask import render_template, send_file, request, redirect, url_for, session, jsonify, flash
 from flask_login import current_user
+from flask_login.utils import login_required
 from . import core
 
 from .forms import FieldsForms, NekretnineForms
@@ -40,6 +42,7 @@ def porez():
     return render_template('porez.html')
 
 @core.route('/prim_1054', methods=['POST', 'GET'])
+@login_required
 def prim_1054():
     """ 
     Reading the pdf , to get all the forms , save them to a list of dictionaries and use it to generate dynamic
@@ -60,15 +63,6 @@ def prim_1054():
             forom.append({'name' : field.T })
 
 
-   # Due to lack of back-end representation in the actuall PDF rendering on "core.render" , of data will be stored in
-   # manner to not match the PDF form fields so i can hardcode some of those strings on the PDF rendering.
-    if forom[0]['name'] == '(2 JIBJMB)':
-        forom[0]['name'] = "JMBG Korisnika -" + " " + str(current_user.jmbg)
-
-    if forom[23]['name'] == '(1 Prezime i ime vlasnika imovine)':
-        forom[23]['name'] = "{} {}".format(current_user.ime, current_user.prezime)
-    
-
     # Formating data for select field
     csv_to_read = os.path.join(file_pdf, 'lista.csv')
     select = []
@@ -87,7 +81,7 @@ def prim_1054():
         data = form.data['fields']
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
         my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
-        my_dict['(koja se iznajmljuje)'] = form.select.data
+        my_dict['(koja se iznajmljuje)'] = '{} - {}'.format(form.select.data, form.address.data)
         new = Tax(json_data=my_dict, tip='PRIM-1054', user_id=current_user.id)
         db.session.add(new)
         db.session.commit()
@@ -97,8 +91,20 @@ def prim_1054():
     return render_template('porezi/prim-1054.html', form=form, current_user=current_user)
 
 @core.route('/edit-1054/<int:form_id>', methods=['POST', 'GET'])
+@login_required
 def edit_1054(form_id):
-    # PDF handling , simply finding the right pdf that matches this route.
+    """ 
+    So far this route exposed all weaknesses in my code , trying to overatomate the filling of pdf
+    didnt scale really well with editing the same data , the key problem is that forms inside the
+    PDF are not placed in same order like the data in my database. I am creating a list where i store
+    all the differences between the first list 'forom' that contains PDF forms , and the same fields
+    from my database model Tax . I compare them with keys and check if there is any value inside
+    if so i send it back to the form so that once submited data is shown to user.
+    """
+    tax_form = db.session.query(Tax).filter(Tax.id==form_id).first()
+    if current_user.id != tax_form.author.id:
+        return "ERROR 403"
+       
     file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'prim_1054.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
@@ -110,32 +116,40 @@ def edit_1054(form_id):
     for page in template_pdf.Root.Pages.Kids:
         for field in page.Annots:
             label = field.T
-            forom.append({'name' : field.T })
-            to_fill.append({'name' : field.T})
-
-    tax_form = db.session.query(Tax).filter(Tax.id==form_id).first()
+            forom.append({'name' : field.T })  # list that is used to store data in db
+            to_fill.append({'name' : field.T}) # a list that i use to display data
 
 
+    # Getting the values from my database so i can display it back to user
     for val in forom:
         for k, v in tax_form.json_data.items():
             if val['name'] == k:
                 to_fill[to_fill.index(val)] = {'name' : tax_form.json_data[k]}
 
+    # I have to find a way to fetch this CSV from client side !
+    csv_to_read = os.path.join(file_pdf, 'lista.csv')
+    select = []
+    with open(csv_to_read) as csv_doc:
+        reader = csv.reader(csv_doc, delimiter=',')
+        for row in reader:
+            select.append((row[2], row[1]))
+
 
     form = FieldsForms(fields=to_fill)
+    form.select.choices = select
 
     if request.method == 'POST' and form.submit():
         data = form.data['fields']
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
         my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
+        my_dict['(koja se iznajmljuje)'] = '{} - {}'.format(form.select.data, form.address.data)
         tax_form.json_data = my_dict
-
         db.session.commit()
+        flash('Uspjesno ste izvršilu izmjenu vase PRIM-1054 prijave !')
     
-
         return redirect(url_for('users.profile'))
 
-    return render_template('porezi/prim-1054.html', form=form)
+    return render_template('porezi/edit-1054.html', form=form, tax_form=tax_form)
 
 @core.route('/pr_1)', methods=['POST', 'GET'])
 def pr_1():
@@ -147,12 +161,10 @@ def pr_1():
     dropdown select field will help to organise logic behind the automation of this process.
     """
 
-
     # PDF handling , simply finding the right pdf that matches this route.
     file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
-
 
     # Generating the list of dict that will be used for dynamic flask_wtf forms.
     # Beware this form contains absurd amount of forms , most of them wont be used for anything.
@@ -194,8 +206,8 @@ def step_1():
             session['step_1'] = request.json
     return 'sucess'
 
-
 @core.route('/render_1054/<int:id>')
+@login_required
 def render_1054(id):
     """
     Note that all rendering views have same "core" inside and that is the for loop we use over pdf.Annots . With this
@@ -204,7 +216,9 @@ def render_1054(id):
      after each important step , but PDFRW doc is the key to understand parts of this script. Despite all efforts
      a lot of things are still hard coded , because pdf is simply stupid format.
      """
-
+    all = Tax.query.filter_by(id=id).first()
+    if current_user.id != all.author.id:
+        return "ERROR 403"
 
     #Finding the right form of pdf
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
@@ -212,7 +226,6 @@ def render_1054(id):
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
     #Query for selected data input
-    all = Tax.query.filter_by(id=id).first()
     all = all.json_data
 
 
@@ -277,16 +290,19 @@ def render_1054(id):
 
 
 @core.route('/render_razrez/<int:id>')
+@login_required
 def render_razrez(id):
     """
     Everything explained in first render function. The only difference here is that there is a lot of hardcoding
     to draw the data on canvas.
     """
+    all = Tax.query.filter_by(id=id).first()
+    if current_user.id != all.author.id:
+        return "ERROR 403"
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
-    all = Tax.query.filter_by(id=id).first()
     all = all.json_data
 
 
@@ -335,4 +351,21 @@ def render_razrez(id):
         return send_file(overlay_io, as_attachment=True,
                          attachment_filename='a_file.pdf',
                          mimetype='application/pdf')
+
+@core.route('/delete/<int:form_id>')
+@login_required
+def delete_tax(form_id):
+
+    tax_form = db.session.query(Tax).filter(Tax.id==form_id).first()
+    if current_user.id != tax_form.author.id:
+        return "ERROR 403"
+    
+
+    form = ''
+
+    if form.validate_on_submit():
+        pass
+
+
+    return render template('delete.html')
 

@@ -55,9 +55,11 @@ def logout():
 
 @users.route('/register', methods=['POST', 'GET'])
 def register():
-    """ Here we are using Flask_WTF to generate forms to make sure our form validation is handled by back end
+    """ 
+    Here we are using Flask_WTF to generate forms to make sure our form validation is handled by back end
     after user makes the post request we check if the form is validated and we proceed to create a new user
-    for our database"""
+    for our database
+    """
     form = RegistrationForm()
 
     if form.validate_on_submit():
@@ -77,8 +79,10 @@ def register():
 @users.route('/confirm/<token>')
 @login_required
 def account_confirm(token):
-    """ Server side token checking , we use confirm_token to read the token data and change user.is_confirmed to True
-    and make the database changes"""
+    """ 
+    Server side token checking , we use confirm_token to read the token data and change user.is_confirmed to True
+    and make the database changes
+    """
 
     # Current_user can only be a logged in user because we set the @login_required decorator and if the current user is
     # confirmed we just redirect him to the index page.
@@ -97,7 +101,9 @@ def account_confirm(token):
 
 @users.route('/password-reset', methods=["POST", "GET"])
 def password_reset():
-    """ A route to request password reset token on users email adress"""
+    """ 
+    A route to request password reset token on users email adress
+    """
     form = PasswordReset()
 
     if form.validate_on_submit():
@@ -115,9 +121,11 @@ def password_reset():
 
 @users.route('/password-change/<token>', methods=["POST"])
 def password_change(token):
-    """  After the user clicks on the link in email we use @staticmethod from user model which reads the data in token
+    """  
+    After the user clicks on the link in email we use @staticmethod from user model which reads the data in token
     data in token is the users id , i do the query over the model and return that user model and proceed to use
-    set_password method to change the password """
+    set_password method to change the password 
+    """
 
     if current_user.is_authenticated:
         return redirect(url_for('core.index'))
@@ -148,8 +156,10 @@ def email_confirm_token():
 @users.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    """This view is used for personal profile page , users should have ability to edit the pesonal data. Ability
-    to change email address and delete they're own accounts"""
+    """
+    This view is used for personal profile page , users should have ability to edit the pesonal data. Ability
+    to change email address and delete they're own accounts
+    """
 
     # We simply check does user exist and return 404 if the user.id is not valid
     user = User.query.filter_by(id=current_user.id).first_or_404()
@@ -209,7 +219,7 @@ def profile():
                 flash('Uspjesno ste izbrisali svoj profil')
                 return redirect(url_for('core.index'))
             else:
-                Flash('Unijeli ste pogresnu lozinku !')
+                flash('Unijeli ste pogresnu lozinku !')
 
     return render_template('users/profile.html', user=user, form_personal=form_personal, form_contact=form_contact,
                            form_delete=form_delete)
@@ -218,8 +228,10 @@ def profile():
 @users.route('/email-change/<token>')
 @login_required
 def email_change(token):
-    """Checking the token and calling the email_confirm_change method in order to see what is going on under the hood
-    chech the modes.py"""
+    """
+    Checking the token and calling the email_confirm_change method in order to see what is going on under the hood
+    chech the modes.py
+    """
 
     if current_user.email_confirm_change(token):
         flash('Uspješno ste promijenili vasu adresu')
@@ -232,13 +244,12 @@ def email_change(token):
 
 @users.route('/livesearch', methods=['GET', 'POST'])
 def livesearch():
-    """Ajax call to this route returns jsonified data to generate all the forms based on name of form and date submited
-    currently there is week/month/year filter"""
+    """
+    Ajax call to this route returns jsonified data to generate all the forms based on name of form and date submited
+    currently there is week/month/year filter
+    """
     search = request.json
     date = search.get('date')
-
-
-        
 
     # In case that someone doesnt submit filter i was running into value error that used to query all data in model
     if date:
@@ -252,12 +263,12 @@ def livesearch():
         return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
 
     
+    # Note THIS VIEW IS NOT WORKING CORECTLY SO FAR
     return jsonify({'date': 'NONE'})
 
 
 @users.route('/jmbg', methods=['POST', 'GET'])
 def jmbg():
-
     form = SubmitJMBG()
 
     if form.validate_on_submit():
@@ -265,9 +276,7 @@ def jmbg():
         db.session.commit()
         flash('Uspjesno ste unijeli Vas JMBG')
         return redirect(url_for('core.porez'))
-
-
-
+        
     return render_template('users/jmbg.html', form=form)
 
 
