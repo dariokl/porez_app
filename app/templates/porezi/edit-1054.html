@@ -33,8 +33,6 @@
                   {{ form.hidden_tag() }}
                     <p>Izaberite Općinu</p>
                     {{ form.select(class='form-control')}}
-                    <p> Adresa Nekretnine </p>
-                    {{ form.address(class='form-group', value=tax_form.json_data['(koja se iznajmljuje)'][6:] )}}
 
                   {% for field in form.fields[0:8] %}
                   <p class='fake_'></p>
@@ -72,6 +70,8 @@
 
                   {% endfor %}
                   <div class='erros'></div>
+                  <p> Adresa Nekretnine </p>
+                  {{ form.address(class='form-group', value=tax_form.json_data['(koja se iznajmljuje)'][6:] )}}
                   {{ form.submit(class='') }}
 
               </fieldset>
