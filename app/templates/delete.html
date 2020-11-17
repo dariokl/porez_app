@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="{{url_for('core.index')}}">Home</a></li>
+        <li>Login</li>
+      </ol>
+      <h2>Login</h2>
+
+    </div>
+  </section>
+<div class="container-fluid">
+    <div class="col-12 text-center">
+        <h1> Brisanje unesene poreske prijave</h1>
+        <p class='text-center'>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure culpa tempore natus quia inventore fugit nam aliquam alias sint earum tempora enim sequi consequuntur animi ab, quae voluptas nulla fuga?Molestiae atque aspernatur tempore in repellat nisi fugit provident necessitatibus soluta harum nostrum ab, eveniet pariatur laudantium officiis accusamus, assumenda deserunt. Distinctio cumque ea maxime deleniti delectus fugiat animi ratione?
+        </p>
+    </div>
+
+<div class="col-12 col-sm-12 col-lg-12 login-form">
+    <p class='text-center'>U POLJE ISPOD UNESITE LOZINKU</p>
+  <form  method="POST">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+          {{ form.password(class='form-control', placeholder='Password' )}}
+      </div>
+      <div class="form-group">
+          {{ form.submit( class='btn btn-danger btn-lg btn-block' ) }}
+      </div>
+      <div class="bottom-action clearfix">
+          <a href="{{ url_for('users.password_reset') }}" class="float-right">Izgubili ste lozinku ?</a>
+      </div>
+  </form>
+</div>
+</div>
+
+{% endblock %}

@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask_login.utils import login_required
 from . import core
 
-from .forms import FieldsForms, NekretnineForms
+from .forms import FieldsForms, NekretnineForms, DeleteTax
 from ..models import Tax
 
 from app import db
@@ -23,23 +23,26 @@ def checkjmbg(f):
     def decorated_function(*args, **kwargs):
 
         if not current_user.jmbg:
-            flash ('Molimo Vas unesite JMBG')
+            flash('Molimo Vas unesite JMBG')
             return redirect(url_for("users.jmbg"))
 
         return f(*args, **kwargs)
 
     return decorated_function
 
+
 @core.route('/')
 def index():
 
     return render_template('index.html')
+
 
 @core.route('/porez', methods=['POST', 'GET'])
 @checkjmbg
 def porez():
 
     return render_template('porez.html')
+
 
 @core.route('/prim_1054', methods=['POST', 'GET'])
 @login_required
@@ -50,18 +53,17 @@ def prim_1054():
     """
 
     # PDF handling , simply finding the right pdf that matches this route.
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
+    file_pdf = os.path.abspath(os.path.dirname(
+        'app/static/img/pdf/prim_1054.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'prim_1054.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
-
 
     # Generating the list of dict that will be used for dynamic flask_wtf forms.
     forom = []
     for page in template_pdf.Root.Pages.Kids:
         for field in page.Annots:
             label = field.T
-            forom.append({'name' : field.T })
-
+            forom.append({'name': field.T})
 
     # Formating data for select field
     csv_to_read = os.path.join(file_pdf, 'lista.csv')
@@ -70,7 +72,6 @@ def prim_1054():
         reader = csv.reader(csv_doc, delimiter=',')
         for row in reader:
             select.append((row[2], row[1]))
-        
 
     # Using FormFieldList to generate exact amount of fields that this pdf holds , so user can submit data for pdf.
     form = FieldsForms(fields=enumerate([e for e in forom]))
@@ -80,15 +81,18 @@ def prim_1054():
     if request.method == 'POST' and form.submit():
         data = form.data['fields']
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
-        my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
-        my_dict['(koja se iznajmljuje)'] = '{} - {}'.format(form.select.data, form.address.data)
+        my_dict = dict((k['name'], v['name'] if v else '')
+                       for k, v in zip(forom, data))
+        my_dict['(koja se iznajmljuje)'] = '{} - {}'.format(form.select.data,
+                                                            form.address.data)
         new = Tax(json_data=my_dict, tip='PRIM-1054', user_id=current_user.id)
         db.session.add(new)
         db.session.commit()
 
-        return redirect (url_for('users.profile'))
+        return redirect(url_for('users.profile'))
 
     return render_template('porezi/prim-1054.html', form=form, current_user=current_user)
+
 
 @core.route('/edit-1054/<int:form_id>', methods=['POST', 'GET'])
 @login_required
@@ -101,14 +105,14 @@ def edit_1054(form_id):
     from my database model Tax . I compare them with keys and check if there is any value inside
     if so i send it back to the form so that once submited data is shown to user.
     """
-    tax_form = db.session.query(Tax).filter(Tax.id==form_id).first()
+    tax_form = db.session.query(Tax).filter(Tax.id == form_id).first()
     if current_user.id != tax_form.author.id:
         return "ERROR 403"
-       
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
+
+    file_pdf = os.path.abspath(os.path.dirname(
+        'app/static/img/pdf/prim_1054.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'prim_1054.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
-
 
     # Generating the list of dict that will be used for dynamic flask_wtf forms.
     forom = []
@@ -116,15 +120,16 @@ def edit_1054(form_id):
     for page in template_pdf.Root.Pages.Kids:
         for field in page.Annots:
             label = field.T
-            forom.append({'name' : field.T })  # list that is used to store data in db
-            to_fill.append({'name' : field.T}) # a list that i use to display data
-
+            # list that is used to store data in db
+            forom.append({'name': field.T})
+            # a list that i use to display data
+            to_fill.append({'name': field.T})
 
     # Getting the values from my database so i can display it back to user
     for val in forom:
         for k, v in tax_form.json_data.items():
             if val['name'] == k:
-                to_fill[to_fill.index(val)] = {'name' : tax_form.json_data[k]}
+                to_fill[to_fill.index(val)] = {'name': tax_form.json_data[k]}
 
     # I have to find a way to fetch this CSV from client side !
     csv_to_read = os.path.join(file_pdf, 'lista.csv')
@@ -134,22 +139,24 @@ def edit_1054(form_id):
         for row in reader:
             select.append((row[2], row[1]))
 
-
     form = FieldsForms(fields=to_fill)
     form.select.choices = select
 
     if request.method == 'POST' and form.submit():
         data = form.data['fields']
         # Simple dict comperhension so that my KEYS in db.json_object match the KEYS on PDF FORMs , threfore
-        my_dict = dict((k['name'], v['name'] if v else '') for k, v in zip(forom, data))
-        my_dict['(koja se iznajmljuje)'] = '{} - {}'.format(form.select.data, form.address.data)
+        my_dict = dict((k['name'], v['name'] if v else '')
+                       for k, v in zip(forom, data))
+        my_dict['(koja se iznajmljuje)'] = '{} - {}'.format(form.select.data,
+                                                            form.address.data)
         tax_form.json_data = my_dict
         db.session.commit()
         flash('Uspjesno ste izvršilu izmjenu vase PRIM-1054 prijave !')
-    
+
         return redirect(url_for('users.profile'))
 
     return render_template('porezi/edit-1054.html', form=form, tax_form=tax_form)
+
 
 @core.route('/pr_1)', methods=['POST', 'GET'])
 def pr_1():
@@ -162,7 +169,7 @@ def pr_1():
     """
 
     # PDF handling , simply finding the right pdf that matches this route.
-    file_pdf= os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
+    file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
@@ -173,13 +180,12 @@ def pr_1():
     for page in template_pdf.Root.Pages.Kids:
         for field in page.Annots:
             label = field.T
-            forom.append({'name' : field.T })
+            forom.append({'name': field.T})
 
     form = NekretnineForms(fields=forom)
 
-
-    #Im using 'step_1' object in seasson wich is saved from ajax call in this view , check the pr_js. to see ajax call
-    #It is pretty much straight forward just sending data as user clicks on next button.
+    # Im using 'step_1' object in seasson wich is saved from ajax call in this view , check the pr_js. to see ajax call
+    # It is pretty much straight forward just sending data as user clicks on next button.
     if form.validate_on_submit():
         if 'step_1' in session:
             session['step_1']['(godina)'] = form.kal_godina.data
@@ -187,13 +193,15 @@ def pr_1():
             session['step_1']['(kanton)'] = form.kanton.data
             session['step_1']['(racun)'] = form.racun.data
             session['step_1']['(banka)'] = form.banka.data
-            tax = Tax(json_data=session['step_1'], tip='PR-1', user_id=current_user.id)
+            tax = Tax(json_data=session['step_1'],
+                      tip='PR-1', user_id=current_user.id)
             db.session.add(tax)
             db.session.commit()
             session.pop('step_1', None)
             return redirect(url_for('users.profile'))
 
     return render_template('porezi/pr-1.html', form=form)
+
 
 @core.route('/step_1', methods=['POST'])
 def step_1():
@@ -205,6 +213,7 @@ def step_1():
         else:
             session['step_1'] = request.json
     return 'sucess'
+
 
 @core.route('/render_1054/<int:id>')
 @login_required
@@ -220,22 +229,23 @@ def render_1054(id):
     if current_user.id != all.author.id:
         return "ERROR 403"
 
-    #Finding the right form of pdf
-    file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/prim_1054.pdf'))
+    # Finding the right form of pdf
+    file_pdf = os.path.abspath(os.path.dirname(
+        'app/static/img/pdf/prim_1054.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'prim_1054.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
-    #Query for selected data input
+    # Query for selected data input
     all = all.json_data
 
-
-    #Creating two bytes object to store new canvs and final pdf in memory
+    # Creating two bytes object to store new canvs and final pdf in memory
     data = io.BytesIO()
     overlay_io = io.BytesIO()
 
-    #Excluding the data we are going to automate
-    presist = [all['(3 Porezna godina)'][2:], all['(6 Porezni period)'], all['(do)']]
-    exclude = ['(3 Porezna godina)', '(6 Porezni period)', '(do)',]
+    # Excluding the data we are going to automate
+    presist = [all['(3 Porezna godina)'][2:],
+               all['(6 Porezni period)'], all['(do)']]
+    exclude = ['(3 Porezna godina)', '(6 Porezni period)', '(do)', ]
 
     for i in exclude:
         if all[i]:
@@ -245,8 +255,8 @@ def render_1054(id):
     for page in template_pdf.Root.Pages.Kids:
         for field in page.Annots:
 
-            #The main loop of view , we are going to extract all the neccessary data from page.Annots
-            #Label names and rect positions.
+            # The main loop of view , we are going to extract all the neccessary data from page.Annots
+            # Label names and rect positions.
             label = field.T
             side = field.Rect
             left = min(side[0], side[2])
@@ -254,18 +264,19 @@ def render_1054(id):
             value = all.get(label, '')
 
             pdf.drawString(x=float(left), y=float(bottom), text=value)
-            pdf.drawString(x=216.96, y=609.12, charSpace=9, text=str(current_user.jmbg))
+            pdf.drawString(x=216.96, y=609.12, charSpace=9,
+                           text=str(current_user.jmbg))
             pdf.drawString(x=479, y=610, text=presist[0], charSpace=9)
             pdf.drawString(x=459, y=583, text=presist[1], charSpace=9)
             pdf.drawString(x=507, y=583, text=presist[2], charSpace=9)
-            pdf.drawString(x=72, y=608, text='{} {}'.format(current_user.ime, current_user.prezime))
-
+            pdf.drawString(x=72, y=608, text='{} {}'.format(
+                current_user.ime, current_user.prezime))
 
         pdf.showPage()
         pdf.save()
         data.seek(0)
 
-        #Creating overlay
+        # Creating overlay
         overlay = pdfrw.PdfReader(data)
         mark = overlay.pages[0]
 
@@ -284,9 +295,8 @@ def render_1054(id):
         #     overlay_io.seek(0)
 
     return send_file(overlay_io, as_attachment=True,
-                         attachment_filename='a_file.pdf',
-                         mimetype='application/pdf')
-
+                     attachment_filename='a_file.pdf',
+                     mimetype='application/pdf')
 
 
 @core.route('/render_razrez/<int:id>')
@@ -296,15 +306,16 @@ def render_razrez(id):
     Everything explained in first render function. The only difference here is that there is a lot of hardcoding
     to draw the data on canvas.
     """
+
     all = Tax.query.filter_by(id=id).first()
     if current_user.id != all.author.id:
         return "ERROR 403"
+
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
     pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
     all = all.json_data
-
 
     data = io.BytesIO()
     overlay_io = io.BytesIO()
@@ -317,16 +328,22 @@ def render_razrez(id):
             left = min(side[0], side[2])
             bottom = min(side[1], side[3])
             value = all.get(label, '')
-            #Matching the len of list in order to have more back end representation logic on this one.
+            # Matching the len of list in order to have more back end representation logic on this one.
             if len(value) == 5:
                 pdf.drawString(x=float(left), y=float(bottom), text=value[0])
-                pdf.drawString(x=float(left) + 140, y=float(bottom), text=value[1])
-                pdf.drawString(x=float(left) + 190, y=float(bottom), text=value[2])
-                pdf.drawString(x=float(left) + 240, y=float(bottom), text=value[3])
-                pdf.drawString(x=float(left) + 340, y=float(bottom), text=value[3])
-            #Everything had to be hardcoded here due to formation inside the database..
-            pdf.drawString(x=128.5, y=725, text=str(current_user.jmbg), charSpace=5)
-            pdf.drawString(x=260, y=702, text='{} {}'.format(current_user.ime, current_user.prezime))
+                pdf.drawString(x=float(left) + 140,
+                               y=float(bottom), text=value[1])
+                pdf.drawString(x=float(left) + 190,
+                               y=float(bottom), text=value[2])
+                pdf.drawString(x=float(left) + 240,
+                               y=float(bottom), text=value[3])
+                pdf.drawString(x=float(left) + 340,
+                               y=float(bottom), text=value[3])
+            # Everything had to be hardcoded here due to formation inside the database..
+            pdf.drawString(x=128.5, y=725, text=str(
+                current_user.jmbg), charSpace=5)
+            pdf.drawString(x=260, y=702, text='{} {}'.format(
+                current_user.ime, current_user.prezime))
             pdf.drawString(x=425, y=727, text=all['(godina)'])
             pdf.drawString(x=135, y=650, text=all['(kanton)'])
             pdf.drawString(x=170, y=675, text=all['(adresa)'])
@@ -352,20 +369,22 @@ def render_razrez(id):
                          attachment_filename='a_file.pdf',
                          mimetype='application/pdf')
 
-@core.route('/delete/<int:form_id>')
+
+@core.route('/delete/<int:form_id>', methods=['POST', 'GET'])
 @login_required
 def delete_tax(form_id):
 
-    tax_form = db.session.query(Tax).filter(Tax.id==form_id).first()
+    tax_form = db.session.query(Tax).filter(Tax.id == form_id).first()
     if current_user.id != tax_form.author.id:
         return "ERROR 403"
-    
 
-    form = ''
+    form = DeleteTax()
 
     if form.validate_on_submit():
-        pass
+        db.session.delete(tax_form)
+        db.session.commit()
+        flash('Uspjesno ste izbrisali poresku prijavu !')
 
+        return redirect(url_for('users.profile'))
 
-    return render template('delete.html')
-
+    return render_template('delete.html', form=form)

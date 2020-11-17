@@ -12,6 +12,7 @@
 <section>
   <span id='userVal' hidden>{{current_user.jmbg}}</span>
   <span id='userAVal' hidden>{{current_user.grad}}</span>
+  <span id='userNVal' hidden>{{current_user.ime}} {{current_user.prezime}}</span>
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-md-offset-3">
@@ -33,7 +34,7 @@
                           <p>Izaberite Općinu</p>
                           {{ form.select(class='form-control') }}
                           <p> Adresa Nekretnine </p>
-                          {{ form.address(class='form-group')}}
+                          {{ form.address(class='form-group', required='required')}}
 
                         {% for field in form.fields[0:8] %}
                         <p class='fake_'></p>

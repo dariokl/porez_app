@@ -876,3 +876,10 @@ h4{text-align:center;margin:30px 0;color:#444}
 .main-timeline .timeline-content:before,.main-timeline .timeline:nth-child(2n) .timeline-content:before{left:99px}
 .main-timeline .timeline-content:after,.main-timeline .timeline:nth-child(2n) .timeline-content:after{left:65px}
 }
+
+.jumbotron {
+  background-image: url("/static/img/druge-page-001.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
