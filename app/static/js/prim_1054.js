@@ -70,9 +70,8 @@ $(document).ready(function () {
 
     });
 
-
-
     $("#fields-3-name").datepicker({
+        autoclose: true,
         format: "mm",
         viewMode: "months",
         minViewMode: "months",
@@ -82,6 +81,7 @@ $(document).ready(function () {
     });
 
     $("#fields-4-name").datepicker({
+        autoclose: true,
         format: "mm",
         viewMode: "months",
         minViewMode: "months",

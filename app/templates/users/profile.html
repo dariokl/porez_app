@@ -316,7 +316,11 @@
           </div>
           <div class="card-body" style="overflow-y: auto">
             <h4 class="card-title">{{tax.tip}}</h4>
-            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body content. You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks" target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
+            <p class="card-text"> Pregled prihoda i rashoda od iznajmljivanja  imovine <br>
+              <br>
+              Godina: {{tax.json_data['(3 Porezna godina)']}}</p> 
+              Porezna prijava OD: {{tax.json_data['(6 Porezni period)']}} mjeseca DO: {{tax.json_data['(do)']}} mjeseca
+              <br><br>Datum prijave: {{tax.json_data['(fill_23)']}}
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
