@@ -27,7 +27,7 @@
                     <!-- fieldsets -->
                     <fieldset>
                        <h2 class="fs-title">1/3</h2>
-
+                       
         
                         <h3 class="fs-subtitle"></h3>
                         {{ form.hidden_tag() }}
@@ -47,9 +47,12 @@
                     </fieldset>
                     <fieldset>
                         <h2 class="fs-title">2/3</h2>
+                        
                         <h3 class="fs-subtitle"></h3>
+              
                         {% for field in form.fields[8:16] %}
                         <p class='fake_'></p>
+                   
 
 
                         {# Flask-WTF needs `hidden_tag()` so CSRF works for each form #}

@@ -4,25 +4,25 @@ $(document).ready(function () {
         $('#fields-0-name').css('background', 'lightgray').attr('placeholder', $('#userVal').text())
         $('#fields-1-name').attr('read_label', 'Porezna godina').prop('required', true)
         $('#fields-2-name').hide()
-        $('#fields-3-name').attr('read_label', 'Porezni period - OD').prop('required', true)
-        $('#fields-4-name').attr('read_label', 'Porezni period - DO').prop('required', true)
-        $('#fields-5-name').attr('read_label', 'Prihod ostvaren  iznajmljivanjem nepokretne imovine (BAM)')
-        $('#fields-6-name').attr('read_label', 'Prihod ostvaren  iznajmljivanjem pokretne imovine (BAM)')
-        $('#fields-7-name').attr('read_label', 'Troškovi odžavanja (BAM)')
-        $('#fields-8-name').attr('read_label', 'Troškovi oglašavanja (BAM)')
-        $('#fields-9-name').attr('read_label', 'Troškovi osiguranja (BAM)')
-        $('#fields-10-name').attr('read_label', 'Takse i naknade za license (BAM)')
+        $('#fields-3-name').attr({'read_label': 'Porezni period - OD', 'has_tool': 'true', 'tool_value': 'Upisati OD kojeg mjeseca u gore navedenoj poreznoj godini se odnosi prijava poreza'}).prop('required', true)
+        $('#fields-4-name').attr({'read_label' : 'Porezni period - DO', 'has_tool': 'true', 'tool_value': 'Upisati DO kojeg mjeseca u gore navedenoj poreznoj godini se odnosi prijava poreza' }).prop('required', true)
+        $('#fields-5-name').attr({'read_label': 'Prihod ostvaren  iznajmljivanjem nepokretne imovine (BAM)', 'has_tool' : 'true', 'tool_value':'Koliko novca ste ukupno dobili ili vam je uplačeno u navedenoj godini od iznajmljivanja nepokretne imovine (stan, kuća, garaža i sl)' })
+        $('#fields-6-name').attr({'read_label': 'Prihod ostvaren  iznajmljivanjem pokretne imovine (BAM)', 'has_tool' : 'true', 'tool_value' :'Koliko novca ste ukupno dobili ili vam je uplačeno u navedenoj godini od iznajmljivanja vaše pokretne imovine (vozilo, motocikl, čamac i sl)'})
+        $('#fields-7-name').attr({'read_label' : 'Troškovi odžavanja (BAM)', 'has_tool': 'true', 'tool_value': 'Ukupan iznos dokumentovanih troškovai godišnjeg oodržavanja imovine koja se iznajmljivala nastali tokom poreznog perioda'})
+        $('#fields-8-name').attr({'read_label': 'Troškovi oglašavanja (BAM)', 'has_tool': 'true', 'tool_value': 'Unesite dokumentovani iznos troškova ako ste plačali u oglašavanje za iznajmljivanje vaše imovine u navedenom poreznom periodu'})
+        $('#fields-9-name').attr({'read_label': 'Troškovi osiguranja (BAM)', 'has_tool': 'true', 'tool_value': 'Unesite dokumentovani iznos troškova osiguranja iznajmljivane imovine u navedenom poreznom periodu'})
+        $('#fields-10-name').attr({'read_label': 'Takse i naknade za license (BAM)', 'has_tool': 'true', 'tool_value': 'Iznos uplačen za takse i naknade za licence a vezane za iznajmljenu imovinu u navedenom poreznom periodu'})
         $('#fields-11-name').attr('read_label', 'Troškovi nenaplativih potraživanja (BAM)')
-        $('#fields-12-name').attr('read_label', 'Trošak amortizacije (BAM)')
-        $('#fields-13-name').attr('read_label', 'Putni troškovi (BAM)')
-        $('#fields-14-name').attr('read_label', 'Troškovi rezija koje plaća vlasnik (BAM)')
-        $('#fields-15-name').attr('read_label', 'Kamate i bankovne naknade (BAM)')
-        $('#fields-16-name').attr('read_label', 'Drugi troskovi u vezi s iznajmljivanjem (BAM)')
-        $('#fields-17-name').attr('read_label', 'Ukupni troskovi').css('background', 'lightgray')
-        $('#fields-18-name').attr('read_label', 'Troskovi koji se priznaju po procentu').css('background', 'lightgray')
-        $('#fields-19-name').attr('read_label', 'Prihod od iznajmljivanja po odbitku troskova ').css('background', 'lightgray')
-        $('#fields-20-name').attr('read_label', 'Ukupan iznos porza na iznajmljivanje imovine koji je tokom poreskog perioda uplacen kao akontacija (BAM) ')
-        $('#fields-21-name').attr('read_label', 'Mjesecni iznos akontacije').css('background', 'lightgray')
+        $('#fields-12-name').attr({'read_label': 'Trošak amortizacije (BAM)', 'has_tool': 'true', 'tool_value':'Iznos amortizacije vezane za iznajmljenu imovinu u navedenom poreznom periodu'})
+        $('#fields-13-name').attr({'read_label': 'Putni troškovi (BAM)', 'has_tool': 'true', 'tool_value' : 'Iznos putnih troškova vezanih za iznajmljenu imovinu u navedenom poreznom periodu'})
+        $('#fields-14-name').attr({'read_label': 'Troškovi rezija koje plaća vlasnik (BAM)', 'has_tool': 'true', 'tool_value': 'Iznos režijskih troškova vezanih za iznajmljenu imovinu u navedenom poreznom periodu' })
+        $('#fields-15-name').attr({'read_label': 'Kamate i bankovne naknade (BAM)', 'has_tool': 'true', 'tool_value': 'Iznos kamata i bankovnih naknada vezanih za iznajmljenu imovinu u navedenom poreznom periodu'})
+        $('#fields-16-name').attr({'read_label': 'Drugi troskovi u vezi s iznajmljivanjem (BAM)', 'has_value': 'true', 'tool_value' : 'Ostali ne navedeni troškovi'})
+        $('#fields-17-name').attr({'read_label': 'Ukupni troskovi', 'has_tool': 'true', 'tool_value':'Zbir svih navedenih troškova'}).css('background', 'lightgray')
+        $('#fields-18-name').attr({'read_label': 'Troskovi koji se priznaju po procentu', 'has_tool': 'true', 'tool_value' : 'Troškovi koji su 30% od navedenih prihoda'}).css('background', 'lightgray')
+        $('#fields-19-name').attr({'read_label': 'Prihod od iznajmljivanja po odbitku troskova ', 'has_tool': 'true', 'tool_value' : 'Prihodi umanjeni za 30%'}).css('background', 'lightgray')
+        $('#fields-20-name').attr({'read_label': 'Ukupan iznos porza na iznajmljivanje imovine koji je tokom poreskog perioda uplacen kao akontacija (BAM) ', 'has_tool' : 'true', 'tool_value': 'Iznos koji je uplačen kao uplata poreza tokom poreznog perioda'})
+        $('#fields-21-name').attr({'read_label': 'Mjesecni iznos akontacije', 'has_tool': 'true', 'tool_value': ' Iznos koji bi se mjesečno uplačivao tokom poreznog perioda kao akontacija'}).css('background', 'lightgray')
         $('#fields-22-name').attr('read_label', 'Datum')
         $('#fields-23-name').attr('read_label', 'Ime i Prezime').val($('#userNVal').text()).prop('disabled', true)
         $('#fields-24-name').attr('read_label', 'Adresa')
@@ -39,6 +39,7 @@ $(document).ready(function () {
             }
         })
     });
+
 
     $(function () {
         $('.fake_').each(function (k, v) {
@@ -91,18 +92,35 @@ $(document).ready(function () {
         format: 'dd.mm.yy'
     })
 
-    if ($('#fields-5-name').val().length === 0 && $('#fields-6-name').val().length === 0) {
-        $('.next').fadeOut()
-    }
+  
+    $('.next').fadeOut()
+    
 
     if ($('#fields-22-name').val().length != 0) {
         $('#fields-22-name').prop('disabled', true)
     }
 
+
+    $(function () {
+        $('#msform :input').each(function (k,v) {
+            if ($(v).attr('has_tool')) {
+                const title = $(v).attr('tool_value')
+                $(v).before('<i class="fa fa-question" data-toggle="tooltip" data-placement="top" title="'+title+'" > </i>')
+                $('[data-toggle="tooltip"]').tooltip()
+            }
+        })
+    })
+
+    
+
+
+
+
+
 });
 
 $(function () {
-    $("#msform :input").change(function () {
+    $("#msform :input").on('change keyup input', function () {
         var li = [$('#fields-7-name').val(), $('#fields-8-name').val(), $('#fields-9-name').val(), $('#fields-10-name').val(), $('#fields-11-name').val(), $('#fields-12-name').val(), $('#fields-13-name').val(), $('#fields-14-name').val(), $('#fields-15-name').val(), $('#fields-16-name').val()]
         var total = 0
         for (var i = 0; i < li.length; i++) {
@@ -114,6 +132,10 @@ $(function () {
         $('#fields-18-name').val((sum_7 + sum_7a));
         var sum_18 =  $('#fields-18-name').val()
         $('#fields-19-name').val(parseInt(total) + parseInt(sum_18))
+        if ($('#fields-5-name').val().length === 0 && $('#fields-6-name').val().length === 0) {
+            console.log('a')
+            $('.next').fadeOut()
+        }
     });
 });
 
@@ -156,10 +178,13 @@ $("#msform :input, .datepicker, .select").on('change keyup input dateChange', fu
             //insert div after the input that changed
             $div.insertAfter($(this));
             $('.next').fadeOut()
+            console.log('a')
         }
     }
     else {
+        
         $('.next').fadeIn()
         $('.error').remove()
     }
 });
+
