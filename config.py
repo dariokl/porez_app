@@ -49,10 +49,15 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
         os.path.join(basedir, 'test.sqlite')
 
+class PostgresConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='dariokl',pw='lolpasspass12',url='localhost:5432',db='porez_test')
+
 
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
-    'default': DevelopmentConfig
+    'default': DevelopmentConfig,
+    'post': PostgresConfig
+
 }
