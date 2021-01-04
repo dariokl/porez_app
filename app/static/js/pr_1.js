@@ -1,11 +1,22 @@
-function make_subform(val) {
+$(document).ready(function() {
+    $('.next').fadeOut()
+})
+
+
+function make_subform(val, title) {
     var tag = 'subform_' + val;
     var el = ('<div class="subform" style="display: flex; flex-direction: column;">' +
-        '<input id="' + tag + '_fname" type="text" placeholder="Adresa i broj"></input>' +
-        '<input id="' + tag + '_lname" type="text" placeholder="Jedinica mjere"></input>' +
-        '<input id="' + tag + '_add1" type="text" placeholder = "Broj jedinica mjere"></input>' +
-        '<input id="' + tag + '_add2" type="text" placeholder = "Iznos poreza"></input>' +
-        '<input id="' + tag + '_add3" type="text" placeholder = "Ukupno"></input>' +
+        '<h4>' + title + '</h4>' +
+        '<span> Adresa i Broj </span>' +
+        '<input id="' + tag + '_fname" type="text" placeholder="Adresa i Broj"></input>' +
+        '<span > Jedinica Mjere </span>'+
+        '<input id="' + tag + '_lname" type="text" placeholder="Jedinica Mjere"></input>' +
+        '<span> Broj/Jedinica Mjere </span>'+
+        '<input id="' + tag + '_add1" type="text" placeholder="Broj/Jedinica Mjere"></input>' +
+        '<span> Iznos Poreza</span>'+
+        '<input id="' + tag + '_add2" type="text" placeholder="Iznos Poreza"></input>' +
+        '<span> Ukupno </span>'+
+        '<input id="' + tag + '_add3" type="text" placeholder="Ukupno"></input>' +
         '</div>');
     var $el = $(el);
     $el.data('value', val);
@@ -15,8 +26,10 @@ function make_subform(val) {
 $(function() {
     $('.row').on('change', 'select', function(e) {
         var value = $(e.target).val();
-        $(".sub_forms").append(make_subform(value));
+        var title = $(this).find('option:selected').text()
+        $(".sub_forms").append(make_subform(value, title));
         $(this).find('[value="+value+"]').remove();
+        $('.next').fadeIn();
     });
 });
 

@@ -111,12 +111,6 @@ $(document).ready(function () {
         })
     })
 
-    
-
-
-
-
-
 });
 
 $(function () {
@@ -156,8 +150,6 @@ $(function () {
 
     });
 });
-
-
 
 
 $("#msform :input, .datepicker, .select").on('change keyup input dateChange', function (e) {
