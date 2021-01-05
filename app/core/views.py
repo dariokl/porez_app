@@ -210,8 +210,10 @@ def step_1():
     if request.method == "POST" and request.json:
         if 'step_1' in session:
             session['step_1'] = request.json
+            print(request.json)
         else:
             session['step_1'] = request.json
+            print(request.json)
     return 'sucess'
 
 
@@ -312,7 +314,7 @@ def render_razrez(id):
         return "ERROR 403"
 
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
-    pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
+    pdf_to_read = os.path.join(file_pdf, 'test.pdf')
     template_pdf = pdfrw.PdfReader(pdf_to_read)
 
     all = all.json_data
@@ -328,6 +330,7 @@ def render_razrez(id):
             left = min(side[0], side[2])
             bottom = min(side[1], side[3])
             value = all.get(label, '')
+            print(all)
             # Matching the len of list in order to have more back end representation logic on this one.
             if len(value) == 5:
                 pdf.drawString(x=float(left), y=float(bottom), text=value[0])

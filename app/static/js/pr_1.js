@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('.next').fadeOut()
+    $('#select option[value="0"').prop('disabled select', true)
 })
 
 
@@ -23,13 +24,37 @@ function make_subform(val, title) {
     return $el;
 }
 
+String.prototype.insert = function (index, string) {
+  var ind = index < 0 ? this.length + index  :  index;
+  return  this.substring(0, ind) + string + this.substr(ind);
+};
+
 $(function() {
     $('.row').on('change', 'select', function(e) {
+        
+        $('.sub_forms').children().each(function (index, value) {
+            var data_dict = {}
+            var $el = $(value);
+            var key = $el.data('value');
+            console.log(key)
+            var val = [];
+            $el.find('input').each(function(_,v){val.push(v.value);});
+            data_dict[key] = val;
+            if (data_dict[key]) {
+                console.log('exist')
+                console.log(key.insert(-1, '2'))
+                $(".sub_forms").append(make_subform(key.insert(-1, '2'), title))
+                return false;
+                
+            }
+         });
         var value = $(e.target).val();
         var title = $(this).find('option:selected').text()
         $(".sub_forms").append(make_subform(value, title));
         $(this).find('[value="+value+"]').remove();
+        $(e.target).val(0);
         $('.next').fadeIn();
+
     });
 });
 
