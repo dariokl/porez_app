@@ -188,6 +188,7 @@ def pr_1():
     # It is pretty much straight forward just sending data as user clicks on next button.
     if form.validate_on_submit():
         if 'step_1' in session:
+            print(session['step_1'])
             session['step_1']['(godina)'] = form.kal_godina.data
             session['step_1']['(adresa)'] = form.adresa.data
             session['step_1']['(kanton)'] = form.kanton.data
@@ -330,7 +331,6 @@ def render_razrez(id):
             left = min(side[0], side[2])
             bottom = min(side[1], side[3])
             value = all.get(label, '')
-            print(all)
             # Matching the len of list in order to have more back end representation logic on this one.
             if len(value) == 5:
                 pdf.drawString(x=float(left), y=float(bottom), text=value[0])
@@ -344,7 +344,7 @@ def render_razrez(id):
                                y=float(bottom), text=value[3])
             # Everything had to be hardcoded here due to formation inside the database..
             pdf.drawString(x=128.5, y=725, text=str(
-                current_user.jmbg), charSpace=5)
+                current_user.jmbg), charSpace=4.6)
             pdf.drawString(x=260, y=702, text='{} {}'.format(
                 current_user.ime, current_user.prezime))
             pdf.drawString(x=425, y=727, text=all['(godina)'])
@@ -391,3 +391,25 @@ def delete_tax(form_id):
         return redirect(url_for('users.profile'))
 
     return render_template('delete.html', form=form)
+
+
+@core.route('/fetchcity', methods=['POST', 'GET'])
+def fetchcity():
+
+    file_csv = os.path.abspath(os.path.dirname(
+        'app/static/img/pdf/lista.csv'))
+
+
+
+
+    csv_to_read = os.path.join(file_csv, 'lista.csv')
+    select = []
+    with open(csv_to_read) as csv_doc:
+        reader = csv.reader(csv_doc, delimiter=',')
+        for row in reader:
+            select.append((row[2], row[1], row[3]))
+
+    
+    return jsonify(select)
+
+

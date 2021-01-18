@@ -1,80 +1,80 @@
-br,Opcina,Šifra
-1,Bihać,003
-2,Bosanska Krupa,008
-3,Bosanski Petrovac,011
-4,Cazin,019
-5,Ključ,048
-6,Sanski Most,076
-7,Velika Kladuša,097
-8,Bužim,124
-9,Banovići,001
-10,Gračanica,035
-11,Gradačac,036
-12,Kalesija,044
-13,Kladanj,047
-14,Čelić,056
-15,Lukavac,057
-16,Srebrenik,085
-17,Tuzla,094
-18,Živinice,106
-19,Doboj - Istok,128
-20,Sapna,138
-21,Teočak,142
-22,Livno,055
-23,Tomislavgrad,028
-24,Kupres,052
-25,Glamoč,032
-26,Bosansko Grahovo,013
-27,Drvar,027
-28,Breza,016
-29,Kakanj,043
-30,Maglaj,060
-31,Olovo,067
-32,Tešanj,090
-33,Vareš,096
-34,Visoko,098
-35,Zavidovići,102
-36,Zenica,103
-37,Žepče,105
-38,Doboj - Jug,132
-39,Usora,025
-40,Goražde,033
-41,Foča - Ustikolina,134
-42,Pale - Prača,136
-43,Bugojno,017
-44,Busovača,018
-45,Donji Vakuf,026
-46,Dobretići,050
-47,Fojnica,030
-48,Gornji Vakuf,034
-49,Jajce,042
-50,Kiseljak,046
-51,Kreševo,051
-52,Novi Travnik,065
-53,Travnik,091
-54,Vitez,100
-55,Čapljina,021
-56,Čitluk,023
-57,Grad Mostar,180
-58,Jablanica,041
-59,Konjic,049
-60,Neum,107
-61,Prozor - Rama,073
-62,Ravno,207
-63,Stolac,086
-64,Hadžići,038
-65,Ilijaš,040
-66,Centar,077
-67,Ilidža,078
-68,Novo Sarajevo,079
-69,Vogošća,080
-70,Novi Grad,108
-71,Stari Grad,109
-72,Trnovo,093
-73,Orašje,068
-74,Odžak,066
-75,Domaljevac-Šamac,012
-76,Široki Brijeg,054
-77,Grude,037
-78,Ljubuški,059
-79,Posušje,070
+br,Opcina,Šifra,Porez
+1,Bihać,3,1
+2,Bosanska Krupa,8,2
+3,Bosanski Petrovac,11,3
+4,Cazin,19,4
+5,Ključ,48,5
+6,Sanski Most,76,6
+7,Velika Kladuša,97,7
+8,Bužim,124,8
+9,Banovići,1,9
+10,Gračanica,35,10
+11,Gradačac,36,11
+12,Kalesija,44,12
+13,Kladanj,47,13
+14,Čelić,56,14
+15,Lukavac,57,15
+16,Srebrenik,85,16
+17,Tuzla,94,17
+18,Živinice,106,18
+19,Doboj - Istok,128,19
+20,Sapna,138,20
+21,Teočak,142,21
+22,Livno,55,22
+23,Tomislavgrad,28,23
+24,Kupres,52,24
+25,Glamoč,32,25
+26,Bosansko Grahovo,13,26
+27,Drvar,27,27
+28,Breza,16,28
+29,Kakanj,43,29
+30,Maglaj,60,30
+31,Olovo,67,31
+32,Tešanj,90,32
+33,Vareš,96,33
+34,Visoko,98,34
+35,Zavidovići,102,35
+36,Zenica,103,36
+37,Žepče,105,37
+38,Doboj - Jug,132,38
+39,Usora,25,39
+40,Goražde,33,40
+41,Foča - Ustikolina,134,41
+42,Pale - Prača,136,42
+43,Bugojno,17,43
+44,Busovača,18,44
+45,Donji Vakuf,26,45
+46,Dobretići,50,46
+47,Fojnica,30,47
+48,Gornji Vakuf,34,48
+49,Jajce,42,49
+50,Kiseljak,46,50
+51,Kreševo,51,51
+52,Novi Travnik,65,52
+53,Travnik,91,53
+54,Vitez,100,54
+55,Čapljina,21,55
+56,Čitluk,23,56
+57,Grad Mostar,180,57
+58,Jablanica,41,58
+59,Konjic,49,59
+60,Neum,107,60
+61,Prozor - Rama,73,61
+62,Ravno,207,62
+63,Stolac,86,63
+64,Hadžići,38,64
+65,Ilijaš,40,65
+66,Centar,77,66
+67,Ilidža,78,67
+68,Novo Sarajevo,79,68
+69,Vogošća,80,69
+70,Novi Grad,108,70
+71,Stari Grad,109,71
+72,Trnovo,93,72
+73,Orašje,68,73
+74,Odžak,66,74
+75,Domaljevac-Šamac,12,75
+76,Široki Brijeg,54,76
+77,Grude,37,77
+78,Ljubuški,59,78
+79,Posušje,70,79

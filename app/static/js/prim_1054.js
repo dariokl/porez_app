@@ -126,10 +126,7 @@ $(function () {
         $('#fields-18-name').val((sum_7 + sum_7a));
         var sum_18 =  $('#fields-18-name').val()
         $('#fields-19-name').val(parseInt(total) + parseInt(sum_18))
-        if ($('#fields-5-name').val().length === 0 && $('#fields-6-name').val().length === 0) {
-            console.log('a')
-            $('.next').fadeOut()
-        }
+
     });
 });
 
@@ -167,11 +164,17 @@ $("#msform :input, .datepicker, .select").on('change keyup input dateChange', fu
                 $div.addClass('error'); //could also add the above styles to your css for .error and remove that code
             }
 
+
+
             //insert div after the input that changed
             $div.insertAfter($(this));
             $('.next').fadeOut()
             console.log('a')
         }
+    }
+
+    else if ($('#fields-5-name').val().length === 0 && $('#fields-6-name').val().length === 0) {
+        $('.next').fadeOut()
     }
     else {
         

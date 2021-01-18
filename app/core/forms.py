@@ -23,7 +23,7 @@ class NekretnineForms(FlaskForm):
     kanton = StringField('Kanton')
     racun =  StringField('Broj bankovnog racuna')
     banka = StringField('Banka')
-    select = SelectField('Select', choices=[('0', 'Izabreite Nekretninu'), ('(kuca)', 'Kuca ili stan'), ('(poslovni)', 'Poslovni prostor')], validators=[DataRequired()])
+    select_type = SelectField('Select', choices=[('0', 'Izabreite Nekretninu'), ('(kuca)', 'Kuca ili stan'), ('(poslovni)', 'Poslovni prostor')], validators=[DataRequired()])
     submit = SubmitField('Unesi Podatke')
 
 
