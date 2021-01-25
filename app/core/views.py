@@ -9,13 +9,25 @@ from .forms import FieldsForms, NekretnineForms, DeleteTax
 from ..models import Tax
 
 from app import db
+
 import io
 import pdfrw
 from pdfrw import PageMerge
 from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib import colors
+from reportlab.platypus.paragraph import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import cm, mm
+from reportlab.platypus.flowables import TopPadder
+
+
 import csv
 
 from functools import wraps
+
+from typing import List
 
 
 def checkjmbg(f):
@@ -399,9 +411,6 @@ def fetchcity():
     file_csv = os.path.abspath(os.path.dirname(
         'app/static/img/pdf/lista.csv'))
 
-
-
-
     csv_to_read = os.path.join(file_csv, 'lista.csv')
     select = []
     with open(csv_to_read) as csv_doc:
@@ -411,5 +420,95 @@ def fetchcity():
 
     
     return jsonify(select)
+
+@core.route('/buffer', methods=['POST', 'GET'])
+def test():
+
+    file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
+    pdf_to_read = os.path.join(file_pdf, 'test(1).pdf')
+
+    q = db.session.query(Tax).filter(Tax.id==20).first()
+
+
+    buffer = io.BytesIO()
+    overlay_io = io.BytesIO()
+    template_pdf = pdfrw.PdfReader(pdf_to_read)
+
+    pdf_canvas = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    x = 20
+    y = 520
+    styles = getSampleStyleSheet()
+
+
+    data = [
+        ['','Vrsta imovine', 'Lokacija imovine','Jedinica mjere','Broj jedinica mjere',\
+        'Porez po jedinici mjere', 'Iznos Poreza'],
+                ['','Vrsta imovine', 'Lokacija imovine','Jedinica mjere','Broj jedinica mjere',\
+        'Porez po jedinici mjere', 'Iznos Poreza'],
+        ]
+
+    right = ['(kuca)', 'Kuca, zgrada ili stan', '(kuca2)', 'Kuca, zgrada ili stan']
+
+
+    dynamic_height = [
+        (4, 530),
+        (5, 525)
+    ]
+
+    def calc_fix(num_lines):
+        for i in dynamic_height:
+            if i[0] == num_lines:
+                y = i[1]
+
+                return y
+
+    print(calc_fix(len(data)))
+
+
+    
+
+    for k, v in q.json_data.items():
+        if isinstance(q.json_data[k], List):
+            key_pair = right.index(k) + 1
+            if k in right:
+                
+
+                v.insert(0, '')
+                v.insert(1, right[key_pair])
+                data.append(v)
+        
+    table = Table(data, None, hAlign='LEFT', repeatRows=1)
+    table.setStyle(TableStyle([
+        ('VALING', (0,0), (-1,-1), 'TOP'),
+        ('ALIGN',(1,1), (-1, -1), 'LEFT'),
+        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black)
+        ]))
+
+    table.wrapOn(pdf_canvas, width, height)
+    table.drawOn(pdf_canvas, x, calc_fix(len(data)))
+    pdf_canvas.showPage()
+    pdf_canvas.save()
+    buffer.seek(0)
+
+
+    overlay = pdfrw.PdfReader(buffer)
+    mark = overlay.pages[0]
+
+    for page in range(len(template_pdf.pages)):
+        merger = PageMerge(template_pdf.pages[page])
+        merger.add(mark).render()
+
+    pdfrw.PdfWriter().write(overlay_io, template_pdf)
+    overlay_io.seek(0)
+
+
+
+    return send_file(overlay_io, as_attachment=False,
+                         attachment_filename='a_file.pdf',
+                         mimetype='application/pdf')
+
+
 
 
