@@ -96,39 +96,21 @@ String.prototype.insert = function (index, string) {
   return this.substring(0, ind) + string + this.substr(ind);
 };
 
-function check_id(id) {
-  var counter = 0;
-  $(".sub_forms")
-    .children()
-    .each(function (index, value) {
-      var data_dict = {};
-      var $el = $(value);
-      var key = $el.data("value");
-      var val = [];
-      $el.find("input").each(function (_, v) {
-        val.push(v.value);
-      });
-      data_dict[key] = val;
-
-      if (data_dict[id]) {
-        counter = 1;
-      } else if (data_dict[id.insert(-1, "2")]) {
-        counter = 2;
-      }
-    });
-  return counter;
+function check_id() {
+  return $('.subform').length;
 }
+
+$('.sub_forms').on('blur', 'input', function() {
+  console.log('aa')
+})
 
 $(function () {
   $("#select_type").change(function (e) {
     var value = $(e.target).val();
     var title = $(this).find("option:selected").text();
-    if (check_id(value) === 0) {
-      $(".sub_forms").append(make_subform(value, title));
-      $(this).find('[value="+value+"]').remove();
-    } else if (check_id(value) === 1) {
-      $(".sub_forms").append(make_subform(value.insert(-1, "2"), title));
-      $(this).find('[value="+value+"]').remove();
+    if (check_id() !== 9) {
+      $(".sub_forms").append(make_subform(value.insert(-1, check_id()), title));
+
     } else {
       var $div = $('<div class="mt-2 col"></div>');
       $div.css({

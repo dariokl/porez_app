@@ -312,8 +312,100 @@ def render_1054(id):
     return send_file(overlay_io, as_attachment=True,
                      attachment_filename='a_file.pdf',
                      mimetype='application/pdf')
+@core.route('/render_pr1/<int:id>', methods=['POST', 'GET'])
+def render_pr1(id):
+
+    file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
+    pdf_to_read = os.path.join(file_pdf, 'test(1).pdf')
+
+    q = db.session.query(Tax).filter(Tax.id==id).first()
 
 
+    buffer = io.BytesIO()
+    overlay_io = io.BytesIO()
+    template_pdf = pdfrw.PdfReader(pdf_to_read)
+
+    pdf_canvas = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    styles = getSampleStyleSheet()
+
+
+    data = [
+        [''
+        ,'Vrsta imovine \n        (a)','Lokacija imovine \n            (b)',
+        'Jedinica mjere      \n            (c)', 
+        'Broj jedinica mjere \n               (d)',
+         '     Porez po \n jedinici mjere \n            (f)',
+         'Iznos Poreza \n         (g)'
+         ],
+        ]
+
+    right = [
+        'kuca', 'Kuca, zgrada\n ili stan',
+        'poslovni', 'Poslovni prostor',
+        'garaza', 'Garaza koja se \n izdaje',
+        'parking', 'Parking prostor',
+        'vozilo', 'Putnicko vozilo',
+        'tvozilo', 'Teretno vozilo',
+        'plovni', 'Plovni objekat',
+        'letljelica', 'Letljelica',
+        'stol', 'Stol u kazinu',
+        'automat', 'Automat za \n zabavne igre',
+        
+        ]
+
+    index_v = 1
+    for k, v in q.json_data.items():
+        if isinstance(q.json_data[k], List):
+            if k[-2].isdigit():
+                k = ''.join([i for i in k if not i.isdigit()])
+            key_pair = right.index(k) + 1
+            if k in right:
+                v.insert(0,  index_v)
+                v.insert(1, right[key_pair])
+                data.append(v)
+                index_v += 1
+
+
+    def calc_h(num_lines, extended):
+        start = (2, 520)
+        e_start = 520 - (extended * 11.5) 
+        result = num_lines - start[0]
+        position = e_start - (result*18)
+        return position
+
+    table = Table(data,colWidths=(0.7*cm, 2.5*cm, None, None, None, None, None))
+    table.setStyle(TableStyle([
+        ('ALIGN',(1,1), (-1, -1), 'LEFT'),
+        ('FONTSIZE', (0,0), (6,0), 10),
+        ('FONTSIZE', (1,1), (6, 20), 8),
+        ('FONTNAME', (0, 0), (6,0),'Times-Bold'),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black)
+        ]))
+
+    table.wrapOn(pdf_canvas, width, height)
+    table.drawOn(pdf_canvas, 40, calc_h(len(data), len([len(e[1]) for e in data if len(e[1]) >= 22])))
+    pdf_canvas.showPage()
+    pdf_canvas.save()
+    buffer.seek(0)
+
+
+    overlay = pdfrw.PdfReader(buffer)
+    mark = overlay.pages[0]
+
+    for page in range(len(template_pdf.pages)):
+        merger = PageMerge(template_pdf.pages[page])
+        merger.add(mark).render()
+
+    pdfrw.PdfWriter().write(overlay_io, template_pdf)
+    overlay_io.seek(0)
+
+    return send_file(overlay_io, as_attachment=False,
+                         attachment_filename='a_file.pdf',
+                         mimetype='application/pdf')
+                         
+### THIS IS AN OLD VIEW THAT I WILL KEEP JUT IN CASE I GET BACK TO OLD TYPE OF REDNERING !
 @core.route('/render_razrez/<int:id>')
 @login_required
 def render_razrez(id):
@@ -421,93 +513,7 @@ def fetchcity():
     
     return jsonify(select)
 
-@core.route('/buffer', methods=['POST', 'GET'])
-def test():
 
-    file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
-    pdf_to_read = os.path.join(file_pdf, 'test(1).pdf')
-
-    q = db.session.query(Tax).filter(Tax.id==20).first()
-
-
-    buffer = io.BytesIO()
-    overlay_io = io.BytesIO()
-    template_pdf = pdfrw.PdfReader(pdf_to_read)
-
-    pdf_canvas = canvas.Canvas(buffer, pagesize=A4)
-    width, height = A4
-    x = 20
-    y = 520
-    styles = getSampleStyleSheet()
-
-
-    data = [
-        ['','Vrsta imovine', 'Lokacija imovine','Jedinica mjere','Broj jedinica mjere',\
-        'Porez po jedinici mjere', 'Iznos Poreza'],
-                ['','Vrsta imovine', 'Lokacija imovine','Jedinica mjere','Broj jedinica mjere',\
-        'Porez po jedinici mjere', 'Iznos Poreza'],
-        ]
-
-    right = ['(kuca)', 'Kuca, zgrada ili stan', '(kuca2)', 'Kuca, zgrada ili stan']
-
-
-    dynamic_height = [
-        (4, 530),
-        (5, 525)
-    ]
-
-    def calc_fix(num_lines):
-        for i in dynamic_height:
-            if i[0] == num_lines:
-                y = i[1]
-
-                return y
-
-    print(calc_fix(len(data)))
-
-
-    
-
-    for k, v in q.json_data.items():
-        if isinstance(q.json_data[k], List):
-            key_pair = right.index(k) + 1
-            if k in right:
-                
-
-                v.insert(0, '')
-                v.insert(1, right[key_pair])
-                data.append(v)
-        
-    table = Table(data, None, hAlign='LEFT', repeatRows=1)
-    table.setStyle(TableStyle([
-        ('VALING', (0,0), (-1,-1), 'TOP'),
-        ('ALIGN',(1,1), (-1, -1), 'LEFT'),
-        ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-        ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black)
-        ]))
-
-    table.wrapOn(pdf_canvas, width, height)
-    table.drawOn(pdf_canvas, x, calc_fix(len(data)))
-    pdf_canvas.showPage()
-    pdf_canvas.save()
-    buffer.seek(0)
-
-
-    overlay = pdfrw.PdfReader(buffer)
-    mark = overlay.pages[0]
-
-    for page in range(len(template_pdf.pages)):
-        merger = PageMerge(template_pdf.pages[page])
-        merger.add(mark).render()
-
-    pdfrw.PdfWriter().write(overlay_io, template_pdf)
-    overlay_io.seek(0)
-
-
-
-    return send_file(overlay_io, as_attachment=False,
-                         attachment_filename='a_file.pdf',
-                         mimetype='application/pdf')
 
 
 

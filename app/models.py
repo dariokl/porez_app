@@ -33,8 +33,8 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Tax', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
-        self.expire = datetime.utcnow() + timedelta(days=1)
         super(User, self).__init__(**kwargs)
+        self.expire = datetime.utcnow() + timedelta(days=1)
 
     def __repr__(self):
         return '{} {}'.format(self.ime, self.prezime)
