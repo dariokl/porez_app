@@ -14,11 +14,27 @@ $(document).ready(function () {
       });
     }
   });
+  $("#kal_godina").yearpicker({
+    startYear: 2000,
+    endYear: 2021,
+  });
 });
 
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
 }
+
+$(function () {
+  $("#msform").on("change", function (e) {
+    if ($("#msform")[0].checkValidity()) {
+      $(".next").fadeIn();
+      $("#select_type").show();
+    } else {
+      $(".next").fadeOut();
+      $("#select_type").hide();
+    }
+  });
+});
 
 function make_subform(val, title) {
   var tag = "subform_" + val;
@@ -30,19 +46,19 @@ function make_subform(val, title) {
     "<span> Opcina </span>" +
     '<select id="' +
     tag +
-    '_oname" type="text" placeholder="Lokacija imovine"></select>' +
+    '_oname" type="text" placeholder="Lokacija imovine" requried></select>' +
     "<span > Adresa i Broj </span>" +
     '<input id="' +
     tag +
-    '_fname" type="text" placeholder="Adresa i Broj"></input>' +
+    '_fname" type="text" placeholder="Adresa i Broj" required></input>' +
     "<span > Jedinica Mjere </span>" +
     '<input id="' +
     tag +
-    '_lname" type="text" placeholder="Jedinica Mjere"></input>' +
+    '_lname" type="text" placeholder="Jedinica Mjere" required></input>' +
     "<span> Broj/Jedinica Mjere </span>" +
     '<input id="' +
     tag +
-    '_add1" type="text" placeholder="Broj Jedinica Mjere"></input>' +
+    '_add1" type="text" placeholder="Broj Jedinica Mjere" required></input>' +
     "<span> Iznos Poreza</span>" +
     '<input id="' +
     tag +
@@ -76,17 +92,21 @@ function make_subform(val, title) {
     });
   });
 
-  $(function() {
-      $($el.children().eq(8)).on('keyup', function(){
-        var one = $($el.find('input').eq(2))
-        var two = $($el.find('input').eq(3))
+  $(function () {
+    $($el.children().eq(8)).on("keyup", function () {
+      var one = $($el.find("input").eq(2));
+      var two = $($el.find("input").eq(3));
 
-        var arOne = one.get()
-        var arTwo = two.get()
-        $($el.children().eq(12).val(arOne[0].value * arTwo[0].value))
-          
-      })
-  })
+      var arOne = one.get();
+      var arTwo = two.get();
+      $(
+        $el
+          .children()
+          .eq(12)
+          .val(arOne[0].value * arTwo[0].value)
+      );
+    });
+  });
 
   return $el;
 }
@@ -97,12 +117,61 @@ String.prototype.insert = function (index, string) {
 };
 
 function check_id() {
-  return $('.subform').length;
+  return $(".subform").length;
 }
 
-$('.sub_forms').on('blur', 'input', function() {
-  console.log('aa')
-})
+$(function () {
+  $("#table_generate").click(function () {
+    data_dict = {};
+    $(".sub_forms")
+      .children()
+      .each(function (k, v) {
+        var $el = $(v);
+        var key = $el.find("h4").text();
+        var val = [];
+        $el.find("input").each(function (_, v) {
+          val.push(v.value);
+        });
+        data_dict[key] = val;
+
+        $.each(data_dict, function (id, row) {
+          console.log(id, row[0]);
+          html =
+            "<tr>" +
+            "<td>" +
+            k++ +
+            "</td>" +
+            "<td>" +
+            id +
+            "</td>" +
+            "<td>" +
+            row[0] +
+            "</td>" +
+            "<td>" +
+            row[1] +
+            "</td>" +
+            "<td>" +
+            row[3] +
+            "</td>" +
+            "<td>" +
+            row[4] +
+            "</td>" +
+            "<td>" +
+            row[5] +
+            "</td>" +
+            "<td>" +
+            row[6] +
+            "</td>" +
+            "</tr>";
+          
+            delete data_dict[id]
+
+
+          $("#myTable").append(html);
+        });
+      });
+  });
+});
 
 $(function () {
   $("#select_type").change(function (e) {
@@ -110,7 +179,6 @@ $(function () {
     var title = $(this).find("option:selected").text();
     if (check_id() !== 9) {
       $(".sub_forms").append(make_subform(value.insert(-1, check_id()), title));
-
     } else {
       var $div = $('<div class="mt-2 col"></div>');
       $div.css({
@@ -141,7 +209,6 @@ $(function () {
           val.push(v.value);
         });
         data_dict[key] = val;
-        console.log(key);
       });
     $.ajax({
       type: "POST",

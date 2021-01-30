@@ -1,17 +1,18 @@
-{% extends 'base.html' %}
-{% block head %}
-{{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/submit.css') }}">
-{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block head %} {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/submit.css') }}" />
+{% endblock %} {% block content %}
+
 <div class="mt-5 section-title" data-aos="fade-up">
-          <h2>Pregled rashoda</h2>
-    <p> Obrazac <strong>PR- 1</strong> <br> Prijava za razred poreza na imovinu za pravna i fizicka lica </p>
+    <h2>Pregled rashoda</h2>
+    <p>
+        Obrazac <strong>PR- 1</strong> <br />
+        Prijava za razred poreza na imovinu za pravna i fizicka lica
+    </p>
 </div>
 {% if form.errors %}
-<p> {{ form.errors }}</p>
+<p>{{ form.errors }}</p>
 {% endif %}
-<section>
+<section class="mb-6" style="min-height: 100vh">
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-md-offset-3">
@@ -28,93 +29,136 @@
                         <h3 class="fs-subtitle"></h3>
                         {{ form.hidden_tag() }}
                         <div class="col" id="add_to">
-                            {% for field in form.fields %}
-                            {{ field.hidden_tag() }}
-                            {% endfor %}
-                            <div class="sub_forms">
-                            </div>
+                            {% for field in form.fields %} {{ field.hidden_tag() }} {% endfor
+                            %}
+                            <div class="sub_forms"></div>
                             <div class="input_group">
-                                {{ form.select_type(class='form-control', placeholder='Izabertine Nekretninu')}}
+                                {{ form.select_type(class='form-control',
+                                placeholder='Izabertine Nekretninu')}}
                             </div>
-
                         </div>
-                        <input type="button" id='ajax_post' name="next" class="next action-button" value="Next"/>
-
+                        <input type="button" id="ajax_post" name="next" class="next action-button" value="Next" />
                     </fieldset>
+
                     <fieldset>
                         <h2 class="fs-title">2/3</h2>
                         <h3 class="fs-subtitle"></h3>
-                        {{ form.kal_godina(placeholder='Kalendarska Godina')}}
-                        {{ form.adresa(placeholder='Adresa')}}
-                        {{ form.kanton(placeholder='Kanton')}}
-
-                        <input type="button" name="next" class="next action-button" value="Next"/>
+                        {{ form.kal_godina(placeholder='Kalendarska Godina')}} {{
+                        form.adresa(placeholder='Adresa')}} {{
+                        form.kanton(placeholder='Kanton')}}
+                        <input type="button"  id='table_generate' name="next" class="next action-button" value="Next" />
                     </fieldset>
                     <fieldset>
                         <h2 class="fs-title">3/3</h2>
                         <h3 class="fs-subtitle"></h3>
-                        {{ form.racun(placeholder='Broj bankovnog racuna')}}
-                        {{ form.banka(placeholder='Ime Banke')}}
-                        {{ form.submit() }}
 
+                        {{ form.racun(placeholder='Broj bankovnog racuna')}} {{
+                        form.banka(placeholder='Ime Banke')}} {{ form.submit() }}
 
+                        <div style="overflow-x: auto" ;>
+                            <table id="myTable">
+                                <tr class="header">
+                                    <th style="width: 20%">#</th>
+                                    <th style="width: 40%">Vrsta imovine</th>
+                                    <th style="width: 40%">Adresa</th>
+                                    <th style="width: 40%">Jedinica mjere</th>
+                                    <th style="width: 40%">Broj / Jedinice mjere</th>
+                                    <th style="width: 40%">Iznos poreza</th>
+                                    <th style="width: 40%">Ukupno</th>
+                                </tr>
+
+                                <tr>
+                                    <td>Francis Futterkiste</td>
+                                    <td>Eletrical Engineer</td>
+                                    <td>futterkiste.francis@gmail.com</td>
+                                    <td>+49 92992744</td>
+                                    <td>Germany</td>
+                                    <td>Berlin</td>
+                                </tr>
+                            </table>
+                        </div>
                     </fieldset>
                 </form>
-                <div class="dme_link">
-                </div>
+                <div class="dme_link"></div>
             </div>
         </div>
     </div>
 </section>
 
 <div class="section-title" data-aos="fade-up">
-          <h2>Our Services</h2>
-        </div>
-     <section id="about" class="about">
-
-      <div class="container">
-
+    <h2>Our Services</h2>
+</div>
+<section id="about" class="about">
+    <div class="container">
         <div class="row">
-          <div class="col-lg-6" data-aos="fade-left" data-aos-duration="500">
-            <img src="/static/img/drugi-page-001.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-6 pt-4 pt-lg-0 content">
-            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
-            <p class="font-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <ul>
-              <li><i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-              <li><i class="fa fa-check"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-              <li><i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
-            </ul>
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-<section>
-    <div class="container" data-aos="fade-up" data-aos-duration="500">
-        <img class="img-fluid" src="/static/img/slide/step.png">
-        <div class="row">
-            <div class="col-sm-4">
-                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem cumque, deserunt dicta doloremque dolores ducimus ex excepturi, explicabo id maiores minus non perferendis quae quam, reiciendis rerum totam ut.</span></p>
+            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="500">
+                <img src="/static/img/drugi-page-001.jpg" class="img-fluid" alt="" />
             </div>
-                        <div class="col-sm-4">
-                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur beatae dolor neque nobis obcaecati officiis, perferendis reiciendis rerum. Dicta dolore enim hic iusto quas! Accusamus iusto omnis tempora voluptatibus.</span></p>
-            </div>
-                        <div class="col-sm-4">
-                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consequatur culpa dolorum magni officiis quidem quis quod sed similique temporibus! Blanditiis dolorem exercitationem, illum laboriosam nesciunt voluptatum. Dicta, natus, quibusdam!</span></p>
+            <div class="col-lg-6 pt-4 pt-lg-0 content">
+                <h3>
+                    Voluptatem dignissimos provident quasi corporis voluptates sit
+                    assumenda.
+                </h3>
+                <p class="font-italic">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <ul>
+                    <li>
+                        <i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                    </li>
+                    <li>
+                        <i class="fa fa-check"></i> Duis aute irure dolor in reprehenderit
+                        in voluptate velit.
+                    </li>
+                    <li>
+                        <i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate trideta storacalaperda mastiro dolore eu fugiat nulla
+                        pariatur.
+                    </li>
+                </ul>
+                <p>
+                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                    sunt in culpa qui officia deserunt mollit anim id est laborum
+                </p>
             </div>
         </div>
     </div>
 </section>
-
+<section>
+    <div class="container" data-aos="fade-up" data-aos-duration="500">
+        <img class="img-fluid" src="/static/img/slide/step.png" />
+        <div class="row">
+            <div class="col-sm-4">
+                <p>
+                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
+                        autem cumque, deserunt dicta doloremque dolores ducimus ex
+                        excepturi, explicabo id maiores minus non perferendis quae quam,
+                        reiciendis rerum totam ut.</span>
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <p>
+                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Asperiores aspernatur beatae dolor neque nobis obcaecati officiis,
+                        perferendis reiciendis rerum. Dicta dolore enim hic iusto quas!
+                        Accusamus iusto omnis tempora voluptatibus.</span>
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <p>
+                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid
+                        consequatur culpa dolorum magni officiis quidem quis quod sed
+                        similique temporibus! Blanditiis dolorem exercitationem, illum
+                        laboriosam nesciunt voluptatum. Dicta, natus, quibusdam!</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

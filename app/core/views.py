@@ -196,6 +196,8 @@ def pr_1():
 
     form = NekretnineForms(fields=forom)
 
+
+
     # Im using 'step_1' object in seasson wich is saved from ajax call in this view , check the pr_js. to see ajax call
     # It is pretty much straight forward just sending data as user clicks on next button.
     if form.validate_on_submit():
