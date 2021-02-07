@@ -133,13 +133,13 @@ $(function () {
           val.push(v.value);
         });
         data_dict[key] = val;
+        var i = k + 1
 
         $.each(data_dict, function (id, row) {
-          console.log(id, row[0]);
           html =
             "<tr>" +
             "<td>" +
-            k++ +
+            i +
             "</td>" +
             "<td>" +
             id +
@@ -151,22 +151,17 @@ $(function () {
             row[1] +
             "</td>" +
             "<td>" +
+            row[2] +
+            "</td>" +
+            "<td>" +
             row[3] +
             "</td>" +
             "<td>" +
             row[4] +
             "</td>" +
-            "<td>" +
-            row[5] +
-            "</td>" +
-            "<td>" +
-            row[6] +
-            "</td>" +
             "</tr>";
-          
-            delete data_dict[id]
 
-
+          delete data_dict[id];
           $("#myTable").append(html);
         });
       });
@@ -196,6 +191,13 @@ $(function () {
   });
 });
 
+$(function(){
+  $('.previous').click(function(){
+    $('fieldset').css("position", "relative");
+    $("#myTable").find("tr:gt(0)").remove();
+  })
+})
+
 $(function () {
   $("#ajax_post").click(function (event) {
     var data_dict = {};
@@ -205,7 +207,7 @@ $(function () {
         var $el = $(value);
         var key = $el.data("value");
         var val = [];
-        $el.find("input").each(function (_, v) {
+        $el.find("input, select").each(function (_, v) {
           val.push(v.value);
         });
         data_dict[key] = val;
@@ -216,7 +218,6 @@ $(function () {
       data: JSON.stringify(data_dict),
       contentType: "application/json;charset=UTF-8",
       success: function (data) {
-        console.log(data);
       },
     });
     event.preventDefault();

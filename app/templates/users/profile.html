@@ -302,11 +302,14 @@
           </div>
           <div class="card-body" style="overflow-y: auto">
             <h4 class="card-title">{{tax.tip}}</h4>
-            <p class="card-text">Card has minimum height set but will expand if more space is needed for card body content. You can use Bootstrap <a href="https://getbootstrap.com/docs/4.0/components/card/#card-decks" target="_blank">card-decks</a> to align multiple cards nicely in a row.</p>
+            <p class="card-text">. 
+              <br>    
+            </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('core.render_pr1', id=tax.id)}}" class="btn btn-primary">Download</a>
-            <a href="#" class="btn btn-outline-primary">Other option</a>
+            <a href="{{url_for('core.edit_pr1', id=tax.id)}}" class="btn btn-outline-primary">Izmijeni</a>
+            <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
           </div>
           {% else %}
                   <div class="card card-custom bg-white border-white border-0">

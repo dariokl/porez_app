@@ -1,4 +1,3 @@
-from operator import add
 import os
 from flask import render_template, send_file, request, redirect, url_for, session, jsonify, flash
 from flask_login import current_user
@@ -225,10 +224,10 @@ def step_1():
     if request.method == "POST" and request.json:
         if 'step_1' in session:
             session['step_1'] = request.json
-            print(request.json)
+
         else:
             session['step_1'] = request.json
-            print(request.json)
+
     return 'sucess'
 
 
@@ -314,6 +313,7 @@ def render_1054(id):
     return send_file(overlay_io, as_attachment=True,
                      attachment_filename='a_file.pdf',
                      mimetype='application/pdf')
+
 @core.route('/render_pr1/<int:id>', methods=['POST', 'GET'])
 def render_pr1(id):
 
@@ -322,12 +322,11 @@ def render_pr1(id):
 
     q = db.session.query(Tax).filter(Tax.id==id).first()
 
-
     buffer = io.BytesIO()
     overlay_io = io.BytesIO()
     template_pdf = pdfrw.PdfReader(pdf_to_read)
-
     pdf_canvas = canvas.Canvas(buffer, pagesize=A4)
+
     width, height = A4
     styles = getSampleStyleSheet()
 
@@ -363,10 +362,12 @@ def render_pr1(id):
                 k = ''.join([i for i in k if not i.isdigit()])
             key_pair = right.index(k) + 1
             if k in right:
+                v.pop(0)
                 v.insert(0,  index_v)
                 v.insert(1, right[key_pair])
                 data.append(v)
                 index_v += 1
+    
 
 
     def calc_h(num_lines, extended):
@@ -388,6 +389,16 @@ def render_pr1(id):
 
     table.wrapOn(pdf_canvas, width, height)
     table.drawOn(pdf_canvas, 40, calc_h(len(data), len([len(e[1]) for e in data if len(e[1]) >= 22])))
+    pdf_canvas.drawString(x=128.5, y=725, text=str(
+        current_user.jmbg), charSpace=4.5)
+    pdf_canvas.drawString(x=260, y=702, text='{} {}'.format(
+        current_user.ime, current_user.prezime))
+    pdf_canvas.drawString(x=425, y=727, text=q.json_data['(godina)'])
+    pdf_canvas.drawString(x=135, y=650, text=q.json_data['(kanton)'])
+    pdf_canvas.drawString(x=170, y=675, text=q.json_data['(adresa)'])
+    pdf_canvas.drawString(x=190, y=611, text=q.json_data['(racun)'])
+    pdf_canvas.drawString(x=415, y=611, text=q.json_data['(banka)'])
+
     pdf_canvas.showPage()
     pdf_canvas.save()
     buffer.seek(0)
@@ -406,7 +417,29 @@ def render_pr1(id):
     return send_file(overlay_io, as_attachment=False,
                          attachment_filename='a_file.pdf',
                          mimetype='application/pdf')
-                         
+
+@core.route('/editpr-1/<int:id>', methods=['POST', 'GET'])
+def edit_pr1(id):
+
+    doc = db.session.query(Tax).filter(Tax.id==id).first()
+    data = doc.json_data
+
+    form = NekretnineForms()
+
+    if form.validate_on_submit():
+        if 'step_1' in session:
+            print(session['step_1'])
+            session['step_1']['(godina)'] = form.kal_godina.data
+            session['step_1']['(adresa)'] = form.adresa.data
+            session['step_1']['(kanton)'] = form.kanton.data
+            session['step_1']['(racun)'] = form.racun.data
+            session['step_1']['(banka)'] = form.banka.data
+            doc.json_data=session['step_1']
+            db.session.commit()
+            session.pop('step_1', None)
+            return redirect(url_for('users.profile'))
+
+    return render_template('/porezi/editpr-1.html', form=form, data=data)
 ### THIS IS AN OLD VIEW THAT I WILL KEEP JUT IN CASE I GET BACK TO OLD TYPE OF REDNERING !
 @core.route('/render_razrez/<int:id>')
 @login_required

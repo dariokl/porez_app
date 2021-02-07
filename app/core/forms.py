@@ -8,6 +8,11 @@ type_n = [('0', 'Izaberite Nekretinu'), ('kuca', 'Kuca , stan ili zgrada'), ('po
         ('tvozilo' ,'Teretno vozilo'), ('plovni', 'Plovni objekat'), ('letljelica', 'Letljelica u vlasnistvu fizickih lica'), \
             ('stol', 'Stol u kazinu'), ('automat', 'Automat za zabavne igre')]
 
+
+type_k = [('0', 'Izaberite Kanton'),('USK', 'Unsko-sanski kanton'), ('PK', 'Posavski Kanton'), ('TK', 'Tuzlanski Kanton'), ("ZDK", 'Zenicko-dobojski kanton'), \
+    ('BPK', 'Bosansko-podrinjski kanton'), ('SBK', 'Srednjobosanski kanton'), ('HNK', 'Hercegovacko-neretvanski kanton'), ('ZNK', 'Zapadnohercegovacki kanton'), \
+        ('KS', 'Kanton Sarajevo'), ('K10', 'Kanton 10')]
+
 class FieldEnteryForm(FlaskForm):
     name = StringField(DataRequired())
 
@@ -24,7 +29,7 @@ class FieldsForms(FlaskForm):
 class NekretnineForms(FlaskForm):
     kal_godina = StringField('Porezna godina')
     adresa = StringField('Adresa')
-    kanton = StringField('Kanton')
+    kanton = SelectField('Kanton')
     racun =  StringField('Broj bankovnog racuna')
     banka = StringField('Banka')
     select_type = SelectField('Select', validators=[DataRequired()])
@@ -33,6 +38,7 @@ class NekretnineForms(FlaskForm):
     def __init__(self, **kwargs):
         super(NekretnineForms, self).__init__(**kwargs)
         self.select_type.choices = [(i[0], i[1]) for i in type_n]
+        self.kanton.choices = [(i[0], i[1]) for i in type_k]
 
 
 class DeleteTax(FlaskForm):

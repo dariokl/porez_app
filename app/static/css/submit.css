@@ -26,6 +26,9 @@ td {
     position: relative;
 }
 
+fieldset {
+    position: relative!important;
+}
 /*Hide all except first fieldset*/
 #msform fieldset:not(:first-of-type) {
     display: none;

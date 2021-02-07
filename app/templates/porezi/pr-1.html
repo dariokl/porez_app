@@ -12,7 +12,8 @@
 {% if form.errors %}
 <p>{{ form.errors }}</p>
 {% endif %}
-<section class="mb-6" style="min-height: 100vh">
+<div class='container'>
+<section class="mb-6">
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-md-offset-3">
@@ -37,26 +38,26 @@
                                 placeholder='Izabertine Nekretninu')}}
                             </div>
                         </div>
-                        <input type="button" id="ajax_post" name="next" class="next action-button" value="Next" />
+                        <input type="button" id="ajax_post" name="next" class="next action-button" value="Naprijed" />
+                        
                     </fieldset>
 
                     <fieldset>
                         <h2 class="fs-title">2/3</h2>
                         <h3 class="fs-subtitle"></h3>
-                        {{ form.kal_godina(placeholder='Kalendarska Godina')}} {{
-                        form.adresa(placeholder='Adresa')}} {{
-                        form.kanton(placeholder='Kanton')}}
-                        <input type="button"  id='table_generate' name="next" class="next action-button" value="Next" />
+                        {{ form.kal_godina(placeholder='Kalendarska Godina', class='form-control')}} 
+                        {{ form.adresa(placeholder='Adresa', class='form-control')}} 
+                        {{form.kanton(placeholder='Kanton', class='mb-2 form-control')}}
+                        {{ form.racun(placeholder='Broj bankovnog racuna', class='form-control')}} 
+                        {{form.banka(placeholder='Ime Banke', class='form-control')}} 
+                        <input type="button" id="ajax_post" name="previous" class="previous action-button" value="Nazad" />
+                        <input type="button"  id='table_generate' name="next" class="next action-button" value="Naprijed" />
                     </fieldset>
                     <fieldset>
                         <h2 class="fs-title">3/3</h2>
                         <h3 class="fs-subtitle"></h3>
-
-                        {{ form.racun(placeholder='Broj bankovnog racuna')}} {{
-                        form.banka(placeholder='Ime Banke')}} {{ form.submit() }}
-
-                        <div style="overflow-x: auto" ;>
-                            <table id="myTable">
+                        <div class='container' style="overflow-x: auto";>
+                            <table id="myTable" class='mb-6'>
                                 <tr class="header">
                                     <th style="width: 20%">#</th>
                                     <th style="width: 40%">Vrsta imovine</th>
@@ -66,24 +67,24 @@
                                     <th style="width: 40%">Iznos poreza</th>
                                     <th style="width: 40%">Ukupno</th>
                                 </tr>
-
-                                <tr>
-                                    <td>Francis Futterkiste</td>
-                                    <td>Eletrical Engineer</td>
-                                    <td>futterkiste.francis@gmail.com</td>
-                                    <td>+49 92992744</td>
-                                    <td>Germany</td>
-                                    <td>Berlin</td>
-                                </tr>
                             </table>
                         </div>
+                        <input type="button" id="ajax_post" name="previous" class="previous action-button" value="Nazad" />
+                        {{ form.submit(class='mt-5') }}
                     </fieldset>
+
+                    
                 </form>
+                
                 <div class="dme_link"></div>
             </div>
+            
         </div>
+
     </div>
 </section>
+</div>
+
 
 <div class="section-title" data-aos="fade-up">
     <h2>Our Services</h2>

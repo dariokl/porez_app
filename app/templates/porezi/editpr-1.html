@@ -1,0 +1,621 @@
+{% extends 'base.html' %} {% block head %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='/css/submit.css') }}"
+/>
+{% endblock %} {% block content %}
+<style>
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 30%; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 30%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #2684E5;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #2684E5;
+  color: white;
+}
+</style>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+     
+    </div>
+    <div class="modal-body text-center">
+      <p>Ukoliko zelite obrisati podatke o nekretnini kliknite dugme</p>
+      <button class='btn btn-danger delete'>Obrisi</button>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</div>
+
+<div class="mt-5 section-title" data-aos="fade-up">
+  <h2>Pregled rashoda</h2>
+  <p>
+    Obrazac <strong>PR- 1</strong> <br />
+    Prijava za razred poreza na imovinu za pravna i fizicka lica
+  </p>
+</div>
+
+<section class="mb-6">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <form id="msform" method="POST">
+
+          <!-- progressbar -->
+          <ul id="progressbar">
+            <li class="active">Personal Details</li>
+            <li>Social Profiles</li>
+            <li>Account Setup</li>
+          </ul>
+          <!-- fieldsets -->
+          <fieldset>
+            <h2 class="fs-title">1/3</h2>
+            <h3 class="fs-subtitle"></h3>
+            {{ form.hidden_tag() }}
+            <div class="col" id="add_to">
+              {% for field in form.fields %} {{ field.hidden_tag() }} 
+              {% endfor %}
+              <div class="sub_forms"></div>
+              <div class="input_group">
+                {{ form.select_type(class='form-control',
+                placeholder='Izabertine Nekretninu')}}
+              </div>
+            </div>
+            <input
+              type="button"
+              id="ajax_post"
+              name="next"
+              class="next action-button"
+              value="Naprijed"
+            />
+          </fieldset>
+
+          <fieldset>
+            <h2 class="fs-title">2/3</h2>
+            <h3 class="fs-subtitle"></h3>
+            {{ form.kal_godina(placeholder='Kalendarska Godina', class='form-control')}} {{
+            form.adresa(placeholder='Adresa', class='form-control', value=data['(adresa)'])}}
+            {{form.kanton(placeholder='Kanton', class='mb-2 form-control')}} {{
+            form.racun(placeholder='Broj bankovnog racuna', class='form-control', value=data['(racun)'])}}
+            {{form.banka(placeholder='Ime Banke', class='form-control', value=data['(banka)'])}}
+            <input
+              type="button"
+              id="table_generate"
+              name="next"
+              class="next action-button"
+              value="Naprijed"
+            />
+            <input type="button" id="ajax_post" name="previous" class="previous action-button" value="Nazad" />
+
+          </fieldset>
+          <fieldset>
+            <h2 class="fs-title">3/3</h2>
+            <h3 class="fs-subtitle"></h3>
+            <div class="container" style="overflow-x: auto" ;>
+              <table id="myTable" class="mb-6">
+                <tr class="header">
+                  <th style="width: 20%">#</th>
+                  <th style="width: 40%">Vrsta imovine</th>
+                  <th style="width: 40%">Adresa</th>
+                  <th style="width: 40%">Jedinica mjere</th>
+                  <th style="width: 40%">Broj / Jedinice mjere</th>
+                  <th style="width: 40%">Iznos poreza</th>
+                  <th style="width: 40%">Ukupno</th>
+                </tr>
+              </table>
+            </div>
+
+            <input type="button" id="ajax_post" name="previous" class="previous action-button" value="Nazad" />
+            {{ form.submit(class='mt-5') }}
+          </fieldset>
+        </form>
+        <div class="dme_link"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-title" data-aos="fade-up">
+  <h2>Our Services</h2>
+</div>
+<section id="about" class="about">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6" data-aos="fade-left" data-aos-duration="500">
+        <img src="/static/img/drugi-page-001.jpg" class="img-fluid" alt="" />
+      </div>
+      <div class="col-lg-6 pt-4 pt-lg-0 content">
+        <h3>
+          Voluptatem dignissimos provident quasi corporis voluptates sit
+          assumenda.
+        </h3>
+        <p class="font-italic">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <ul>
+          <li>
+            <i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea
+            commodo consequat.
+          </li>
+          <li>
+            <i class="fa fa-check"></i> Duis aute irure dolor in reprehenderit
+            in voluptate velit.
+          </li>
+          <li>
+            <i class="fa fa-check"></i> Ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in
+            voluptate trideta storacalaperda mastiro dolore eu fugiat nulla
+            pariatur.
+          </li>
+        </ul>
+        <p>
+          Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+          fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+          sunt in culpa qui officia deserunt mollit anim id est laborum
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="container" data-aos="fade-up" data-aos-duration="500">
+    <img class="img-fluid" src="/static/img/slide/step.png" />
+    <div class="row">
+      <div class="col-sm-4">
+        <p>
+          <span
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
+            autem cumque, deserunt dicta doloremque dolores ducimus ex
+            excepturi, explicabo id maiores minus non perferendis quae quam,
+            reiciendis rerum totam ut.</span
+          >
+        </p>
+      </div>
+      <div class="col-sm-4">
+        <p>
+          <span
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Asperiores aspernatur beatae dolor neque nobis obcaecati officiis,
+            perferendis reiciendis rerum. Dicta dolore enim hic iusto quas!
+            Accusamus iusto omnis tempora voluptatibus.</span
+          >
+        </p>
+      </div>
+      <div class="col-sm-4">
+        <p>
+          <span
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid
+            consequatur culpa dolorum magni officiis quidem quis quod sed
+            similique temporibus! Blanditiis dolorem exercitationem, illum
+            laboriosam nesciunt voluptatum. Dicta, natus, quibusdam!</span
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  var data = {{data | tojson | safe}}
+
+  $(function () {
+    if (localStorage.getItem("cityData")) {
+    } else {
+      $.ajax({
+        method: "POST",
+        url: "/fetchcity",
+        success: function (response) {
+          localStorage.setItem("cityData", JSON.stringify(response));
+        },
+      });
+    }
+  });
+
+   
+  $(function () {
+  $("#msform").on("change", function (e) {
+    if ($("#msform")[0].checkValidity()) {
+      $(".next").fadeIn();
+      $("#select_type").show();
+    } else {
+      $(".next").fadeOut();
+      $("#select_type").hide();
+    }
+  });
+});
+
+$(function(){
+  $('#kanton').val(data['(kanton)'])
+})
+
+  function get_title(string) {
+      list = []
+      var arr = $('#select_type option').each(function(k, v) {
+          list.push(v.value, v.text)
+      });
+      if (list.indexOf(string.replace(/[0-9]/g, '')) >= 0) {
+          result = list[list.indexOf(string.replace(/[0-9]/g, '')) + 1]
+          return result
+      }
+  }
+
+  function get_city(data){
+      var result = []
+      var keys = Object.keys(data);
+      var cityArr = JSON.parse(localStorage.getItem('cityData'))
+      for (i=0; i < keys.length; i++) {
+          if(typeof data[keys[i]] === 'object') {
+              var cityId = data[keys[i]][0]
+              for (i=0; i< cityArr.length; i++) {
+                  if (cityArr[i][0] ===  cityId){
+                      result.push(cityArr[i][0], cityArr[i][1])
+                  }
+              }
+
+          }
+      }
+
+      return result
+  }
+
+  function generate_form(data) {
+      var keys = Object.keys(data);
+      cityId = get_city(data);
+      for (i = 0; i < keys.length ; i++) {
+          if (typeof data[keys[i]] === 'object'){
+              var el =
+      '<div class="subform" style="display: flex; flex-direction: column;">' +
+      "<h4>" +
+      get_title(keys[i]) + '<i class="fa fa-trash deleteform" style="margin-left: 90%; color: red;"></i>' +
+      "</h4>" +
+      "<span> Opcina </span>" +
+      '<input id="' + 
+      keys[i] +
+      '_fname" type="hidden" placeholder="Adresa i Broj" value="'+keys[i]+'" hidden></input>' +
+      '<select id="' +
+      keys[i] +
+      '_oname" type="text" placeholder="Lokacija imovine" requried> <option value='+cityId[0]+'>'+cityId[1]+' </option></select>' +
+      "<span > Adresa i Broj </span>" +
+      '<input id="' +
+      keys[i] +
+      '_fname" type="text" placeholder="Adresa i Broj" value="'+data[keys[i]][1] +'"required></input>' +
+      "<span > Jedinica Mjere </span>" +
+      '<input id="' +
+      keys[i] +
+      '_lname" type="text" placeholder="Jedinica Mjere" value="'+data[keys[i]][2] +'" required></input>' +
+      "<span> Broj/Jedinica Mjere </span>" +
+      '<input id="' +
+      keys[i] +
+      '_add1" type="text" placeholder="Broj Jedinica Mjere" value="'+data[keys[i]][3] +'" required></input>' +
+      "<span> Iznos Poreza</span>" +
+      '<input id="' +
+      keys[i] +
+      '_add2" type="text" placeholder="Porez po Jedinici Mjere" value="'+data[keys[i]][4] +'"disabled></input>' +
+      "<span> Ukupno </span>" +
+      '<input id="' +
+      keys[i] +
+      '_add3" type="text" placeholder="Iznos Poreza" value="'+data[keys[i]][5] +'" disabled></input>' +
+      "</div>";
+
+    $('.sub_forms').append(el)
+          }
+      }
+    }
+
+  $(function() {
+    generate_form(data)
+    $('.subform select').click(function() {
+  var cityArray = JSON.parse(localStorage.getItem("cityData"));
+  for (i = 1; i < cityArray.length; i++) {
+    $(this)
+      .append(
+        '<option value="' +
+          cityArray[i][0] +
+          '">' +
+          cityArray[i][1] +
+          "</option>"
+      );
+  }
+  })
+  })
+
+$(function() {
+  $('.subform select').on('change', function(e) {
+    var cityArr = JSON.parse(localStorage.getItem('cityData'))
+    for (i=0; i < cityArr.length; i++) {
+      if ($(this).val() === cityArr[i][0]){
+        ($(this).parent().children().eq(11).val(cityArr[i][2]))
+      }
+    }
+  })
+})
+
+$(function() {
+  $('.subform').on('change', 'input', function(e) {
+    var valOne = $(this).parent().find('input').eq(3).get()
+    var valTwo = $(this).parent().find('input').eq(4).get()
+    $(this).parent().children().eq(13).val(valOne[0].value * valTwo[0].value)
+  })
+})
+
+  $(function () {
+  $("#ajax_post").click(function (event) {
+    var data_dict = {};
+    $(".sub_forms")
+      .children()
+      .each(function (index, value) {
+        var $el = $(value);
+        var key = $el.data("value");
+        if (typeof key === "undefined") {
+          key = $el.find('input:hidden').val();
+        }
+        var val = [];
+        $el.find("input[type!=hidden], select").each(function (_, v) {
+          val.push(v.value);
+        });
+        data_dict[key] = val;
+      });
+
+
+    $.ajax({
+      type: "POST",
+      url: "/step_1",
+      data: JSON.stringify(data_dict),
+      contentType: "application/json;charset=UTF-8",
+      success: function (data) {
+      },
+    });
+    event.preventDefault();
+  });
+});
+$(function() {
+  $("#kal_godina").yearpicker({
+    startYear: 2000,
+    endYear: 2021,
+  });
+  $('#kal_godina').val(data['(godina)'])
+})
+$(function () {
+  $("#select_type").change(function (e) {
+    var value = $(e.target).val();
+    var title = $(this).find("option:selected").text();
+    if (check_id() !== 9) {
+      $(".sub_forms").append(make_subform(value.insert(-1, check_id()), title));
+    } else {
+      var $div = $('<div class="mt-2 col"></div>');
+      $div.css({
+        background: "#FF5555",
+        color: "black",
+      });
+      if ($("div.error", $(this).parent()).length == 0) {
+        $div.html("Maksimalan broj za kategoriju nekretnine !");
+        $div.addClass("error"); //could also add the above styles to your css for .error and remove that code
+        $div.insertAfter($(this));
+      }
+    }
+    $(e.target).val(0);
+    $(".next").fadeIn();
+  });
+});
+function make_subform(val, title) {
+  var tag = "subform_" + val;
+  var el =
+    '<div class="subform" style="display: flex; flex-direction: column;">' +
+    "<h4>" +
+    title +
+    "</h4>" +
+    "<span> Opcina </span>" +
+    '<select id="' +
+    tag +
+    '_oname" type="text" placeholder="Lokacija imovine" requried></select>' +
+    "<span > Adresa i Broj </span>" +
+    '<input id="' +
+    tag +
+    '_fname" type="text" placeholder="Adresa i Broj" required></input>' +
+    "<span > Jedinica Mjere </span>" +
+    '<input id="' +
+    tag +
+    '_lname" type="text" placeholder="Jedinica Mjere" required></input>' +
+    "<span> Broj/Jedinica Mjere </span>" +
+    '<input id="' +
+    tag +
+    '_add1" type="text" placeholder="Broj Jedinica Mjere" required></input>' +
+    "<span> Iznos Poreza</span>" +
+    '<input id="' +
+    tag +
+    '_add2" type="text" placeholder="Porez po Jedinici Mjere" disabled></input>' +
+    "<span> Ukupno </span>" +
+    '<input id="' +
+    tag +
+    '_add3" type="text" placeholder="Iznos Poreza" disabled></input>' +
+    "</div>";
+  var $el = $(el);
+  $el.data("value", val);
+  var cityArray = JSON.parse(localStorage.getItem("cityData"));
+  for (i = 0; i < cityArray.length; i++) {
+    $el
+      .find("select")
+      .append(
+        '<option value="' +
+          cityArray[i][0] +
+          '">' +
+          cityArray[i][1] +
+          "</option>"
+      );
+
+  }
+  $(function () {
+    $("select").change(function (e) {
+      for (i = 0; i < cityArray.length; i++) {
+        if ($(e.target).val() === cityArray[i][0]) {
+          $($el.children().eq(10).val(cityArray[i][2]));
+        }
+      }
+    });
+  });
+
+  return $el;
+}
+
+String.prototype.insert = function (index, string) {
+  var ind = index < 0 ? this.length + index : index;
+  return this.substring(0, ind) + string + this.substr(ind);
+};
+
+function check_id() {
+  return $(".subform").length;
+}
+
+$(function () {
+  $("#table_generate").click(function () {
+    data_dict = {};
+    $(".sub_forms")
+      .children()
+      .each(function (k, v) {
+        var $el = $(v);
+        var key = $el.find("h4").text();
+        var val = [];
+        $el.find(":input:not([type=hidden])").slice(1).each(function (_, v) {
+          val.push(v.value);
+        });
+        data_dict[key] = val;
+        var i = k + 1
+
+        $.each(data_dict, function (id, row) {
+          html =
+            "<tr>" +
+            "<td>" +
+            i +
+            "</td>" +
+            "<td>" +
+            id +
+            "</td>" +
+            "<td>" +
+            row[0] +
+            "</td>" +
+            "<td>" +
+            row[1] +
+            "</td>" +
+            "<td>" +
+            row[2] +
+            "</td>" +
+            "<td>" +
+            row[3] +
+            "</td>" +
+            "<td>" +
+            row[4] +
+            "</td>" +
+            "</tr>";
+
+          delete data_dict[id];
+          $("#myTable").append(html);
+        });
+      });
+  });
+});
+
+$(function(){
+  $('.previous').click(function(){
+    $('fieldset').css("position", "relative");
+    $("#myTable").find("tr:gt(0)").remove();
+  })
+})
+
+var modal = document.getElementById("myModal");
+
+var span = document.getElementsByClassName("close")[0];
+
+$(function() {
+  $('.deleteform').on('click', function(e) {
+  var del = e.target.parentElement.parentElement
+  modal.style.display = "block";
+  e.preventDefault()
+  $('.delete').on('click', function() {
+    del.remove()
+    modal.style.display = 'none';
+  })
+}) 
+})
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+</script>
+
+{% endblock %}
