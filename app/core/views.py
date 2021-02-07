@@ -419,6 +419,7 @@ def render_pr1(id):
                          mimetype='application/pdf')
 
 @core.route('/editpr-1/<int:id>', methods=['POST', 'GET'])
+@login_required
 def edit_pr1(id):
 
     doc = db.session.query(Tax).filter(Tax.id==id).first()
