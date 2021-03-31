@@ -306,8 +306,9 @@
               Prijava za razrez poreza na imovinu za pravna i fizicka lica
               <br><br>
               Prijava za kalendarsku godinu: {{tax.json_data['(godina)']}}
-              <br><br>               <br><br>              
-
+              <br><br>              
+              Sifra kantona: {{tax.json_data['(kanton)']}}             
+              <br><br><br>
             </p> 
             </p>
           </div>
@@ -336,14 +337,10 @@
             <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
           </div>
                     {% endif %}
-
         </div>
-
       </div>
         {% endfor %}
     </div>
   </div>
 </section>
-
-
 {% endblock %}
