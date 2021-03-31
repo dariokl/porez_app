@@ -29,6 +29,9 @@ $(function () {
     if ($("#msform")[0].checkValidity()) {
       $(".next").fadeIn();
       $("#select_type").show();
+      if ($("#select_type").parent().find('#add_more').length == 0 ) {
+        $("#select_type").before("<span id='add_more'>Ako želite prijaviti još nekretnina izaberite vrstu iz dole nevedene liste.</span>")
+      }
     } else {
       $(".next").fadeOut();
       $("#select_type").hide();

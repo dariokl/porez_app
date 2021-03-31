@@ -201,7 +201,6 @@ def pr_1():
     # It is pretty much straight forward just sending data as user clicks on next button.
     if form.validate_on_submit():
         if 'step_1' in session:
-            print(session['step_1'])
             session['step_1']['(godina)'] = form.kal_godina.data
             session['step_1']['(adresa)'] = form.adresa.data
             session['step_1']['(kanton)'] = form.kanton.data
@@ -222,6 +221,7 @@ def step_1():
     """This is middle step in prijava_razrez_im because amount of fields depends on user needs. So this is a way to store
     data from ajax call that happens inside pr_1.js"""
     if request.method == "POST" and request.json:
+
         if 'step_1' in session:
             session['step_1'] = request.json
 
@@ -311,14 +311,14 @@ def render_1054(id):
         #     overlay_io.seek(0)
 
     return send_file(overlay_io, as_attachment=True,
-                     attachment_filename='a_file.pdf',
+                     attachment_filename='prim1054.pdf',
                      mimetype='application/pdf')
 
 @core.route('/render_pr1/<int:id>', methods=['POST', 'GET'])
 def render_pr1(id):
 
     file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
-    pdf_to_read = os.path.join(file_pdf, 'test(1).pdf')
+    pdf_to_read = os.path.join(file_pdf, 'pr_1.pdf')
 
     q = db.session.query(Tax).filter(Tax.id==id).first()
 
@@ -356,6 +356,7 @@ def render_pr1(id):
         ]
 
     index_v = 1
+    final_sum = 0
     for k, v in q.json_data.items():
         if isinstance(q.json_data[k], List):
             if k[-2].isdigit():
@@ -366,9 +367,9 @@ def render_pr1(id):
                 v.insert(0,  index_v)
                 v.insert(1, right[key_pair])
                 data.append(v)
+                final_sum += int(v[-1])
                 index_v += 1
-    
-
+    data.append(['', 'UKUPNO', '', '', '', '', final_sum])
 
     def calc_h(num_lines, extended):
         start = (2, 520)
@@ -414,9 +415,9 @@ def render_pr1(id):
     pdfrw.PdfWriter().write(overlay_io, template_pdf)
     overlay_io.seek(0)
 
-    return send_file(overlay_io, as_attachment=False,
-                         attachment_filename='a_file.pdf',
-                         mimetype='application/pdf')
+    return send_file(overlay_io, as_attachment=True,
+                     attachment_filename='pr-1.pdf',
+                     mimetype='application/pdf')
 
 @core.route('/editpr-1/<int:id>', methods=['POST', 'GET'])
 @login_required

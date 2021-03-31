@@ -32,7 +32,7 @@ class NekretnineForms(FlaskForm):
     kanton = SelectField('Kanton')
     racun =  StringField('Broj bankovnog racuna')
     banka = StringField('Banka')
-    select_type = SelectField('Select', validators=[DataRequired()])
+    select_type = SelectField('aaaaaaaaaaaaaaa', validators=[DataRequired()])
     submit = SubmitField('Unesi Podatke')
 
     def __init__(self, **kwargs):
