@@ -267,24 +267,9 @@
       <div class="input-group" >
        <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
        <div class="input-group-btn" >
-        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Category</span> <span class="caret" >&nbsp;</span></button>
-        <div class="dropdown-menu dropdown-menu-right" >
-           <ul class="category_filters" >
-            <li >
-             <input class="cat_type category-input" data-label="All" id="all" value="" name="radios" type="radio" ><label for="all" >Sve</label>
-            </li>
-            <li >
-             <input type="radio" name="radios" id="Design" class="Sedmica" value="Sedmica" ><label class="Sedmica" for="Sedmica" >Prosla sedmica</label>
-            </li>
-            <li >
-             <input type="radio" name="radios" id="Mjesec" class='Mjesec' value="Marketing" ><label class="category-label" for="Mjesec" >Prosli mjesec</label>
-            </li>
-            <li >
-             <input type="radio" name="radios" id="Godina" class="Godina" value="Programming" ><label class="category-label" for="Godina" >Prosla Godina</label>
-            </li>
-           </ul>
-        </div>
-        <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Search</span></button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Filter po godinama</span> <span class="caret" >&nbsp;</span></button>
+
+        <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Filter</span></button>
        </div>
       </div>
      </div>
@@ -305,11 +290,8 @@
             <p class="card-text">
               Prijava za razrez poreza na imovinu za pravna i fizicka lica
               <br><br>
-              Prijava za kalendarsku godinu: {{tax.json_data['(godina)']}}
-              <br><br>              
-              Sifra kantona: {{tax.json_data['(kanton)']}}             
-              <br><br><br>
-            </p> 
+      
+              Datum prijave: {{tax.timestamp.strftime('%Y-%m-%d')}}
             </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
@@ -318,26 +300,27 @@
             <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
           </div>
           {% else %}
-                  <div class="card card-custom bg-white border-white border-0">
+          <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img" style="background-image: url(/static/img/prvi-page-001.jpg); background-size: contain;"></div>
           <div class="card-custom-avatar">
             <img class="img-fluid" src="/static/img/ProfileLogo.png" alt="Avatar" />
           </div>
           <div class="card-body" style="overflow-y: auto">
             <h4 class="card-title">{{tax.tip}}</h4>
-            <p class="card-text"> Pregled prihoda i rashoda od iznajmljivanja  imovine <br>
-              <br>
-              Godina: {{tax.json_data['(3 Porezna godina)']}}</p> 
-              Porezna prijava OD: {{tax.json_data['(6 Porezni period)']}} mjeseca DO: {{tax.json_data['(do)']}} mjeseca
-              <br><br>Datum prijave: {{tax.json_data['(fill_23)']}}
+            <p class="card-text"> 
+              Pregled prihoda i rashoda od iznajmljivanja  imovine 
+              <br><br>
+              Datum prijave: {{tax.timestamp.strftime('%Y-%m-%d')}}
+            </p>
           </div>
           <div class="card-footer" style="background: inherit; border-color: inherit;">
             <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
             <a href="{{url_for('core.edit_1054', form_id=tax.id)}}" class="btn btn-outline-primary">Izmijeni</a>
             <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
           </div>
-                    {% endif %}
+          {% endif %}
         </div>
+     
       </div>
         {% endfor %}
     </div>

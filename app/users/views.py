@@ -7,6 +7,8 @@ from ..models import User, Tax
 from app.users.forms import RegistrationForm, LoginForm, PasswordReset, PasswordChange, ProfileEditPersonal, \
     ProfileEditContact, ProfileDelete, SubmitJMBG
 
+from sqlalchemy import extract
+
 from ..email import send_email
 
 from datetime import datetime, timedelta
@@ -153,7 +155,7 @@ def email_confirm_token():
                'email/register_email',)
 
 
-@users.route('/profile', methods=['GET', 'POST'])
+@users.route('/porezni-profil', methods=['GET', 'POST'])
 @login_required
 def profile():
     """
@@ -249,20 +251,26 @@ def livesearch():
     currently there is week/month/year filter
     """
     search = request.json
-    date = search.get('date')
+    date = search.get('year')
 
     # In case that someone doesnt submit filter i was running into value error that used to query all data in model
     if date:
 
         date = maya.parse(date).datetime()
 
-        query = Tax.query.filter(Tax.user_id==current_user.id).filter(Tax.tip == search.get('name').upper()).all()
+        query = Tax.query.filter(Tax.user_id==current_user.id).filter(extract('year', Tax.timestamp) == date.strftime('%Y')).all()
+        
+        if len(query) != 0:
+                
+            return jsonify({
+            'name': [e.tip for e in query], 
+            'id': [e.id for e in query],
+            'date':[e.timestamp.strftime('%Y-%m-%d') for e in query],
+            })
+        
+        else:
+            return {'message': 'Ne postoje podaci vezani za ovu godinu'}, 404
 
-        print(query)
-
-        return jsonify({'name': [e.tip for e in query], 'id': [e.id for e in query]})
-
-    
     # Note THIS VIEW IS NOT WORKING CORECTLY SO FAR
     return jsonify({'date': 'NONE'})
 

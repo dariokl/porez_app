@@ -48,7 +48,7 @@ def index():
     return render_template('index.html')
 
 
-@core.route('/porez', methods=['POST', 'GET'])
+@core.route('/porezne-prijave', methods=['POST', 'GET'])
 @checkjmbg
 def porez():
 
@@ -442,76 +442,6 @@ def edit_pr1(id):
             return redirect(url_for('users.profile'))
 
     return render_template('/porezi/editpr-1.html', form=form, data=data)
-### THIS IS AN OLD VIEW THAT I WILL KEEP JUT IN CASE I GET BACK TO OLD TYPE OF REDNERING !
-@core.route('/render_razrez/<int:id>')
-@login_required
-def render_razrez(id):
-    """
-    Everything explained in first render function. The only difference here is that there is a lot of hardcoding
-    to draw the data on canvas.
-    """
-
-    all = Tax.query.filter_by(id=id).first()
-    if current_user.id != all.author.id:
-        return "ERROR 403"
-
-    file_pdf = os.path.abspath(os.path.dirname('app/static/img/pdf/pr_1.pdf'))
-    pdf_to_read = os.path.join(file_pdf, 'test.pdf')
-    template_pdf = pdfrw.PdfReader(pdf_to_read)
-
-    all = all.json_data
-
-    data = io.BytesIO()
-    overlay_io = io.BytesIO()
-
-    pdf = canvas.Canvas(data)
-    for page in template_pdf.Root.Pages.Kids:
-        for field in page.Annots:
-            label = field.T
-            side = field.Rect
-            left = min(side[0], side[2])
-            bottom = min(side[1], side[3])
-            value = all.get(label, '')
-            # Matching the len of list in order to have more back end representation logic on this one.
-            if len(value) == 5:
-                pdf.drawString(x=float(left), y=float(bottom), text=value[0])
-                pdf.drawString(x=float(left) + 140,
-                               y=float(bottom), text=value[1])
-                pdf.drawString(x=float(left) + 190,
-                               y=float(bottom), text=value[2])
-                pdf.drawString(x=float(left) + 240,
-                               y=float(bottom), text=value[3])
-                pdf.drawString(x=float(left) + 340,
-                               y=float(bottom), text=value[3])
-            # Everything had to be hardcoded here due to formation inside the database..
-            pdf.drawString(x=128.5, y=725, text=str(
-                current_user.jmbg), charSpace=4.6)
-            pdf.drawString(x=260, y=702, text='{} {}'.format(
-                current_user.ime, current_user.prezime))
-            pdf.drawString(x=425, y=727, text=all['(godina)'])
-            pdf.drawString(x=135, y=650, text=all['(kanton)'])
-            pdf.drawString(x=170, y=675, text=all['(adresa)'])
-            pdf.drawString(x=190, y=611, text=all['(racun)'])
-            pdf.drawString(x=415, y=611, text=all['(banka)'])
-
-        pdf.showPage()
-
-        pdf.save()
-        data.seek(0)
-
-        overlay = pdfrw.PdfReader(data)
-        mark = overlay.pages[0]
-
-        for page in range(len(template_pdf.pages)):
-            merger = PageMerge(template_pdf.pages[page])
-            merger.add(mark).render()
-
-        pdfrw.PdfWriter().write(overlay_io, template_pdf)
-        overlay_io.seek(0)
-
-        return send_file(overlay_io, as_attachment=True,
-                         attachment_filename='a_file.pdf',
-                         mimetype='application/pdf')
 
 
 @core.route('/delete/<int:form_id>', methods=['POST', 'GET'])
