@@ -1,12 +1,11 @@
 $(document).ready(function () {
-  $('#table_filter').yearpicker({
+  $("#table_filter").yearpicker({
     startYear: 2000,
     endYear: 2021,
+  });
 
+  $(".profile-data").hide();
 });
-  
-})
-
 
 $(function () {
   $("#searchBtn").on("click", function (e) {
@@ -21,14 +20,14 @@ $(function () {
         dataChart(data);
       },
       error(xhr) {
-          if(xhr.status == 404){
-            $("#add_to").append(
-                '<div class="container">' +
-                  '<h1 class="text-center">Ne postoje podaci vezani za ovu godinu !</h1>' +
-                  "</div>"
-              );
-          }
-      }
+        if (xhr.status == 404) {
+          $("#add_to").append(
+            '<div class="container">' +
+              '<h1 class="text-center">Ne postoje podaci vezani za ovu godinu !</h1>' +
+              "</div>"
+          );
+        }
+      },
     });
     e.preventDefault();
   });
@@ -91,16 +90,15 @@ function dataChart(value) {
   }
 }
 
-
 $(function () {
-  $(".profil").on('click', function() {
-    $(".porez-data").hide()
-    $(".searchFilter").hide()
-    $(".profile-data").show()
-  })
-  $(".porez").on('click', function() {
-    $(".profile-data").hide()
-    $(".porez-data").show()
-    $(".searchFilter").show()
-  })
-})
+  $(".profil").on("click", function () {
+    $(".porez-data").hide();
+    $(".searchFilter").hide();
+    $(".profile-data").show();
+  });
+  $(".porez").on("click", function () {
+    $(".profile-data").hide();
+    $(".porez-data").show();
+    $(".searchFilter").show();
+  });
+});
