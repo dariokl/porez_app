@@ -19,267 +19,34 @@
 
       </div>
     </section>
-<section>
-
 
 <div class="container">
-
-  <div class="container">
-    <div class="text-center py-5">
-      <img src="https://cdn.onlinewebfonts.com/svg/img_173956.png" alt class="ui-w-100 rounded-circle"
-           style="height: 100px; width: 100px">
-      <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
-        <h4 class="font-weight-bold my-4">{{ user.ime|title}} {{user.prezime|title}}</h4>
-
-        <div class="text-muted mb-4">
-          <div class="col">
-            {% if current_user.is_confirmed %}
-            <p><strong>Grad:</strong> {{ current_user.grad|title }}</p>
-            {% if current_user.jmbg != None %}
-            <p><strong>JMBG:</strong> {{ current_user.jmbg }}</p>
-            {% else %}
-            <p><strong>JMBG:</strong> Nema podataka</p>
-            {% endif %}
-            {% if current_user.kontakt_tel != None %}
-            <p><strong>Kontakt Tel:</strong> {{ current_user.kontakt_tel }}</p>
-            {% else %}
-            <p><strong>Kontakt Tel:</strong> Nema podataka</p>
-            {% endif %}
-            {% else %}
-            <p>Da bi ste mogli upravljati vasim licnim podacima , i izvristi promjenu vase email adrese molim Vas
-              potvrdite <a href="{{url_for('users.email_confirm_token')}}">Vasu email adresu !</a></p>
-            {% endif %}
+  <div class="row ">
+    <div class="col-12">
+      <ul class="nav nav-tabs tabs-alt justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link py-4 active porez" href="#">Porez</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link py-4 active profil ml-1" href="#">Profil</a>
+        </li>
+      </ul>
+      <div class="row searchFilter" >
+        <div class="col-sm-12" >
+         <div class="input-group" >
+          <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
+          <div class="input-group-btn" >
+           <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Filter po godinama</span> <span class="caret" >&nbsp;</span></button>
+   
+           <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Filter</span></button>
           </div>
+         </div>
         </div>
-      </div>
-
-      {% if current_user.is_confirmed %}
-
-      <div class="text-center">
-        <a href="#" class="btn icon-btn borderless btn-outline-twitter btn-lg btn-round" data-toggle="modal"
-           data-target="#emailModal">
-          Personal
-        </a>
-        <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Privatne informacije
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="col-12 col-sm-12 col-lg-12 login-form">
-                  <div class="avatar" style="position: relative;">
-                    <i class="fa fa-id-card"></i>
-                  </div>
-                  <h2> Vase korisnicke informacije </h2>
-                  <p>Zbog zastite vase privatnosti i ujedno uspjesnog funkcionisana web aplikacije , molimo Vas
-                    da koristite validne licne dokumentacije zbog vlastite sigurnosti. Ukoliko imate vise pitanja
-                    vezanih za sigurnost vasih privatnih podata obratite nam se putem emaila !</p>
-                  <hr>
-                  <form method="POST">
-                    {{ form_personal.hidden_tag() }}
-                    <div class="form-group">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-user"></i>
-					</span>
-                        </div>
-                        {{ form_personal.ime( class='form-control', value=user.ime)}}
-                      </div>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-user"></i>
-					</span>
-                        </div>
-                        {{ form_personal.prezime( class='form-control', value=user.prezime)}}
-                      </div>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-globe"></i>
-					</span>
-                        </div>
-                        {{ form_personal.grad( class='form-control', value=user.grad)}}
-                      </div>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-id-card"></i>
-					</span>
-                        </div>
-                        {{ form_personal.jmbg(class='form-control', value=user.jmbg)}}
-                      </div>
-                    </div>
-                </div>
-                <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a>
-                </p>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_personal.submit1() }}
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a href="#" class="btn icon-btn borderless btn-outline-twitter btn-lg btn-round" data-toggle="modal"
-           data-target="#emailContact">
-          Kontakt
-        </a>
-        <div class="modal fade" id="emailContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Kontakt Informacije
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="col-12 col-sm-12 col-lg-12 login-form">
-                  <div class="avatar" style="position: relative; top: 0px;">
-                    <i class="fa fa-cogs"></i>
-                  </div>
-                  <h2> Vase kontakt informacije </h2>
-                  <p>Da bi ste uspjesno izvrisli promjenu vase email adrese
-                    ili vaseg broja telefona , nakon zahtjeva za promjenu molimo Vas
-                    da provijerite inbox Vase email adrese i izvrsite potvrdu promjene.</p>
-                  <hr>
-                  <form method="POST">
-                    {{ form_contact.hidden_tag() }}
-                    <div class="form-group">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-user fa-1x"></i>
-					</span>
-                        </div>
-                        {{ form_contact.email( class='form-control', value=user.email)}}
-                      </div>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-					<span class="input-group-text">
-						<i class="fa fa-phone fa-1x"></i>
-					</span>
-                        </div>
-                        {{ form_contact.kontakt_tel( class='form-control', value=user.kontakt_tel)}}
-                      </div>
-                    </div>
-                </div>
-                <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a>
-                </p>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_contact.submit2() }}
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a href="#" class="btn btn-lg btn-danger btn-round" data-toggle="modal"
-           data-target="#deleteModal">
-          Obrisite Profil
-        </a>
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteLabel">Obrisite Account</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <form method="POST">
-                {{ form_delete.hidden_tag() }}
-              <div class="modal-body">
-                <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
-                <div class="col">{{form_delete.confirm.label}}</div>
-                <div class="col">{{form_delete.confirm(class='form-control')}}</div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_delete.submit3(class='btn btn-danger') }}
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% else %}
-       <a href="#" class="btn btn-lg btn-danger btn-round" data-toggle="modal"
-           data-target="#deleteModal">
-          Obrisite Profil
-        </a>
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteLabel">Obrisite Account</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
-              </div>
-              <div class="modal-footer">
-                <form  method="POST">
-                  {{ form_delete.hidden_tag() }}
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  {{ form_delete.submit3(class='btn btn-danger') }}
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    {% endif %}
-    </div>
-  </div>
-  <hr class="m-0">
-  <ul class="nav nav-tabs tabs-alt justify-content-center">
-    <li class="nav-item">
-      <a class="nav-link py-4 active" href="#">Porez</a>
-    </li>
-  </ul>
-</div>
-
-<section>
-  <div class="container">
-
-<div class="container">
-  <div class="row searchFilter" >
-     <div class="col-sm-12" >
-      <div class="input-group" >
-       <input id="table_filter" type="text" class="form-control" aria-label="Text input with segmented button dropdown" >
-       <div class="input-group-btn" >
-        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="label-icon" >Filter po godinama</span> <span class="caret" >&nbsp;</span></button>
-
-        <button id="searchBtn" type="button" class="btn btn-secondary btn-search" ><span class="glyphicon glyphicon-search" >&nbsp;</span> <span class="label-icon" >Filter</span></button>
-       </div>
-      </div>
-     </div>
-  </div>
-</div>
-
-    <div class="row pt-5 m-auto" id="add_to">
+     </div>     
+     <div class="row pt-5 porez-data" id="add_to">
       {% for tax in user.posts %}
+      {% if tax.tip == 'PR-1' %}
       <div class="col-md-6 col-lg-4 pb-3" data-aos="fade-up" data-aos-duration="1000">
-            {% if tax.tip == 'PR-1' %}
         <div class="card card-custom bg-white border-white border-0">
           <div class="card-custom-img" style="background-image: url(/static/img/drugi-page-001.jpg); background-size: contain;"></div>
           <div class="card-custom-avatar">
@@ -299,31 +66,262 @@
             <a href="{{url_for('core.edit_pr1', id=tax.id)}}" class="btn btn-outline-primary">Izmijeni</a>
             <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
           </div>
-          {% else %}
-          <div class="card card-custom bg-white border-white border-0">
-          <div class="card-custom-img" style="background-image: url(/static/img/prvi-page-001.jpg); background-size: contain;"></div>
-          <div class="card-custom-avatar">
-            <img class="img-fluid" src="/static/img/ProfileLogo.png" alt="Avatar" />
+        </div>
+      </div>
+      {% else %}
+      <div class="col-md-6 col-lg-4 pb-3" data-aos="fade-up" data-aos-duration="1000">
+        <div class="card card-custom bg-white border-white border-0">
+        <div class="card-custom-img" style="background-image: url(/static/img/prvi-page-001.jpg); background-size: contain;"></div>
+        <div class="card-custom-avatar">
+          <img class="img-fluid" src="/static/img/ProfileLogo.png" alt="Avatar" />
+        </div>
+        <div class="card-body" style="overflow-y: auto">
+          <h4 class="card-title">{{tax.tip}}</h4>
+          <p class="card-text"> 
+            Pregled prihoda i rashoda od iznajmljivanja  imovine 
+            <br><br>
+            Datum prijave: {{tax.timestamp.strftime('%Y-%m-%d')}}
+          </p>
+        </div>
+        <div class="card-footer" style="background: inherit; border-color: inherit;">
+          <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
+          <a href="{{url_for('core.edit_1054', form_id=tax.id)}}" class="btn btn-outline-primary">Izmijeni</a>
+          <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
+        </div>
+      </div>
+    </div>
+      {% endif %}
+      {% endfor %}
+      </div> 
+    </div>
+    <div class="col-12 profile-data mb-5 mt-5">
+      <div class="text-center">
+        <img src="https://cdn.onlinewebfonts.com/svg/img_173956.png" alt class="ui-w-100 rounded-circle"
+             style="height: 100px; width: 100px">
+        <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
+          <h4 class="font-weight-bold my-4">{{ user.ime|title}} {{user.prezime|title}}</h4>
+  
+          <div class="text-muted mb-4">
+            <div class="col">
+              {% if current_user.is_confirmed %}
+              <p><strong>Grad:</strong> {{ current_user.grad|title }}</p>
+              {% if current_user.jmbg != None %}
+              <p><strong>JMBG:</strong> {{ current_user.jmbg }}</p>
+              {% else %}
+              <p><strong>JMBG:</strong> Nema podataka</p>
+              {% endif %}
+              {% if current_user.kontakt_tel != None %}
+              <p><strong>Kontakt Tel:</strong> {{ current_user.kontakt_tel }}</p>
+              {% else %}
+              <p><strong>Kontakt Tel:</strong> Nema podataka</p>
+              {% endif %}
+              {% else %}
+              <p>Da bi ste mogli upravljati vasim licnim podacima , i izvristi promjenu vase email adrese molim Vas
+                potvrdite <a href="{{url_for('users.email_confirm_token')}}">Vasu email adresu !</a></p>
+              {% endif %}
+            </div>
           </div>
-          <div class="card-body" style="overflow-y: auto">
-            <h4 class="card-title">{{tax.tip}}</h4>
-            <p class="card-text"> 
-              Pregled prihoda i rashoda od iznajmljivanja  imovine 
-              <br><br>
-              Datum prijave: {{tax.timestamp.strftime('%Y-%m-%d')}}
-            </p>
+        </div>
+  
+        {% if current_user.is_confirmed %}
+  
+        <div class="text-center">
+          <a href="#" class="btn icon-btn borderless btn-outline-twitter btn-lg btn-round" data-toggle="modal"
+             data-target="#emailModal">
+            Personal
+          </a>
+          <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Privatne informacije
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="col-12 col-sm-12 col-lg-12 login-form">
+                    <div class="avatar" style="position: relative;">
+                      <i class="fa fa-id-card"></i>
+                    </div>
+                    <h2> Vase korisnicke informacije </h2>
+                    <p>Zbog zastite vase privatnosti i ujedno uspjesnog funkcionisana web aplikacije , molimo Vas
+                      da koristite validne licne dokumentacije zbog vlastite sigurnosti. Ukoliko imate vise pitanja
+                      vezanih za sigurnost vasih privatnih podata obratite nam se putem emaila !</p>
+                    <hr>
+                    <form method="POST">
+                      {{ form_personal.hidden_tag() }}
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-user"></i>
+            </span>
+                          </div>
+                          {{ form_personal.ime( class='form-control', value=user.ime)}}
+                        </div>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-user"></i>
+            </span>
+                          </div>
+                          {{ form_personal.prezime( class='form-control', value=user.prezime)}}
+                        </div>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-globe"></i>
+            </span>
+                          </div>
+                          {{ form_personal.grad( class='form-control', value=user.grad)}}
+                        </div>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-id-card"></i>
+            </span>
+                          </div>
+                          {{ form_personal.jmbg(class='form-control', value=user.jmbg)}}
+                        </div>
+                      </div>
+                  </div>
+                  <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a>
+                  </p>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{ form_personal.submit1() }}
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-footer" style="background: inherit; border-color: inherit;">
-            <a href="{{url_for('core.render_1054', id=tax.id)}}" class="btn btn-primary">Download</a>
-            <a href="{{url_for('core.edit_1054', form_id=tax.id)}}" class="btn btn-outline-primary">Izmijeni</a>
-            <a href="{{url_for('core.delete_tax', form_id=tax.id)}}" class="btn btn-outline-danger">Obriši</a>
+          <a href="#" class="btn icon-btn borderless btn-outline-twitter btn-lg btn-round" data-toggle="modal"
+             data-target="#emailContact">
+            Kontakt
+          </a>
+          <div class="modal fade" id="emailContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Kontakt Informacije
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="col-12 col-sm-12 col-lg-12 login-form">
+                    <div class="avatar" style="position: relative; top: 0px;">
+                      <i class="fa fa-cogs"></i>
+                    </div>
+                    <h2> Vase kontakt informacije </h2>
+                    <p>Da bi ste uspjesno izvrisli promjenu vase email adrese
+                      ili vaseg broja telefona , nakon zahtjeva za promjenu molimo Vas
+                      da provijerite inbox Vase email adrese i izvrsite potvrdu promjene.</p>
+                    <hr>
+                    <form method="POST">
+                      {{ form_contact.hidden_tag() }}
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-user fa-1x"></i>
+            </span>
+                          </div>
+                          {{ form_contact.email( class='form-control', value=user.email)}}
+                        </div>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-phone fa-1x"></i>
+            </span>
+                          </div>
+                          {{ form_contact.kontakt_tel( class='form-control', value=user.kontakt_tel)}}
+                        </div>
+                      </div>
+                  </div>
+                  <p>Ukoliko zelite promijeniti Vasu lozinku kliknite na <a href="{{ url_for('users.password_reset')}}">link</a>
+                  </p>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{ form_contact.submit2() }}
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="btn btn-lg btn-danger btn-round" data-toggle="modal"
+             data-target="#deleteModal">
+            Obrisite Profil
+          </a>
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteLabel">Obrisite Account</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="POST">
+                  {{ form_delete.hidden_tag() }}
+                <div class="modal-body">
+                  <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
+                  <div class="col">{{form_delete.confirm.label}}</div>
+                  <div class="col">{{form_delete.confirm(class='form-control')}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{ form_delete.submit3(class='btn btn-danger') }}
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+         <a href="#" class="btn btn-lg btn-danger btn-round" data-toggle="modal"
+             data-target="#deleteModal">
+            Obrisite Profil
+          </a>
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteLabel">Obrisite Account</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p> Paznja ukoliko potvrdite da zelite obrisati vas potojeci account , svi podaci ce biti obrasini !</p>
+                </div>
+                <div class="modal-footer">
+                  <form  method="POST">
+                    {{ form_delete.hidden_tag() }}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{ form_delete.submit3(class='btn btn-danger') }}
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
           {% endif %}
         </div>
-     
-      </div>
-        {% endfor %}
-    </div>
   </div>
-</section>
+</div>
+</div>
+
+
+
 {% endblock %}

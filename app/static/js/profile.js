@@ -1,3 +1,13 @@
+$(document).ready(function () {
+  $('#table_filter').yearpicker({
+    startYear: 2000,
+    endYear: 2021,
+
+});
+  
+})
+
+
 $(function () {
   $("#searchBtn").on("click", function (e) {
     $("#add_to").empty();
@@ -81,7 +91,16 @@ function dataChart(value) {
   }
 }
 
-$("#table_filter").yearpicker({
-  startYear: 2000,
-  endYear: 2021,
-}).css('width', '100%s');
+
+$(function () {
+  $(".profil").on('click', function() {
+    $(".porez-data").hide()
+    $(".searchFilter").hide()
+    $(".profile-data").show()
+  })
+  $(".porez").on('click', function() {
+    $(".profile-data").hide()
+    $(".porez-data").show()
+    $(".searchFilter").show()
+  })
+})
